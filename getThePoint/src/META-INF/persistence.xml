@@ -22,8 +22,15 @@
             Persistence unit for getthepoint Application
         </description>
 
-		<class>de.hdm.getthepoint.server.db.model.Kategorie</class>
-		<class>de.hdm.getthepoint.server.db.model.Frage</class>
+		<class>de.hdm.getThePoint.db.dbmodel.Admin</class>
+		<class>de.hdm.getThePoint.db.dbmodel.Antwort</class>
+		<class>de.hdm.getThePoint.db.dbmodel.Ergebnis</class>
+		<class>de.hdm.getThePoint.db.dbmodel.Frage</class>
+		<class>de.hdm.getThePoint.db.dbmodel.Kategorie</class>
+		<class>de.hdm.getThePoint.db.dbmodel.Lehrender</class>
+		<class>de.hdm.getThePoint.db.dbmodel.Student</class>
+		<class>de.hdm.getThePoint.db.dbmodel.Wissenstest</class>
+		<class>de.hdm.getThePoint.db.dbmodel.ZuordnungWissenstestFrage</class>
 
 		<properties>
 			<property name="datanucleus.storeManagerType" value="true" />
