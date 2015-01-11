@@ -19,40 +19,61 @@
 
 	<h:form>
 
-		<p:outputLabel for="kategorie" value="Kategorie:" />
-		<p:selectOneListbox value="#{frageBean.bezeichnung}" id="kategorie">
-			<f:selectItems value="#{frageBean.kategorien}" var="kateg" itemValue="#{kateg}"
-				itemLabel="#{kateg.bezeichnung}" />
-		</p:selectOneListbox>
-
-		<p:dataScroller value="#{frageBean.fragen}" var="frage" chunkSize="10">
-			<f:facet name="header">
-            Scroll Down to Load More Cars
-        </f:facet>
-
-			<h:panelGrid columns="1" style="width:100%" columnClasses="frage">
+		<p:dataTable id="fragen" var="frage" value="#{frageBean.fragen}">
+			<p:column headerText="Frage">
+				<p:inplace id="ajax" editor="true">
+					<p:inputText value="#{frage.text}" />
+				</p:inplace>
+			</p:column>
 
 
-				<p:outputPanel>
-					<h:panelGrid columns="2" cellpadding="5">
-						<h:outputLabel for="frage" value="Name:" />
-						<p:inputText id="frage" />
+			<p:column headerText="Antwortmöglichkeiten">
 
-						<h:outputLabel for="antwort1" value="Antwortmöglichkeit 1:" />
-						<p:inputText id="antwort1" value="#{frageBean.antwortm1}" />
+				<p:dataList value="#{frage.antwortmoeglichkeiten}" var="antwort"
+					type="ordered">
 
-						<h:outputLabel for="antwort2" value="Antwortmöglichkeit 2:" />
-						<p:inputText id="antwort2" value="#{frageBean.antwortm2}" />
+					<p:inplace id="ajax" editor="true">
+						<p:inputText value="#{antwort.text}"></p:inputText>
+					</p:inplace>
 
-						<h:outputLabel for="antwort3" value="Antwortmöglichkeit 3:" />
-						<p:inputText id="antwort3" value="#{frageBean.antwortm3}" />
+				</p:dataList>
+				<p:outputLabel for="selectloesung" value="Lösung: " />
+				<p:selectOneButton id="selectloesung" value="#{frage.loesung}"
+					required="false" converter="omnifaces.SelectItemsConverter">
+					<f:selectItems value="#{frage.antwortmoeglichkeiten}" var="antw"
+						itemValue="#{antw}"
+						itemLabel="#{frage.antwortmoeglichkeiten.indexOf(antw)+1}"></f:selectItems>
+				</p:selectOneButton>
+			</p:column>
 
-						<h:outputLabel for="antwort4" value="Antwortmöglichkeit 4:" />
-						<p:inputText id="antwort4" value="#{frageBean.antwortm4}" />
-					</h:panelGrid>
-				</p:outputPanel>
-			</h:panelGrid>
-		</p:dataScroller>
+			<p:column headerText="Kategorie">
+				<p:selectOneMenu value="#{frage.kategorie}"
+					converter="omnifaces.SelectItemsConverter">
+					<f:selectItems value="#{frageBean.kategorien}" var="kateg"
+						itemValue="#{kateg}" itemLabel="#{kateg.bezeichnung}"></f:selectItems>
+				</p:selectOneMenu>
+			</p:column>
+			
+			<p:column headerText="Bild">
+			<p:graphicImage value="#{frage.bild}"></p:graphicImage>
+			</p:column>
+
+			<p:column headerText="Schwierigkeit">
+				<p:outputLabel value="#{frage.schwierigkeit.text}"></p:outputLabel>
+			</p:column>
+
+
+
+		</p:dataTable>
+		<br></br>
+		<p:commandButton value="Neue Frage hinzufügen"
+			action="#{frageBean.addFrage()}" update="fragen"></p:commandButton>
+		<br></br>
+		<br></br>
+		<p:commandButton value="Speichern" id="save" update="fragen"
+			icon="ui-icon-disk" />
+		<p:button value="Abbrechen"></p:button>
+
 	</h:form>
 </h:body>
 </html>

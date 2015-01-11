@@ -35,7 +35,8 @@ public class FrageMapper implements DbMapperInterface<FrageBo, Frage> {
 		FrageBo frageBo = new FrageBo();
 		frageBo.setId(dbmodel.getId());
 		frageBo.setText(dbmodel.getText());
-		frageBo.setBild(dbmodel.getBild());		// TODO Kategorie
+		frageBo.setBild(dbmodel.getBild());
+		frageBo.setKategorie(kategorieMapper.getModel(dbmodel.getKategorie()));
 
 		switch (dbmodel.getSchwierigkeit()) {
 		case 0:
@@ -62,6 +63,7 @@ public class FrageMapper implements DbMapperInterface<FrageBo, Frage> {
 		Frage frage = new Frage();
 		frage.setId(model.getId());
 		frage.setText(model.getText());
+		frage.setKategorie(kategorieMapper.getDbModel(model.getKategorie()));
 		Set<Antwort> antwortmoeglichkeiten = new HashSet<>();
 
 		for (AntwortBo antwort : model.getAntwortmoeglichkeiten()) {

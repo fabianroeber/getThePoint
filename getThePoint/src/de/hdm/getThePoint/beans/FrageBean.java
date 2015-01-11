@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
+import de.hdm.getThePoint.bo.AntwortBo;
 import de.hdm.getThePoint.bo.FrageBo;
 import de.hdm.getThePoint.bo.KategorieBo;
 import de.hdm.getThePoint.db.DataAcces;
@@ -47,6 +48,13 @@ public class FrageBean implements Serializable {
 
 	public void getAllFragen() {
 		fragen = frageMapper.getModelsAsList(dataAccess.getAllFrage());
+	}
+
+	public void addFrage() {
+		FrageBo frage = new FrageBo();
+		frage.setText("Hier Frage eingeben");
+		frage.setAntwortmoeglichkeiten(new ArrayList<AntwortBo>());
+		fragen.add(frage);
 	}
 
 	public String getName() {
@@ -106,7 +114,8 @@ public class FrageBean implements Serializable {
 	}
 
 	public void getAllKategorien() {
-		kategorien = kategorieMapper.getModelsAsList(dataAccess.getAllKategorie());
+		kategorien = kategorieMapper.getModelsAsList(dataAccess
+				.getAllKategorie());
 	}
 
 	public String getBezeichnung() {
