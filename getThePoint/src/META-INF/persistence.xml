@@ -30,7 +30,7 @@
 		<class>de.hdm.getThePoint.db.dbmodel.Lehrender</class>
 		<class>de.hdm.getThePoint.db.dbmodel.Student</class>
 		<class>de.hdm.getThePoint.db.dbmodel.Wissenstest</class>
-		<class>de.hdm.getThePoint.db.dbmodel.ZuordnungWissenstestFrage</class>
+		
 
 		<properties>
 			<property name="datanucleus.storeManagerType" value="true" />

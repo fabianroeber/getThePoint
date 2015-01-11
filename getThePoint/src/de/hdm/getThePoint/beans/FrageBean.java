@@ -6,38 +6,47 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import de.hdm.getThePoint.bo.FrageBo;
+import de.hdm.getThePoint.bo.KategorieBo;
 import de.hdm.getThePoint.db.DataAcces;
 import de.hdm.getThePoint.db.mapper.FrageMapper;
+import de.hdm.getThePoint.db.mapper.KategorieMapper;
 
 @ManagedBean(name = "frageBean")
-@SessionScoped
+@ViewScoped
 public class FrageBean implements Serializable {
 
 	String name = "test";
 
 	private static final long serialVersionUID = -7885565449150992040L;
 
-	private FrageMapper frageMapper = new FrageMapper();
-	
-	private DataAcces dataAccess = new DataAcces();
-	
+	private FrageMapper frageMapper;
+	private KategorieMapper kategorieMapper;
+
+	private DataAcces dataAccess;
+
 	private List<FrageBo> fragen;
-	
 	private String antwortm1;
 	private String antwortm2;
 	private String antwortm3;
 	private String antwortm4;
-	
-	
+
+	private List<KategorieBo> kategorien;
+	private String bezeichnung;
+
 	public FrageBean() {
-		fragen = getAllFragen();
+		dataAccess = new DataAcces();
+		frageMapper = new FrageMapper();
+		kategorieMapper = new KategorieMapper();
+		getAllFragen();
+		getAllKategorien();
+
 	}
 
-	public List<FrageBo> getAllFragen() {
-		return frageMapper.getModelsAsList(dataAccess
-				.getAllFrage());
+	public void getAllFragen() {
+		fragen = frageMapper.getModelsAsList(dataAccess.getAllFrage());
 	}
 
 	public String getName() {
@@ -88,5 +97,24 @@ public class FrageBean implements Serializable {
 		this.fragen = fragen;
 	}
 
-	
+	public List<KategorieBo> getKategorien() {
+		return kategorien;
+	}
+
+	public void setKategorien(List<KategorieBo> kategorien) {
+		this.kategorien = kategorien;
+	}
+
+	public void getAllKategorien() {
+		kategorien = kategorieMapper.getModelsAsList(dataAccess.getAllKategorie());
+	}
+
+	public String getBezeichnung() {
+		return bezeichnung;
+	}
+
+	public void setBezeichnung(String bezeichnung) {
+		this.bezeichnung = bezeichnung;
+	}
+
 }

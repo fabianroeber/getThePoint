@@ -20,10 +20,9 @@
 	<h:form>
 
 		<p:outputLabel for="kategorie" value="Kategorie:" />
-		<p:selectOneListbox id="kategorie" value="#{kategorieBean.kategorien}">
-			<f:selectItem itemLabel="Kategorie auswählen" itemValue="null" />
-			<f:selectItem value="kateg" itemValue="#{kateg}"
-				itemLabel="#{fachvorg.bezeichnung}" />
+		<p:selectOneListbox value="#{frageBean.bezeichnung}" id="kategorie">
+			<f:selectItems value="#{frageBean.kategorien}" var="kateg" itemValue="#{kateg}"
+				itemLabel="#{kateg.bezeichnung}" />
 		</p:selectOneListbox>
 
 		<p:dataScroller value="#{frageBean.fragen}" var="frage" chunkSize="10">
@@ -40,16 +39,16 @@
 						<p:inputText id="frage" />
 
 						<h:outputLabel for="antwort1" value="Antwortmöglichkeit 1:" />
-						<p:inputText id="antwort1" value="#{FrageBean.antwortm1}" />
+						<p:inputText id="antwort1" value="#{frageBean.antwortm1}" />
 
 						<h:outputLabel for="antwort2" value="Antwortmöglichkeit 2:" />
-						<p:inputText id="antwort2" value="#{FrageBean.antwortm2}" />
+						<p:inputText id="antwort2" value="#{frageBean.antwortm2}" />
 
 						<h:outputLabel for="antwort3" value="Antwortmöglichkeit 3:" />
-						<p:inputText id="antwort3" value="#{FrageBean.antwortm3}" />
+						<p:inputText id="antwort3" value="#{frageBean.antwortm3}" />
 
 						<h:outputLabel for="antwort4" value="Antwortmöglichkeit 4:" />
-						<p:inputText id="antwort4" value="#{FrageBean.antwortm4}" />
+						<p:inputText id="antwort4" value="#{frageBean.antwortm4}" />
 					</h:panelGrid>
 				</p:outputPanel>
 			</h:panelGrid>
