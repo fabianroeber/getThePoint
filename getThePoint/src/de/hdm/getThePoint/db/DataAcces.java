@@ -1,5 +1,6 @@
 package de.hdm.getThePoint.db;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -16,7 +17,9 @@ import de.hdm.getThePoint.db.dbmodel.Wissenstest;
  * @author Fabian
  *
  */
-public class DataAcces {
+public class DataAcces implements Serializable {
+
+	private static final long serialVersionUID = -7993963883289903662L;
 
 	private EntityManagerFactory entityManagerFactory = null;
 
@@ -30,6 +33,7 @@ public class DataAcces {
 
 	/**
 	 * Methode zum Abrufen aller {@link Wissenstest}.
+	 * 
 	 * @return
 	 */
 	public List<Wissenstest> getAllWissentests() {
