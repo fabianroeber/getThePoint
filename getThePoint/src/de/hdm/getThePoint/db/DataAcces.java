@@ -8,6 +8,7 @@ import javax.persistence.Persistence;
 
 import de.hdm.getThePoint.db.dbmodel.Frage;
 import de.hdm.getThePoint.db.dbmodel.Kategorie;
+import de.hdm.getThePoint.db.dbmodel.Lehrender;
 import de.hdm.getThePoint.db.dbmodel.Wissenstest;
 
 /**
@@ -56,6 +57,13 @@ public class DataAcces {
 	public List<Frage> getAllFrage() {
 		List<Frage> list = entityManager.createQuery(
 				"SELECT frage FROM Frage frage", Frage.class).getResultList();
+		return list;
+
+	}
+	
+	public List<Lehrender> getAllLehrende() {
+		List<Lehrender> list = entityManager.createQuery(
+				"SELECT lehrender FROM Lehrender lehrender", Lehrender.class).getResultList();
 		return list;
 
 	}
