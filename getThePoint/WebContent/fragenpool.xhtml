@@ -7,51 +7,59 @@
 	xmlns:o="http://omnifaces.org/ui"
 	xmlns:of="http://omnifaces.org/functions"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-	<ui:define name="content"></ui:define>
-	<h:form>
-		<p:dataTable id="fragen" var="frage" value="#{frageBean.fragen}">
-			<p:column headerText="Frage">
-				<p:inplace id="ajax" editor="true">
-					<p:inputText value="#{frage.text}" />
-				</p:inplace>
-			</p:column>
-			<p:column headerText="Antwortmöglichkeiten">
-				<p:dataList value="#{frage.antwortmoeglichkeiten}" var="antwort"
-					type="ordered">
-					<p:inplace id="ajax" editor="true">
-						<p:inputText value="#{antwort.text}"></p:inputText>
-					</p:inplace>
-				</p:dataList>
-				<p:outputLabel for="selectloesung" value="Lösung: " />
-				<p:selectOneButton id="selectloesung" value="#{frage.loesung}"
-					required="false" converter="omnifaces.SelectItemsConverter">
-					<f:selectItems value="#{frage.antwortmoeglichkeiten}" var="antw"
-						itemValue="#{antw}"
-						itemLabel="#{frage.antwortmoeglichkeiten.indexOf(antw)+1}"></f:selectItems>
-				</p:selectOneButton>
-			</p:column>
-			<p:column headerText="Kategorie">
-				<p:selectOneMenu value="#{frage.kategorie}"
-					converter="omnifaces.SelectItemsConverter">
-					<f:selectItems value="#{frageBean.kategorien}" var="kateg"
-						itemValue="#{kateg}" itemLabel="#{kateg.bezeichnung}"></f:selectItems>
-				</p:selectOneMenu>
-			</p:column>
+	<ui:define name="pageheader">
 
-			<p:column headerText="Bild">
-				<p:graphicImage value="#{frage.bild}"></p:graphicImage>
-			</p:column>
-			<p:column headerText="Schwierigkeit">
-				<p:outputLabel value="#{frage.schwierigkeit.text}"></p:outputLabel>
-			</p:column>
-		</p:dataTable>
-		<br></br>
-		<p:commandButton value="Neue Frage hinzufügen"
-			action="#{frageBean.addFrage()}" update="fragen"></p:commandButton>
-		<br></br>
-		<br></br>
-		<p:commandButton value="Speichern" id="save" update="fragen"
-			icon="ui-icon-disk" />
-		<p:button value="Abbrechen"></p:button>
-	</h:form>
+	</ui:define>
+	<ui:define name="content">
+		<h:form>
+
+			<p:dataTable id="fragen" var="frage" value="#{frageBean.fragen}">
+				<p:column headerText="Frage">
+					<p:inplace id="ajax" editor="true">
+						<p:inputText value="#{frage.text}" />
+					</p:inplace>
+				</p:column>
+				<p:column headerText="Antwortmöglichkeiten">
+					<p:dataList value="#{frage.antwortmoeglichkeiten}" var="antwort"
+						type="ordered">
+						<p:inplace id="ajax" editor="true">
+							<p:inputText value="#{antwort.text}"></p:inputText>
+						</p:inplace>
+					</p:dataList>
+					<p:outputLabel for="selectloesung" value="Lösung: " />
+					<p:selectOneButton id="selectloesung" value="#{frage.loesung}"
+						required="false" converter="omnifaces.SelectItemsConverter">
+						<f:selectItems value="#{frage.antwortmoeglichkeiten}" var="antw"
+							itemValue="#{antw}"
+							itemLabel="#{frage.antwortmoeglichkeiten.indexOf(antw)+1}"></f:selectItems>
+					</p:selectOneButton>
+				</p:column>
+				<p:column headerText="Kategorie">
+					<p:selectOneMenu value="#{frage.kategorie}"
+						converter="omnifaces.SelectItemsConverter">
+						<f:selectItems value="#{frageBean.kategorien}" var="kateg"
+							itemValue="#{kateg}" itemLabel="#{kateg.bezeichnung}"></f:selectItems>
+					</p:selectOneMenu>
+				</p:column>
+
+				<p:column headerText="Bild">
+					<p:graphicImage value="#{frage.bild}"></p:graphicImage>
+				</p:column>
+				<p:column headerText="Schwierigkeit">
+					<p:outputLabel value="#{frage.schwierigkeit.text}"></p:outputLabel>
+				</p:column>
+			</p:dataTable>
+			<br></br>
+			<p:commandButton value="Neue Frage hinzufügen"
+				action="#{frageBean.addFrage()}" update="fragen"></p:commandButton>
+			<br></br>
+			<br></br>
+			<p:commandButton value="Speichern" id="save" update="fragen"
+				icon="ui-icon-disk" />
+			<p:button value="Abbrechen"></p:button>
+		</h:form>
+	</ui:define>
+	<ui:define name="pagefooter">
+
+	</ui:define>
 </ui:composition>
