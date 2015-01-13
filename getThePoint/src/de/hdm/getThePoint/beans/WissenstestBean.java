@@ -30,6 +30,7 @@ public class WissenstestBean implements Serializable {
 	private List<WissenstestBo> wissenstests;
 	private List<KategorieBo> kategorien;
 	private DualListModel<FrageBo> dlmfragen;
+	private KategorieBo selectedKategorie;
 
 	private FrageMapper frageMapper;
 	private KategorieMapper kategorieMapper;
@@ -109,5 +110,13 @@ public class WissenstestBean implements Serializable {
 
 	public void setKategorien(List<KategorieBo> kategorien) {
 		this.kategorien = kategorien;
+	}
+
+	public KategorieBo getSelectedKategorie() {
+		return selectedKategorie;
+	}
+
+	public void setSelectedKategorie(KategorieBo selectedKategorie) {
+		this.selectedKategorie = selectedKategorie;
 	}
 }

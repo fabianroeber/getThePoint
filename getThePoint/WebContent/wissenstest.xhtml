@@ -14,12 +14,13 @@
 		<h:form>
 
 			<p:outputLabel for="kategorie" value="Kategorie" />
-			<p:selectOneMenu id="kategorie" value="#{kateg}"
+			<p:selectOneMenu id="kategorie"
+				value="#{wissenstestBean.selectedKategorie}"
 				converter="omnifaces.SelectItemsConverter" panelStyle="width:180px"
 				effect="fade" var="k" style="width:160px" filter="true"
 				filterMatchMode="startsWith">
 				<f:selectItems value="#{wissenstestBean.kategorien}" var="kateg"
-					itemLabel="#{theme.displayName}" itemValue="#{kateg}" />
+					itemLabel="#{kateg.bezeichnung}" itemValue="#{kateg}" />
 
 				<p:column style="width:10%">
 					<h:outputText styleClass="ui-theme ui-theme-#{k.bezeichnung}" />
