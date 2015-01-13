@@ -1,6 +1,7 @@
 package de.hdm.getThePoint.bo;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Fabian
@@ -9,6 +10,8 @@ import java.util.Date;
 public class WissenstestBo extends BusinessObject {
 
 	private static final long serialVersionUID = -4218497524010213019L;
+
+	private String bezeichnung;
 
 	private LehrenderBo lehrender;
 
@@ -23,6 +26,10 @@ public class WissenstestBo extends BusinessObject {
 	private boolean aktiv;
 
 	private boolean gestartet;
+
+	private List<FrageZuordung> frageZuordungen;
+
+	private List<ErgebnisBo> ergebnisse;
 
 	public LehrenderBo getLehrender() {
 		return lehrender;
@@ -78,6 +85,30 @@ public class WissenstestBo extends BusinessObject {
 
 	public void setGestartet(boolean gestartet) {
 		this.gestartet = gestartet;
+	}
+
+	public String getBezeichnung() {
+		return bezeichnung;
+	}
+
+	public void setBezeichnung(String bezeichnung) {
+		this.bezeichnung = bezeichnung;
+	}
+
+	public List<ErgebnisBo> getErgebnisse() {
+		return ergebnisse;
+	}
+
+	public void setErgebnisse(List<ErgebnisBo> ergebnisse) {
+		this.ergebnisse = ergebnisse;
+	}
+
+	public List<FrageZuordung> getFrageZuordungen() {
+		return frageZuordungen;
+	}
+
+	public void setFrageZuordungen(List<FrageZuordung> frageZuordungen) {
+		this.frageZuordungen = frageZuordungen;
 	}
 
 }
