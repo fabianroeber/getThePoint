@@ -13,6 +13,23 @@
 	<ui:define name="content">
 		<h:form>
 
+			<p:outputLabel for="kategorie" value="Kategorie" />
+			<p:selectOneMenu id="kategorie" value="#{kateg}"
+				converter="omnifaces.SelectItemsConverter" panelStyle="width:180px"
+				effect="fade" var="k" style="width:160px" filter="true"
+				filterMatchMode="startsWith">
+				<f:selectItems value="#{wissenstestBean.kategorien}" var="kateg"
+					itemLabel="#{theme.displayName}" itemValue="#{kateg}" />
+
+				<p:column style="width:10%">
+					<h:outputText styleClass="ui-theme ui-theme-#{k.bezeichnung}" />
+				</p:column>
+
+				<p:column>
+					<h:outputText value="#{k.bezeichnung}" />
+				</p:column>
+			</p:selectOneMenu>
+
 			<p:growl id="msg" showDetail="true" escape="false" />
 			<p:pickList id="FragenPickList" value="#{wissenstestBean.dlmfragen}"
 				var="frage" effect="bounce" itemValue="#{frage}"
