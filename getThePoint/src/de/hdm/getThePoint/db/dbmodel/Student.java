@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class Student extends HibernateModel {
 
 	private static final long serialVersionUID = 9181040556325482020L;
-	private int id;
+	private Integer id;
 	private String matrikelNr;
 	private String name;
 	private String vorname;
@@ -29,11 +29,11 @@ public class Student extends HibernateModel {
 	public Student() {
 	}
 
-	public Student(int id) {
+	public Student(Integer id) {
 		this.id = id;
 	}
 
-	public Student(int id, String matrikelNr, String name, String vorname,
+	public Student(Integer id, String matrikelNr, String name, String vorname,
 			String kuerzel, Set<Ergebnis> ergebnises) {
 		this.id = id;
 		this.matrikelNr = matrikelNr;
@@ -45,11 +45,11 @@ public class Student extends HibernateModel {
 
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

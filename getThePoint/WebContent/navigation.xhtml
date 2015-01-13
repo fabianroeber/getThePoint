@@ -7,6 +7,19 @@
 	xmlns:of="http://omnifaces.org/functions"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	<h:form>
-
+		<p:tabMenu activeIndex="#{param.i}">
+			<p:menuitem value="Quiz - Status">
+				<f:param name="i" value="0" />
+			</p:menuitem>
+			<p:menuitem value="Quiz - Verwaltung">
+				<f:param name="i" value="1" />
+			</p:menuitem>
+			<p:menuitem value="Fragenpool" outcome="/fragenpool.xhtml">
+				<f:param name="i" value="2" />
+			</p:menuitem>
+			<p:menuitem value="Ergebnisse" outcome="/wissenstest.xhtml">
+				<f:param name="i" value="3" />
+			</p:menuitem>
+		</p:tabMenu>
 	</h:form>
 </ui:composition>

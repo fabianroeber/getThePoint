@@ -1,11 +1,7 @@
 package de.hdm.getThePoint.bo;
 
-
 public class ErgebnisBo extends BusinessObject {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2250934284088999510L;
 
 	private WissenstestBo wissenstest;
@@ -13,11 +9,11 @@ public class ErgebnisBo extends BusinessObject {
 	private StudentBo student;
 
 	private FrageBo frage;
-	
+
 	private int frage_id;
 
 	private AntwortBo antwort;
-	
+
 	private int antwort_id;
 
 	private boolean richtig;
@@ -45,7 +41,7 @@ public class ErgebnisBo extends BusinessObject {
 	public void setFrage(FrageBo frage) {
 		this.frage = frage;
 	}
-	
+
 	public int getFrage_id() {
 		return frage_id;
 	}

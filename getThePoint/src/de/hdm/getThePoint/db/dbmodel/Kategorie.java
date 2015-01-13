@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class Kategorie extends HibernateModel {
 
 	private static final long serialVersionUID = -8572549950770548904L;
-	private int id;
+	private Integer id;
 	private Lehrender lehrender;
 	private String bezeichnung;
 	private Set<Frage> frages = new HashSet<Frage>(0);
@@ -30,11 +30,11 @@ public class Kategorie extends HibernateModel {
 	public Kategorie() {
 	}
 
-	public Kategorie(int id) {
+	public Kategorie(Integer id) {
 		this.id = id;
 	}
 
-	public Kategorie(int id, Lehrender lehrender, String bezeichnung,
+	public Kategorie(Integer id, Lehrender lehrender, String bezeichnung,
 			Set<Frage> frages) {
 		this.id = id;
 		this.lehrender = lehrender;
@@ -44,11 +44,11 @@ public class Kategorie extends HibernateModel {
 
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

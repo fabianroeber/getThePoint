@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class Ergebnis extends HibernateModel {
 
 	private static final long serialVersionUID = -1090013602142615546L;
-	private int id;
+	private Integer id;
 	private Antwort antwort;
 	private Frage frage;
 	private Student student;
@@ -28,11 +28,11 @@ public class Ergebnis extends HibernateModel {
 	public Ergebnis() {
 	}
 
-	public Ergebnis(int id) {
+	public Ergebnis(Integer id) {
 		this.id = id;
 	}
 
-	public Ergebnis(int id, Antwort antwort, Frage frage, Student student,
+	public Ergebnis(Integer id, Antwort antwort, Frage frage, Student student,
 			Wissenstest wissenstest, Character richtig) {
 		this.id = id;
 		this.antwort = antwort;
@@ -44,11 +44,11 @@ public class Ergebnis extends HibernateModel {
 
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

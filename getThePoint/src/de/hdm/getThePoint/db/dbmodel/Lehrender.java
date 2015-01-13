@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class Lehrender extends HibernateModel {
 
 	private static final long serialVersionUID = -8545825896179063884L;
-	private int id;
+	private Integer id;
 	private String name;
 	private String vorname;
 	private Set<Wissenstest> wissenstests = new HashSet<Wissenstest>(0);
@@ -28,11 +28,11 @@ public class Lehrender extends HibernateModel {
 	public Lehrender() {
 	}
 
-	public Lehrender(int id) {
+	public Lehrender(Integer id) {
 		this.id = id;
 	}
 
-	public Lehrender(int id, String name, String vorname,
+	public Lehrender(Integer id, String name, String vorname,
 			Set<Wissenstest> wissenstests, Set<Kategorie> kategories) {
 		this.id = id;
 		this.name = name;
@@ -43,11 +43,11 @@ public class Lehrender extends HibernateModel {
 
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

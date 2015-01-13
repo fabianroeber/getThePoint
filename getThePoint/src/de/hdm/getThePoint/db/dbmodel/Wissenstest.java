@@ -25,7 +25,7 @@ import javax.persistence.TemporalType;
 public class Wissenstest extends HibernateModel {
 
 	private static final long serialVersionUID = 7719728256949700400L;
-	private int id;
+	private Integer id;
 	private Lehrender lehrender;
 	private Date startzeit;
 	private Date endzeit;
@@ -42,11 +42,11 @@ public class Wissenstest extends HibernateModel {
 	public Wissenstest() {
 	}
 
-	public Wissenstest(int id) {
+	public Wissenstest(Integer id) {
 		this.id = id;
 	}
 
-	public Wissenstest(int id, Lehrender lehrender, Date startzeit,
+	public Wissenstest(Integer id, Lehrender lehrender, Date startzeit,
 			Date endzeit, Integer zeitFrage, Character random,
 			Character starttyp, Character gestartet, Character aktiv,
 			String bezeichnung,
@@ -68,11 +68,11 @@ public class Wissenstest extends HibernateModel {
 
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

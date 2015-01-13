@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class Frage extends HibernateModel {
 
 	private static final long serialVersionUID = -8141793399933091960L;
-	private int id;
+	private Integer id;
 	private Antwort antwort;
 	private Kategorie kategorie;
 	private String text;
@@ -36,13 +36,13 @@ public class Frage extends HibernateModel {
 	public Frage() {
 	}
 
-	public Frage(int id, Antwort antwort, Kategorie kategorie) {
+	public Frage(Integer id, Antwort antwort, Kategorie kategorie) {
 		this.id = id;
 		this.antwort = antwort;
 		this.kategorie = kategorie;
 	}
 
-	public Frage(int id, Antwort antwort, Kategorie kategorie, String text,
+	public Frage(Integer id, Antwort antwort, Kategorie kategorie, String text,
 			Integer schwierigkeit, String bild,
 			Set<ZuordungWissenstestFrage> zuordungWissenstestFrages,
 			Set<Antwort> antworts, Set<Ergebnis> ergebnises) {
@@ -59,11 +59,11 @@ public class Frage extends HibernateModel {
 
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

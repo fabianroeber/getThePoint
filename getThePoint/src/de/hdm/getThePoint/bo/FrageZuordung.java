@@ -6,7 +6,7 @@ public class FrageZuordung extends BusinessObject {
 
 	private FrageBo frage;
 
-	public FrageZuordung(int id, FrageBo frage) {
+	public FrageZuordung(Integer id, FrageBo frage) {
 		super();
 		this.setId(id);
 		this.frage = frage;

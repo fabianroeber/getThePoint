@@ -6,13 +6,13 @@ public class BusinessObject implements Serializable {
 
 	private static final long serialVersionUID = -3544159520355754839L;
 
-	private int id;
+	private Integer id;
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

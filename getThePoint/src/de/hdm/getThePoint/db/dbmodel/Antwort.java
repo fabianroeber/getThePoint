@@ -4,6 +4,7 @@ package de.hdm.getThePoint.db.dbmodel;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,7 +22,7 @@ import javax.persistence.Table;
 public class Antwort extends HibernateModel {
 
 	private static final long serialVersionUID = 4532428067635261546L;
-	private int id;
+	private Integer id;
 	private Frage frage;
 	private String text;
 	private Set<Frage> frages = new HashSet<Frage>(0);
@@ -30,11 +31,11 @@ public class Antwort extends HibernateModel {
 	public Antwort() {
 	}
 
-	public Antwort(int id) {
+	public Antwort(Integer id) {
 		this.id = id;
 	}
 
-	public Antwort(int id, Frage frage, String text, Set<Frage> frages,
+	public Antwort(Integer id, Frage frage, String text, Set<Frage> frages,
 			Set<Ergebnis> ergebnises) {
 		this.id = id;
 		this.frage = frage;
@@ -45,11 +46,11 @@ public class Antwort extends HibernateModel {
 
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

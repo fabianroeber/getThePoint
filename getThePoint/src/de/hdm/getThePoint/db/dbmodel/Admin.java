@@ -15,18 +15,18 @@ import javax.persistence.Table;
 public class Admin extends HibernateModel {
 
 	private static final long serialVersionUID = 895799225419210507L;
-	private int id;
+	private Integer id;
 	private String login;
 	private String passwort;
 
 	public Admin() {
 	}
 
-	public Admin(int id) {
+	public Admin(Integer id) {
 		this.id = id;
 	}
 
-	public Admin(int id, String login, String passwort) {
+	public Admin(Integer id, String login, String passwort) {
 		this.id = id;
 		this.login = login;
 		this.passwort = passwort;
@@ -34,11 +34,11 @@ public class Admin extends HibernateModel {
 
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

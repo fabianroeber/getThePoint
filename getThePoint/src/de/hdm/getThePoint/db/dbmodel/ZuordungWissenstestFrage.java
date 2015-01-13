@@ -18,18 +18,19 @@ import javax.persistence.Table;
 public class ZuordungWissenstestFrage extends HibernateModel {
 
 	private static final long serialVersionUID = -8472971881473721757L;
-	private int id;
+	private Integer id;
 	private Frage frage;
 	private Wissenstest wissenstest;
 
 	public ZuordungWissenstestFrage() {
 	}
 
-	public ZuordungWissenstestFrage(int id) {
+	public ZuordungWissenstestFrage(Integer id) {
 		this.id = id;
 	}
 
-	public ZuordungWissenstestFrage(int id, Frage frage, Wissenstest wissenstest) {
+	public ZuordungWissenstestFrage(Integer id, Frage frage,
+			Wissenstest wissenstest) {
 		this.id = id;
 		this.frage = frage;
 		this.wissenstest = wissenstest;
@@ -37,11 +38,11 @@ public class ZuordungWissenstestFrage extends HibernateModel {
 
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

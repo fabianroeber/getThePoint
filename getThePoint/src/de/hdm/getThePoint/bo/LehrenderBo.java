@@ -2,19 +2,13 @@ package de.hdm.getThePoint.bo;
 
 public class LehrenderBo extends BusinessObject {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5382845302404475300L;
 
 	private String vorname;
-	
+
 	private String nachname;
 
 	private String kuerzel;
-
-
-
 
 	public String getVorname() {
 		return vorname;

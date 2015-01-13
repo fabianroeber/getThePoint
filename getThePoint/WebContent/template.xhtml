@@ -8,17 +8,31 @@
 	xmlns:o="http://omnifaces.org/ui"
 	xmlns:of="http://omnifaces.org/functions"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
+
 <h:head>
 	<meta http-equiv="
 	Content-Type"
 		content="text/html; charset=ISO-8859-1" />
 	<title>GetThePoint - Verwaltung</title>
 </h:head>
-
 <h:body>
-	<ui:insert name="pageheader"></ui:insert>
-	<ui:include src="navigation.xhtml"></ui:include>
-	<ui:insert name="content"></ui:insert>
-	<ui:insert name="pagefooter"></ui:insert>
+
+	<p:layout>
+		<p:layoutUnit position="north" minSize="86">
+			<p:graphicImage id="headimg"
+				value="/resources/images/Quiz-Games-red.png" height="60px"
+				width="60px"></p:graphicImage>
+			<p:outputLabel for="headimg"
+				style="font-size: 40px; position: absolute; bottom: 15px; left: 70px;"
+				value="Get The Point - Das interaktive Lehrveranstaltungsquiz der HdM Stuttgart"></p:outputLabel>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" minSize="800">
+			<ui:include src="navigation.xhtml"></ui:include>
+			<ui:insert name="content"></ui:insert>
+		</p:layoutUnit>
+		<p:layoutUnit position="south">
+			<ui:insert name="pagefooter"></ui:insert>
+		</p:layoutUnit>
+	</p:layout>
 </h:body>
 </html>
