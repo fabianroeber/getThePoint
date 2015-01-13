@@ -13,6 +13,30 @@
 	<ui:define name="content">
 		<h:form>
 
+			<p:growl id="msg" showDetail="true" escape="false" />
+			<p:pickList id="FragenPickList" value="#{wissenstestBean.dlmfragen}"
+				var="frage" effect="bounce" itemValue="#{frage}"
+				itemLabel="#{frage.text}" showSourceControls="true"
+				showTargetControls="true" showCheckbox="true"
+				showSourceFilter="true" showTargetFilter="true"
+				filterMatchMode="contains">
+
+				<f:facet name="sourceCaption">Fragenpool</f:facet>
+				<f:facet name="targetCaption">Wissenstest</f:facet>
+
+				<p:ajax event="transfer" listener="#{wissenstestBean.onTransfer}"
+					update="msg" />
+
+				<p:column style="width:25%">
+					<h:outputText styleClass="ui-theme ui-theme-#{frage.text}" />
+				</p:column>
+
+				<p:column style="width:75%;">
+					<h:outputText value="#{frage.text}" />
+				</p:column>
+			</p:pickList>
+
+			<p:commandButton id="save" value="Speichern" style="margin-top:5px" />
 
 		</h:form>
 	</ui:define>
