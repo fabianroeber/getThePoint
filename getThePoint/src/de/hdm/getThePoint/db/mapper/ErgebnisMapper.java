@@ -1,5 +1,6 @@
 package de.hdm.getThePoint.db.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdm.getThePoint.bo.ErgebnisBo;
@@ -9,13 +10,16 @@ public class ErgebnisMapper implements DbMapperInterface<ErgebnisBo, Ergebnis> {
 
 	@Override
 	public List<ErgebnisBo> getModelsAsList(List<Ergebnis> dbmodels) {
-		// TODO Auto-generated method stub
-		return null;
+		List<ErgebnisBo> ergebnisse = new ArrayList<ErgebnisBo>();
+		for (Ergebnis ergebnis : dbmodels) {
+			ergebnisse.add(getModel(ergebnis));
+		}
+		return ergebnisse;
 	}
 
 	@Override
 	public ErgebnisBo getModel(Ergebnis dbmodel) {
-		// TODO Auto-generated method stub
+		//TODO
 		return null;
 	}
 
