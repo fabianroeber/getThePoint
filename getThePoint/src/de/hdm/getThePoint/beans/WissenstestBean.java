@@ -13,6 +13,7 @@ import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 
 import de.hdm.getThePoint.bo.FrageBo;
+import de.hdm.getThePoint.bo.FrageZuordung;
 import de.hdm.getThePoint.bo.KategorieBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.DataAcces;
@@ -29,6 +30,7 @@ public class WissenstestBean implements Serializable {
 	private List<FrageBo> fragen;
 	private List<WissenstestBo> wissenstests;
 	private List<KategorieBo> kategorien;
+	private List<FrageBo> wissenstestfragen;
 	private DualListModel<FrageBo> dlmfragen;
 	private KategorieBo selectedKategorie;
 
@@ -44,10 +46,11 @@ public class WissenstestBean implements Serializable {
 		kategorieMapper = new KategorieMapper();
 		getAllFragen();
 		getAllKategorien();
+
 		dlmfragen = new DualListModel<FrageBo>(fragen, fragen);
 
 		getAllWissenstests();
-
+		getAllWissenstestFragen();
 	}
 
 	public void onTransfer(TransferEvent event) {
@@ -78,6 +81,10 @@ public class WissenstestBean implements Serializable {
 	public void getAllKategorien() {
 		kategorien = kategorieMapper.getModelsAsList(dataAccess
 				.getAllKategorie());
+	}
+
+	public void getAllWissenstestFragen() {
+		
 	}
 
 	public List<FrageBo> getFragen() {
