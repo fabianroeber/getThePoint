@@ -60,37 +60,41 @@ public class AuswertungenBean implements Serializable {
 		int anzahlRichtigeAntwGes = 0;
 		int laststudentid = 0;
 		for (ErgebnisBo er : ergebnisseByWissenstest) {
-			if(laststudentid != er.getStudent().getId()){
+			if (laststudentid != er.getStudent().getId()) {
 				Row row1 = sheet.createRow(i);
 				Cell cell1 = row1.createCell(0);
 				cell1.setCellValue("Richtige Antworten: " + anzahlRichtigeAntw);
-				i=+2;
+				i = +2;
 				Row row2 = sheet.createRow(i);
 				Cell cell2 = row2.createCell(0);
 				cell2.setCellValue(er.getStudent().getName());
 				i++;
 				anzahlRichtigeAntw = 0;
 			}
-			
+
 			Row row = sheet.createRow(i);
 			Cell cell1 = row.createCell(0);
 			cell1.setCellValue(er.getFrage().getText());
-			Cell cell2 = row.createCell(2);
+			Cell cell2 = row.createCell(1);
 			cell2.setCellValue(er.getAntwort().getText());
-			Cell cell3 = row.createCell(0);
+			Cell cell3 = row.createCell(2);
 			cell3.setCellValue(er.isRichtig());
-			
-			
+
 			i++;
+			Row row2 = sheet.createRow(i);
 			laststudentid = er.getStudent().getId();
-			if(er.isRichtig()){
+			if (er.isRichtig()) {
 				anzahlRichtigeAntw++;
 				anzahlRichtigeAntwGes++;
 			}
-				
-			
-			
-			
+			i++;
+			Row row3 = sheet.createRow(i);
+			Cell cell4 = row.createCell(0);
+			cell4.setCellValue("Prozentualer Anteil richtiger Antworten insgesamt: ");
+
+			Cell cell5 = row.createCell(1);
+			cell5.setCellValue(anzahlRichtigeAntwGes++ * 100
+					/ ergebnisseByWissenstest.size() + "%");
 		}
 
 		FileOutputStream fileOut = new FileOutputStream(
