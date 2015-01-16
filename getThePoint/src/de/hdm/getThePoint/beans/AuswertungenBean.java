@@ -1,14 +1,14 @@
 package de.hdm.getThePoint.beans;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -16,15 +16,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import de.hdm.getThePoint.bo.AntwortBo;
 import de.hdm.getThePoint.bo.ErgebnisBo;
-import de.hdm.getThePoint.bo.FrageBo;
-import de.hdm.getThePoint.bo.KategorieBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.DataAcces;
 import de.hdm.getThePoint.db.mapper.ErgebnisMapper;
-import de.hdm.getThePoint.db.mapper.FrageMapper;
-import de.hdm.getThePoint.db.mapper.KategorieMapper;
 import de.hdm.getThePoint.db.mapper.WissenstestMapper;
 
 @ManagedBean(name = "auswertungenBean")
@@ -97,10 +92,17 @@ public class AuswertungenBean implements Serializable {
 					/ ergebnisseByWissenstest.size() + "%");
 		}
 
-		FileOutputStream fileOut = new FileOutputStream(
-				"StudentenAuswertung.xls");
-		wb.write(fileOut);
-		fileOut.close();
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		HttpServletResponse response = (HttpServletResponse) facesContext
+				.getExternalContext().getResponse();
+
+		response.reset();
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		response.setHeader("Content-Disposition", "testexcel");
+
+		OutputStream out = response.getOutputStream();
+		wb.write(out);
+		facesContext.responseComplete();
 
 	}
 

@@ -16,11 +16,10 @@
 			<p:dataTable id="wissenstests" var="wissenstest"
 				value="#{auswertungenBean.wissenstests}"
 				selection="#{auswertungenBean.selectedWissenstest}"
-				rowKey="#{wissenstest.id}">
-				 <f:facet name="header">Durchgeführte Wissenstests</f:facet>
-				<p:column selectionMode="single"
-					style="width:16px;text-align:center" />
-				<p:column>
+				rowKey="#{wissenstest.id}" selectionMode="single">
+				<f:facet name="header">Durchgeführte Wissenstests</f:facet>
+				<p:column style="width:16px;text-align:center" />
+				<p:column selectionMode="single">
 					<p:outputLabel value="#{wissenstest.bezeichnung}" />
 				</p:column>
 				<f:facet name="footer">
@@ -29,11 +28,11 @@
 				</f:facet>
 
 			</p:dataTable>
+
 			<br></br>
 
 			<br></br>
 			<br></br>
-
 		</h:form>
 	</ui:define>
 	<ui:define name="pagefooter">
