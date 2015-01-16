@@ -14,10 +14,13 @@
 			<br></br>
 
 			<p:dataTable id="wissenstests" var="wissenstest"
-				value="#{auswertungenBean.wissenstests}" selectionMode="single"
+				value="#{auswertungenBean.wissenstests}"
 				selection="#{auswertungenBean.selectedWissenstest}"
 				rowKey="#{wissenstest.id}">
-				<p:column headerText="Durchgeführte Wissenstests">
+				 <f:facet name="header">Durchgeführte Wissenstests</f:facet>
+				<p:column selectionMode="single"
+					style="width:16px;text-align:center" />
+				<p:column>
 					<p:outputLabel value="#{wissenstest.bezeichnung}" />
 				</p:column>
 				<f:facet name="footer">

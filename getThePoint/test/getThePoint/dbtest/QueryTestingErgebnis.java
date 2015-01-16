@@ -5,21 +5,22 @@ import org.junit.Test;
 
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.DataAcces;
+import de.hdm.getThePoint.db.dbmodel.Ergebnis;
 import de.hdm.getThePoint.db.dbmodel.Kategorie;
 import de.hdm.getThePoint.db.dbmodel.Wissenstest;
 
-public class TestingWissenstest {
+public class QueryTestingErgebnis {
 
 	@Test
 	public void test() {
 
 		DataAcces dataAcces = new DataAcces();
 
-		List<Wissenstest> liste = dataAcces.getAllWissentests();
+		List<Ergebnis> liste = dataAcces.getAllErgebnisse();
 
-		for (Wissenstest wissenstest: liste) {
-			System.out.println(wissenstest.getBezeichnung());
-			System.out.println(wissenstest.getLehrender().getName());
+		for (Ergebnis ergebnis: liste) {
+			System.out.println(ergebnis.getFrage().getText());
+			System.out.println(ergebnis.getStudent().getName());
 		}
 
 	}

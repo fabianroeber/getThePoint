@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.dbmodel.Ergebnis;
 import de.hdm.getThePoint.db.dbmodel.Frage;
 import de.hdm.getThePoint.db.dbmodel.Kategorie;
@@ -65,17 +66,27 @@ public class DataAcces implements Serializable {
 		return list;
 
 	}
-	
+
 	public List<Lehrender> getAllLehrende() {
 		List<Lehrender> list = entityManager.createQuery(
-				"SELECT lehrender FROM Lehrender lehrender", Lehrender.class).getResultList();
+				"SELECT lehrender FROM Lehrender lehrender", Lehrender.class)
+				.getResultList();
 		return list;
 
 	}
-	
+
 	public List<Ergebnis> getAllErgebnisse() {
 		List<Ergebnis> list = entityManager.createQuery(
-				"SELECT ergebnis FROM Ergebnis ergebnis", Ergebnis.class).getResultList();
+				"SELECT ergebnis FROM Ergebnis ergebnis", Ergebnis.class)
+				.getResultList();
+		return list;
+
+	}
+
+	public List<Ergebnis> getErgebnisseByWissenstest(int wissenstest_id) {
+		List<Ergebnis> list = entityManager.createQuery(
+				"SELECT ergebnis FROM Ergebnis ergebnis where ergebnis.wissenstest = "
+						+ wissenstest_id + "ORDER BY ergebnis.student.id", Ergebnis.class).getResultList();
 		return list;
 
 	}
