@@ -8,7 +8,7 @@ public class StudentBo extends BusinessObject {
 
 	private String kuerzel;
 
-	private Long matrikelnummer;
+	private String matrikelnummer;
 
 	public String getName() {
 		return name;
@@ -26,11 +26,11 @@ public class StudentBo extends BusinessObject {
 		this.kuerzel = kuerzel;
 	}
 
-	public Long getMatrikelnummer() {
+	public String getMatrikelnummer() {
 		return matrikelnummer;
 	}
 
-	public void setMatrikelnummer(Long matrikelnummer) {
+	public void setMatrikelnummer(String matrikelnummer) {
 		this.matrikelnummer = matrikelnummer;
 	}
 

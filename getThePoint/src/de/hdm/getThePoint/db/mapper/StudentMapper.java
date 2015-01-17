@@ -1,5 +1,6 @@
 package de.hdm.getThePoint.db.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdm.getThePoint.bo.StudentBo;
@@ -9,20 +10,30 @@ public class StudentMapper implements DbMapperInterface<StudentBo, Student> {
 
 	@Override
 	public List<StudentBo> getModelsAsList(List<Student> dbmodels) {
-		// TODO Auto-generated method stub
-		return null;
+		List<StudentBo> studentBos = new ArrayList<StudentBo>();
+		for (Student student : dbmodels) {
+			studentBos.add(getModel(student));
+		}
+		return studentBos;
 	}
 
 	@Override
 	public StudentBo getModel(Student dbmodel) {
-		// TODO Auto-generated method stub
-		return null;
+		StudentBo studentBo = new StudentBo();
+		studentBo.setId(dbmodel.getId());
+		studentBo.setKuerzel(dbmodel.getKuerzel());
+		studentBo.setMatrikelnummer(dbmodel.getMatrikelNr());
+		studentBo.setName(dbmodel.getName());
+		return studentBo;
 	}
 
 	@Override
 	public Student getDbModel(StudentBo model) {
-		// TODO Auto-generated method stub
-		return null;
+		Student student = new Student(model.getId());
+		student.setKuerzel(model.getKuerzel());
+		student.setMatrikelNr(model.getMatrikelnummer());
+		student.setName(model.getName());
+		return student;
 	}
 
 }

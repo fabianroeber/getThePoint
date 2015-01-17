@@ -21,7 +21,8 @@
 					<p:dataTable id="antwortmoeg" rowIndexVar="antwortRow"
 						value="#{frage.antwortmoeglichkeiten}" var="antwort"
 						styleClass="hide-column-names" selection="#{frage.loesung}"
-						selectionMode="single" type="ordered" rowKey="#{antwort.id}">
+						selectionMode="single" type="ordered" rowKey="#{antwort.id}"
+						rendered="#{frage.antwortmoeglichkeiten.size() > 0}">
 						<p:column>
 							<p:inplace id="antwortbearbeiten" editor="true" event="dblclick">
 								<p:inputText value="#{antwort.text}"></p:inputText>
@@ -29,8 +30,8 @@
 							<p:tooltip id="tooltipAntwort" for="antwortbearbeiten"
 								value="Doppelklick, um Antwortmöglichkeit zu bearbeiten" />
 						</p:column>
-						<p:column width="20px">
-							<p:commandButton icon="ui-icon-circle-minus" 
+						<p:column>
+							<p:commandButton icon="ui-icon-circle-minus"
 								action="#{frageBean.deleteAntwortmoeg(frageRow, antwortRow)}"></p:commandButton>
 						</p:column>
 					</p:dataTable>
