@@ -16,7 +16,7 @@
 	<title>GetThePoint - Verwaltung</title>
 </h:head>
 <h:body>
-
+	<h:outputStylesheet library="css" name="main.css" />
 	<p:layout>
 		<p:layoutUnit position="north" minSize="86">
 			<p:graphicImage id="headimg"
@@ -26,7 +26,7 @@
 				style="font-size: 40px; position: absolute; bottom: 15px; left: 70px;"
 				value="Get The Point - Das interaktive Lehrveranstaltungsquiz der HdM Stuttgart"></p:outputLabel>
 		</p:layoutUnit>
-		<p:layoutUnit position="center" minSize="800">
+		<p:layoutUnit position="center" minSize="1200">
 			<ui:include src="navigation.xhtml"></ui:include>
 			<ui:insert name="content"></ui:insert>
 		</p:layoutUnit>

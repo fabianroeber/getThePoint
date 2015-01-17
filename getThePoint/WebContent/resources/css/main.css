@@ -1,1 +1,5 @@
 @CHARSET "ISO-8859-1";
+
+.hide-column-names table thead tr {
+	display: none;
+}

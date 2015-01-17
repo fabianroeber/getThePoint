@@ -17,19 +17,26 @@
 					</p:inplace>
 				</p:column>
 				<p:column headerText="Antwortmöglichkeiten">
-					<p:dataList value="#{frage.antwortmoeglichkeiten}" var="antwort"
-						type="ordered">
-						<p:inplace id="ajax" editor="true">
-							<p:inputText value="#{antwort.text}"></p:inputText>
-						</p:inplace>
-					</p:dataList>
-					<p:outputLabel for="selectloesung" value="Lösung: " />
+					<p:dataTable value="#{frage.antwortmoeglichkeiten}" var="antwort"
+						styleClass="hide-column-names" selection="#{frage.loesung}"
+						selectionMode="single" type="ordered" rowKey="#{antwort.id}">
+						<p:column>
+							<p:inplace id="antwortbearbeiten" editor="true" event="dblclick">
+								<p:inputText value="#{antwort.text}"></p:inputText>
+							</p:inplace>
+							<p:tooltip id="tooltipAntwort" for="antwortbearbeiten"
+								value="Doppelklick, um Antwortmöglichkeit zu bearbeiten" />
+						</p:column>
+					</p:dataTable>
+
+					<!-- <p:outputLabel for="selectloesung" value="Lösung: " />
 					<p:selectOneButton id="selectloesung" value="#{frage.loesung}"
 						required="false" converter="omnifaces.SelectItemsConverter">
 						<f:selectItems value="#{frage.antwortmoeglichkeiten}" var="antw"
 							itemValue="#{antw}"
 							itemLabel="#{frage.antwortmoeglichkeiten.indexOf(antw)+1}"></f:selectItems>
-					</p:selectOneButton>
+					</p:selectOneButton> -->
+
 				</p:column>
 				<p:column headerText="Kategorie">
 					<p:selectOneMenu value="#{frage.kategorie}"
