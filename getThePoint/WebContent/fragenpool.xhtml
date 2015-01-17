@@ -10,14 +10,16 @@
 	<ui:define name="content">
 		<h:form>
 
-			<p:dataTable id="fragen" var="frage" value="#{frageBean.fragen}">
+			<p:dataTable rowIndexVar="frageRow" id="fragen" var="frage"
+				value="#{frageBean.fragen}">
 				<p:column headerText="Frage">
 					<p:inplace id="ajax" editor="true">
 						<p:inputText value="#{frage.text}" />
 					</p:inplace>
 				</p:column>
 				<p:column headerText="Antwortmöglichkeiten">
-					<p:dataTable value="#{frage.antwortmoeglichkeiten}" var="antwort"
+					<p:dataTable id="antwortmoeg" rowIndexVar="antwortRow"
+						value="#{frage.antwortmoeglichkeiten}" var="antwort"
 						styleClass="hide-column-names" selection="#{frage.loesung}"
 						selectionMode="single" type="ordered" rowKey="#{antwort.id}">
 						<p:column>
@@ -27,7 +29,14 @@
 							<p:tooltip id="tooltipAntwort" for="antwortbearbeiten"
 								value="Doppelklick, um Antwortmöglichkeit zu bearbeiten" />
 						</p:column>
+						<p:column width="20px">
+							<p:commandButton icon="ui-icon-circle-minus" 
+								action="#{frageBean.deleteAntwortmoeg(frageRow, antwortRow)}"></p:commandButton>
+						</p:column>
 					</p:dataTable>
+					<p:commandButton icon="ui-icon-plus"
+						action="#{frageBean.addAntwortmoeg(frageRow)}"
+						update="antwortmoeg" rendered="#{!frage.hasMaxAntworten()}" />
 
 					<!-- <p:outputLabel for="selectloesung" value="Lösung: " />
 					<p:selectOneButton id="selectloesung" value="#{frage.loesung}"

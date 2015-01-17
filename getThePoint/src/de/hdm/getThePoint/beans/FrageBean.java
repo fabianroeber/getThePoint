@@ -36,15 +36,48 @@ public class FrageBean implements Serializable {
 		getAllKategorien();
 	}
 
+	/**
+	 * Diese Methode ruft alle Kategorien aus der Datenbank ab.
+	 */
+	public void getAllKategorien() {
+		kategorien = kategorieMapper.getModelsAsList(dataAccess
+				.getAllKategorie());
+	}
+
+	/**
+	 * Diese Methode ruft alle Fragen aus der Datenbank ab
+	 */
 	public void getAllFragen() {
 		fragen = frageMapper.getModelsAsList(dataAccess.getAllFrage());
 	}
 
+	/**
+	 * Diese Methode f&uuml;gt der Liste eine neue Frage hinzu.
+	 */
 	public void addFrage() {
 		FrageBo frage = new FrageBo();
 		frage.setText("Hier Frage eingeben");
 		frage.setAntwortmoeglichkeiten(new ArrayList<AntwortBo>());
 		fragen.add(frage);
+	}
+
+	/**
+	 * Diese Methode f&uuml;gt einer Frage eine Antworm&ouml;glichkeit hinzu.
+	 * 
+	 * @param i
+	 */
+	public void addAntwortmoeg(int i) {
+		List<AntwortBo> antwortmoeg = fragen.get(i).getAntwortmoeglichkeiten();
+		antwortmoeg.add(new AntwortBo());
+	}
+
+	/**
+	 * Diese Methode l&ouml;scht eine Antwortm&ouml;glichkeit einer Frage.
+	 */
+	public void deleteAntwortmoeg(int indexFrage, int indexAntwortmoeg) {
+		fragen.get(indexFrage).getAntwortmoeglichkeiten()
+				.remove(indexAntwortmoeg);
+
 	}
 
 	public List<FrageBo> getFragen() {
@@ -61,11 +94,6 @@ public class FrageBean implements Serializable {
 
 	public void setKategorien(List<KategorieBo> kategorien) {
 		this.kategorien = kategorien;
-	}
-
-	public void getAllKategorien() {
-		kategorien = kategorieMapper.getModelsAsList(dataAccess
-				.getAllKategorie());
 	}
 
 }

@@ -20,6 +20,19 @@ public class FrageBo extends BusinessObject {
 
 	private Schwierigkeit schwierigkeit;
 
+	/**
+	 * Diese Methode legt fest, dass eine Frage maximal vier
+	 * Antwortm&ouml;glichkeiten haben darf.
+	 * 
+	 * @return
+	 */
+	public boolean hasMaxAntworten() {
+		if (antwortmoeglichkeiten.size() < 4) {
+			return false;
+		}
+		return true;
+	}
+
 	public String getText() {
 		return text;
 	}
