@@ -83,10 +83,10 @@ public class DataAcces implements Serializable {
 
 	}
 
-	public List<Ergebnis> getErgebnisseByWissenstest(int wissenstest_id) {
+	public List<Ergebnis> getErgebnisseByWissenstest(WissenstestBo selektierterWissenstest) {
 		List<Ergebnis> list = entityManager.createQuery(
 				"SELECT ergebnis FROM Ergebnis ergebnis where ergebnis.wissenstest = "
-						+ wissenstest_id + "ORDER BY ergebnis.student.id", Ergebnis.class).getResultList();
+						+ selektierterWissenstest.getId() + " ORDER BY ergebnis.student.id", Ergebnis.class).getResultList();
 		return list;
 
 	}

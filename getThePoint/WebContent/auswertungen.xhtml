@@ -14,25 +14,30 @@
 			<br></br>
 
 			<p:dataTable id="wissenstests" var="wissenstest"
-				value="#{auswertungenBean.wissenstests}"
+				selectionMode="single"
 				selection="#{auswertungenBean.selectedWissenstest}"
-				rowKey="#{wissenstest.id}" selectionMode="single">
-				<f:facet name="header">Durchgeführte Wissenstests</f:facet>
-				<p:column style="width:16px;text-align:center" />
-				<p:column selectionMode="single">
+				value="#{auswertungenBean.wissenstests}" rowKey="#{wissenstest.id}">
+				<f:facet name="header">Auswahl des Wissenstests</f:facet>
+				<p:column selection="#{auswertungenBean.selectedWissenstest}"
+					style=" width:16px;text-align:center" />
+				<p:column>
 					<p:outputLabel value="#{wissenstest.bezeichnung}" />
 				</p:column>
 				<f:facet name="footer">
-					<p:commandButton value="Excel-Auswertung pro Student"
+					<h:commandButton value="Excel-Auswertung pro Student"
 						action="#{auswertungenBean.createAuswertungStudenten()}" />
+					
 				</f:facet>
 
 			</p:dataTable>
 
 			<br></br>
+			<br></br>
+			<br></br>
 
-			<br></br>
-			<br></br>
+			<p:chart type="bar" model="#{auswertungenBean.barModel}"
+				style="height:300px" />
+
 		</h:form>
 	</ui:define>
 	<ui:define name="pagefooter">

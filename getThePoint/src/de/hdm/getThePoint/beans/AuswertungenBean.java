@@ -1,20 +1,38 @@
 package de.hdm.getThePoint.beans;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.ComparisonOperator;
+import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.FontFormatting;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 
 import de.hdm.getThePoint.bo.ErgebnisBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
@@ -35,6 +53,56 @@ public class AuswertungenBean implements Serializable {
 	private WissenstestMapper wissenstestMapper;
 	private ErgebnisMapper ergebnisMapper;
 	private DataAcces dataAccess;
+	private BarChartModel barModel;
+
+	@PostConstruct
+	public void init() {
+		createBarModels();
+	}
+
+	private BarChartModel initBarModel() {
+		BarChartModel model = new BarChartModel();
+
+		ChartSeries richtig = new ChartSeries();
+		richtig.setLabel("richtig");
+		richtig.set("2004", 120);
+		richtig.set("2005", 100);
+		richtig.set("2006", 44);
+		richtig.set("2007", 150);
+		richtig.set("2008", 25);
+
+		ChartSeries falsch = new ChartSeries();
+		falsch.setLabel("falsch");
+		falsch.set("2004", 52);
+		falsch.set("2005", 60);
+		falsch.set("2006", 110);
+		falsch.set("2007", 135);
+		falsch.set("2008", 120);
+
+		model.addSeries(richtig);
+		model.addSeries(falsch);
+
+		return model;
+	}
+
+	private void createBarModels() {
+		createBarModel();
+	}
+
+	private void createBarModel() {
+		barModel = initBarModel();
+
+		barModel.setTitle("Richtige und falsche Antworten pro Frage");
+		barModel.setLegendPosition("ne");
+
+		Axis xAxis = barModel.getAxis(AxisType.X);
+		xAxis.setLabel("Fragen");
+
+		Axis yAxis = barModel.getAxis(AxisType.Y);
+		yAxis.setLabel("Anzahl Antworten");
+		yAxis.setMin(0);
+		yAxis.setMax(200);
+	}
 
 	public AuswertungenBean() {
 		dataAccess = new DataAcces();
@@ -48,60 +116,95 @@ public class AuswertungenBean implements Serializable {
 		getErgebnisseByWissenstest(selectedWissenstest);
 
 		Workbook wb = new HSSFWorkbook();
+		CreationHelper createHelper = wb.getCreationHelper();
 		Sheet sheet = wb.createSheet("new sheet");
 
-		int i = 0;
+		CellStyle style = wb.createCellStyle();
+		Font font = wb.createFont();
+		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		style.setFont(font);
+
+		int i = 1;
 		int anzahlRichtigeAntw = 0;
 		int anzahlRichtigeAntwGes = 0;
+		int anzahlFragen = 0;
 		int laststudentid = 0;
 		for (ErgebnisBo er : ergebnisseByWissenstest) {
 			if (laststudentid != er.getStudent().getId()) {
-				Row row1 = sheet.createRow(i);
-				Cell cell1 = row1.createCell(0);
-				cell1.setCellValue("Richtige Antworten: " + anzahlRichtigeAntw);
-				i = +2;
+				i++;
+				anzahlFragen = 0;
 				Row row2 = sheet.createRow(i);
 				Cell cell2 = row2.createCell(0);
-				cell2.setCellValue(er.getStudent().getName());
-				i++;
+				cell2.setCellStyle(style);
+				cell2.setCellValue(er.getStudent().getName() + ", " + er.getStudent().getKuerzel());
 				anzahlRichtigeAntw = 0;
+				i++;
 			}
+			Row row3 = sheet.createRow(i);
+			Cell cell3 = row3.createCell(0);
+			cell3.setCellValue(er.getFrage().getText());
+			Cell cell4 = row3.createCell(1);
+			cell4.setCellValue(er.getAntwort().getText());
+			Cell cell5 = row3.createCell(2);
 
-			Row row = sheet.createRow(i);
-			Cell cell1 = row.createCell(0);
-			cell1.setCellValue(er.getFrage().getText());
-			Cell cell2 = row.createCell(1);
-			cell2.setCellValue(er.getAntwort().getText());
-			Cell cell3 = row.createCell(2);
-			cell3.setCellValue(er.isRichtig());
+			cell5.setCellValue(er.isRichtig() ? "richtig" : "falsch");
 
 			i++;
-			Row row2 = sheet.createRow(i);
 			laststudentid = er.getStudent().getId();
+			anzahlFragen++;
 			if (er.isRichtig()) {
 				anzahlRichtigeAntw++;
 				anzahlRichtigeAntwGes++;
 			}
-			i++;
-			Row row3 = sheet.createRow(i);
-			Cell cell4 = row.createCell(0);
-			cell4.setCellValue("Prozentualer Anteil richtiger Antworten insgesamt: ");
 
-			Cell cell5 = row.createCell(1);
-			cell5.setCellValue(anzahlRichtigeAntwGes++ * 100
-					/ ergebnisseByWissenstest.size() + "%");
+			if (ergebnisseByWissenstest.indexOf(er) < ergebnisseByWissenstest
+					.size() - 1) {
+				if (er.getStudent().getId() != ergebnisseByWissenstest
+						.get(ergebnisseByWissenstest.indexOf(er) + 1)
+						.getStudent().getId()) {
+					i++;
+					Row row1 = sheet.createRow(i);
+					Cell cell1 = row1.createCell(0);
+					cell1.setCellValue("Richtige Antworten: "
+							+ anzahlRichtigeAntw + "/" + anzahlFragen);
+					i++;
+				}
+			}
+
 		}
+		
+		i++;
+		Row row5 = sheet.createRow(i);
+		Cell cell8 = row5.createCell(0);
+		cell8.setCellValue("Richtige Antworten: " + anzahlRichtigeAntw + "/" + anzahlFragen);
+
+		i = i + 3;
+		Row row4 = sheet.createRow(i);
+		Cell cell6 = row4.createCell(0);
+		cell6.setCellStyle(style);
+		cell6.setCellValue("Prozentualer Anteil richtiger Antworten insgesamt: ");
+
+		Cell cell7 = row4.createCell(1);
+		cell7.setCellStyle(style);
+		cell7.setCellValue(anzahlRichtigeAntwGes++ * 100
+				/ ergebnisseByWissenstest.size() + "%");
+
+		sheet.autoSizeColumn((short) 0);
+		sheet.autoSizeColumn((short) 1);
+		sheet.autoSizeColumn((short) 2);
+		sheet.autoSizeColumn((short) 3);
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		HttpServletResponse response = (HttpServletResponse) facesContext
-				.getExternalContext().getResponse();
 
-		response.reset();
-		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		response.setHeader("Content-Disposition", "testexcel");
+		ExternalContext externalContext = facesContext.getExternalContext();
 
-		OutputStream out = response.getOutputStream();
-		wb.write(out);
+		externalContext.responseReset();
+		externalContext.setResponseContentType("application/vnd.ms-excel");
+
+		externalContext.setResponseHeader("Content-Disposition", "testexcel");
+
+		OutputStream outputStream = externalContext.getResponseOutputStream();
+		wb.write(outputStream);
 		facesContext.responseComplete();
 
 	}
@@ -118,7 +221,7 @@ public class AuswertungenBean implements Serializable {
 
 	public void getErgebnisseByWissenstest(WissenstestBo selektierterWissenstest) {
 		ergebnisseByWissenstest = ergebnisMapper.getModelsAsList(dataAccess
-				.getErgebnisseByWissenstest(selektierterWissenstest.getId()));
+				.getErgebnisseByWissenstest(selektierterWissenstest));
 	}
 
 	public List<WissenstestBo> getWissenstests() {
@@ -143,6 +246,14 @@ public class AuswertungenBean implements Serializable {
 
 	public void setErgebnisse(List<ErgebnisBo> ergebnisse) {
 		this.ergebnisse = ergebnisse;
+	}
+
+	public BarChartModel getBarModel() {
+		return barModel;
+	}
+
+	public void setBarModel(BarChartModel barModel) {
+		this.barModel = barModel;
 	}
 
 }
