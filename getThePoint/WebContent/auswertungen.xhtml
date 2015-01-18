@@ -26,17 +26,20 @@
 				<f:facet name="footer">
 					<h:commandButton value="Excel-Auswertung pro Student"
 						action="#{auswertungenBean.createAuswertungStudenten()}" />
-					
+					<h:commandButton value="Chart: Auswertung nach Fragen"
+						type="button" onclick="PF('dlg').show();" />
+
 				</f:facet>
 
 			</p:dataTable>
 
-			<br></br>
-			<br></br>
-			<br></br>
+			<p:dialog header="Auswertung nach Fragen" widgetVar="dlg"
+				height="700px" width="1000px">
+				<p:chart type="bar" model="#{auswertungenBean.barModel}"
+					style="height:500px; width:800px" />
+			</p:dialog>
 
-			<p:chart type="bar" model="#{auswertungenBean.barModel}"
-				style="height:300px" />
+
 
 		</h:form>
 	</ui:define>

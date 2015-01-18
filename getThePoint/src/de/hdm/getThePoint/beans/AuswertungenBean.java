@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -33,8 +34,10 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.HorizontalBarChartModel;
 
 import de.hdm.getThePoint.bo.ErgebnisBo;
+import de.hdm.getThePoint.bo.FrageBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.DataAcces;
 import de.hdm.getThePoint.db.mapper.ErgebnisMapper;
@@ -49,11 +52,22 @@ public class AuswertungenBean implements Serializable {
 	private List<WissenstestBo> wissenstests;
 	private List<ErgebnisBo> ergebnisse;
 	private List<ErgebnisBo> ergebnisseByWissenstest;
+	private List<ErgebnisBo> ergebnisseByWissenstestOrderByFrageUndRichtig;
 	private WissenstestBo selectedWissenstest;
 	private WissenstestMapper wissenstestMapper;
 	private ErgebnisMapper ergebnisMapper;
 	private DataAcces dataAccess;
 	private BarChartModel barModel;
+
+	private int maxanz = 0;
+	
+	public AuswertungenBean() {
+		dataAccess = new DataAcces();
+		wissenstestMapper = new WissenstestMapper();
+		ergebnisMapper = new ErgebnisMapper();
+		getAllWissenstests();
+		selectedWissenstest = wissenstests.get(0);
+	}
 
 	@PostConstruct
 	public void init() {
@@ -61,27 +75,48 @@ public class AuswertungenBean implements Serializable {
 	}
 
 	private BarChartModel initBarModel() {
-		BarChartModel model = new BarChartModel();
+		getErgebnisseByWissenstestOrderByFrageUndRichtig(selectedWissenstest);
+		HorizontalBarChartModel model = new HorizontalBarChartModel();
 
 		ChartSeries richtig = new ChartSeries();
-		richtig.setLabel("richtig");
-		richtig.set("2004", 120);
-		richtig.set("2005", 100);
-		richtig.set("2006", 44);
-		richtig.set("2007", 150);
-		richtig.set("2008", 25);
-
 		ChartSeries falsch = new ChartSeries();
+		richtig.setLabel("richtig");
 		falsch.setLabel("falsch");
-		falsch.set("2004", 52);
-		falsch.set("2005", 60);
-		falsch.set("2006", 110);
-		falsch.set("2007", 135);
-		falsch.set("2008", 120);
+
+		FrageBo lastFrage = null;
+		int anzrichtig = 0;
+		int anzfalsch = 0;
+		for (ErgebnisBo erg : ergebnisseByWissenstestOrderByFrageUndRichtig) {
+			if (lastFrage != null) {
+				if (erg.getFrage().getId() != lastFrage.getId()) {
+					richtig.set(lastFrage.getText(), anzrichtig);
+					falsch.set(lastFrage.getText(), anzfalsch);
+					if (anzrichtig > maxanz)
+						maxanz = anzrichtig;
+					if (anzfalsch > maxanz)
+						maxanz = anzfalsch;
+					anzrichtig = 0;
+					anzfalsch = 0;
+				}
+			}
+			if (erg.isRichtig())
+				anzrichtig++;
+			else
+				anzfalsch++;
+
+			lastFrage = erg.getFrage();
+
+		}
+		richtig.set(lastFrage.getText(), anzrichtig);
+		falsch.set(lastFrage.getText(), anzfalsch);
+
+		if (anzrichtig > maxanz)
+			maxanz = anzrichtig;
+		if (anzfalsch > maxanz)
+			maxanz = anzfalsch;
 
 		model.addSeries(richtig);
 		model.addSeries(falsch);
-
 		return model;
 	}
 
@@ -96,20 +131,14 @@ public class AuswertungenBean implements Serializable {
 		barModel.setLegendPosition("ne");
 
 		Axis xAxis = barModel.getAxis(AxisType.X);
-		xAxis.setLabel("Fragen");
-
+		xAxis.setLabel("Anzahl Antworten");
+		xAxis.setMin(0);
+		xAxis.setMax(maxanz+1);
+		xAxis.setTickCount(1);
+		
 		Axis yAxis = barModel.getAxis(AxisType.Y);
-		yAxis.setLabel("Anzahl Antworten");
-		yAxis.setMin(0);
-		yAxis.setMax(200);
-	}
-
-	public AuswertungenBean() {
-		dataAccess = new DataAcces();
-		wissenstestMapper = new WissenstestMapper();
-		ergebnisMapper = new ErgebnisMapper();
-		getAllWissenstests();
-
+		yAxis.setLabel("Fragen");
+		
 	}
 
 	public void createAuswertungStudenten() throws IOException {
@@ -136,7 +165,8 @@ public class AuswertungenBean implements Serializable {
 				Row row2 = sheet.createRow(i);
 				Cell cell2 = row2.createCell(0);
 				cell2.setCellStyle(style);
-				cell2.setCellValue(er.getStudent().getName() + ", " + er.getStudent().getKuerzel());
+				cell2.setCellValue(er.getStudent().getName() + ", "
+						+ er.getStudent().getKuerzel());
 				anzahlRichtigeAntw = 0;
 				i++;
 			}
@@ -172,11 +202,12 @@ public class AuswertungenBean implements Serializable {
 			}
 
 		}
-		
+
 		i++;
 		Row row5 = sheet.createRow(i);
 		Cell cell8 = row5.createCell(0);
-		cell8.setCellValue("Richtige Antworten: " + anzahlRichtigeAntw + "/" + anzahlFragen);
+		cell8.setCellValue("Richtige Antworten: " + anzahlRichtigeAntw + "/"
+				+ anzahlFragen);
 
 		i = i + 3;
 		Row row4 = sheet.createRow(i);
@@ -224,6 +255,13 @@ public class AuswertungenBean implements Serializable {
 				.getErgebnisseByWissenstest(selektierterWissenstest));
 	}
 
+	public void getErgebnisseByWissenstestOrderByFrageUndRichtig(
+			WissenstestBo selektierterWissenstest) {
+		ergebnisseByWissenstestOrderByFrageUndRichtig = ergebnisMapper
+				.getModelsAsList(dataAccess
+						.getErgebnisseByWissenstestOrderByFrageUndRichtig(selektierterWissenstest));
+	}
+
 	public List<WissenstestBo> getWissenstests() {
 		return wissenstests;
 	}
@@ -254,6 +292,15 @@ public class AuswertungenBean implements Serializable {
 
 	public void setBarModel(BarChartModel barModel) {
 		this.barModel = barModel;
+	}
+
+	public List<ErgebnisBo> getErgebnisseByWissenstestOrderByFrageUndRichtig() {
+		return ergebnisseByWissenstestOrderByFrageUndRichtig;
+	}
+
+	public void setErgebnisseByWissenstestOrderByFrageUndRichtig(
+			List<ErgebnisBo> ergebnisseByWissenstestOrderByFrageUndRichtig) {
+		this.ergebnisseByWissenstestOrderByFrageUndRichtig = ergebnisseByWissenstestOrderByFrageUndRichtig;
 	}
 
 }
