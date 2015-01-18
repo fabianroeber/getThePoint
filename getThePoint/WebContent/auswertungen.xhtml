@@ -18,21 +18,35 @@
 				selection="#{auswertungenBean.selectedWissenstest}"
 				value="#{auswertungenBean.wissenstests}" rowKey="#{wissenstest.id}">
 				<f:facet name="header">Auswahl des Wissenstests</f:facet>
-				<p:column selection="#{auswertungenBean.selectedWissenstest}"
-					style=" width:16px;text-align:center" />
-				<p:column>
+				<p:column headerText="Bezeichnung"
+					selection="#{auswertungenBean.selectedWissenstest}"
+					style="text-align:left">
 					<p:outputLabel value="#{wissenstest.bezeichnung}" />
 				</p:column>
+				<p:column headerText="Beginn">
+					<p:outputLabel value="#{wissenstest.startzeit}">
+						<f:convertDateTime pattern="dd.MM.yyyy hh:mm:ss" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Ende">
+					<p:outputLabel value="#{wissenstest.endzeit}">
+						<f:convertDateTime pattern="dd.MM.yyyy hh:mm:ss" />
+					</p:outputLabel>
+				</p:column>
 				<f:facet name="footer">
-					<h:commandButton value="Excel-Auswertung pro Student"
-						action="#{auswertungenBean.createAuswertungStudenten()}" />
-					<h:commandButton value="Chart: Auswertung nach Fragen"
-						type="button" onclick="PF('dlg').show();" />
-
+					<h:commandLink
+						action="#{auswertungenBean.createAuswertungStudenten()}"
+						title="Excel Export des kompletten Wissenstest">
+						<h:graphicImage value="resources/images/Excel_15.png"
+							height="25px" width="25px"></h:graphicImage>
+					</h:commandLink>
+					<h:commandLink type="button" onclick="PF('dlg').show();"
+						title="Statistik">
+						<h:graphicImage value="resources/images/analytics.png"
+							height="25px" width="25px"></h:graphicImage>
+					</h:commandLink>
 				</f:facet>
-
 			</p:dataTable>
-
 			<p:dialog header="Auswertung nach Fragen" widgetVar="dlg"
 				height="700px" width="1000px">
 				<p:chart type="bar" model="#{auswertungenBean.barModel}"

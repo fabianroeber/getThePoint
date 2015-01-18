@@ -27,6 +27,8 @@ public class WissenstestBo extends BusinessObject {
 
 	private boolean gestartet;
 
+	private boolean editable;
+
 	private List<FrageZuordung> frageZuordungen;
 
 	private List<ErgebnisBo> ergebnisse;
@@ -109,6 +111,14 @@ public class WissenstestBo extends BusinessObject {
 
 	public void setFrageZuordungen(List<FrageZuordung> frageZuordungen) {
 		this.frageZuordungen = frageZuordungen;
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 
 }
