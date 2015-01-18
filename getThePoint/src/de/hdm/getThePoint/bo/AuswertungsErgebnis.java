@@ -16,6 +16,13 @@ public class AuswertungsErgebnis {
 		this.richtigInProzent = richtigInProzent;
 	}
 
+	public boolean isoverPercentage(int percent) {
+		if (richtigInProzent >= percent) {
+			return true;
+		}
+		return false;
+	}
+
 	public String getStudentname() {
 		return studentname;
 	}

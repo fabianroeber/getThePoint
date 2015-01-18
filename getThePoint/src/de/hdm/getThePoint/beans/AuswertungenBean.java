@@ -49,6 +49,7 @@ public class AuswertungenBean implements Serializable {
 	private DataAcces dataAccess;
 	private BarChartModel barModel;
 	private List<AuswertungsErgebnis> auswertungsErgebnis;
+	private int definedPercentage;
 
 	private int maxanz = 0;
 
@@ -65,11 +66,20 @@ public class AuswertungenBean implements Serializable {
 		createBarModels();
 	}
 
+	/**
+	 * Diese Methode bef&uumllt die Liste von Auswertungsergebnis, in der in der
+	 * View ersichtlich macht, welche Studenten einen Bonuspunkt bekommen.
+	 */
 	private void createAuswertungsErgebnisse() {
-		// hier Markus
+		// hier Markus logik TODO
 
 	}
 
+	/**
+	 * Erstellt Objekte f&uuml;r die Erstellung einer Statistik.
+	 * 
+	 * @return
+	 */
 	private BarChartModel initBarModel() {
 		getErgebnisseByWissenstestOrderByFrageUndRichtig(selectedWissenstest);
 		HorizontalBarChartModel model = new HorizontalBarChartModel();
@@ -137,6 +147,11 @@ public class AuswertungenBean implements Serializable {
 
 	}
 
+	/**
+	 * Erstellt ein Report als .xls Datei zu einem Wissenstest.
+	 * 
+	 * @throws IOException
+	 */
 	public void createAuswertungStudenten() throws IOException {
 		getErgebnisseByWissenstest(selectedWissenstest);
 
@@ -236,6 +251,18 @@ public class AuswertungenBean implements Serializable {
 
 	}
 
+	/**
+	 * Diese Methode pr&uuml;ft ob eine Ergebnis unter oder &uuml;ber der
+	 * eingegeben Prozentzahl liegt.
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public boolean isOverPerc(int index) {
+		return auswertungsErgebnis.get(index).isoverPercentage(
+				definedPercentage);
+	}
+
 	public void getAllWissenstests() {
 		wissenstests = wissenstestMapper.getModelsAsList(dataAccess
 				.getAllWissentests());
@@ -306,6 +333,14 @@ public class AuswertungenBean implements Serializable {
 	public void setAuswertungsErgebnis(
 			List<AuswertungsErgebnis> auswertungsErgebnis) {
 		this.auswertungsErgebnis = auswertungsErgebnis;
+	}
+
+	public int getDefinedPercentage() {
+		return definedPercentage;
+	}
+
+	public void setDefinedPercentage(int definedPercentage) {
+		this.definedPercentage = definedPercentage;
 	}
 
 }

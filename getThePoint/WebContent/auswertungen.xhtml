@@ -54,6 +54,11 @@
 			</p:dialog>
 
 
+			<p:dataTable value="#{auswertungenBean.auswertungsErgebnis}"
+				rowIndexVar="row">
+				<p:column headerText="%"
+					styleClass="#{auswertungenBean.isOverPerc(row) == true ? 'styleGreen' : 'stylered'}"></p:column>
+			</p:dataTable>
 
 		</h:form>
 	</ui:define>
