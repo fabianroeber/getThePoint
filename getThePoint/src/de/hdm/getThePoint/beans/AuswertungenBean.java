@@ -25,6 +25,7 @@ import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.HorizontalBarChartModel;
 
+import de.hdm.getThePoint.bo.AuswertungsErgebnis;
 import de.hdm.getThePoint.bo.ErgebnisBo;
 import de.hdm.getThePoint.bo.FrageBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
@@ -47,9 +48,10 @@ public class AuswertungenBean implements Serializable {
 	private ErgebnisMapper ergebnisMapper;
 	private DataAcces dataAccess;
 	private BarChartModel barModel;
+	private List<AuswertungsErgebnis> auswertungsErgebnis;
 
 	private int maxanz = 0;
-	
+
 	public AuswertungenBean() {
 		dataAccess = new DataAcces();
 		wissenstestMapper = new WissenstestMapper();
@@ -61,6 +63,11 @@ public class AuswertungenBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		createBarModels();
+	}
+
+	private void createAuswertungsErgebnisse() {
+		// hier Markus
+
 	}
 
 	private BarChartModel initBarModel() {
@@ -122,12 +129,12 @@ public class AuswertungenBean implements Serializable {
 		Axis xAxis = barModel.getAxis(AxisType.X);
 		xAxis.setLabel("Anzahl Antworten");
 		xAxis.setMin(0);
-		xAxis.setMax(maxanz+1);
+		xAxis.setMax(maxanz + 1);
 		xAxis.setTickCount(1);
-		
+
 		Axis yAxis = barModel.getAxis(AxisType.Y);
 		yAxis.setLabel("Fragen");
-		
+
 	}
 
 	public void createAuswertungStudenten() throws IOException {
@@ -290,6 +297,15 @@ public class AuswertungenBean implements Serializable {
 	public void setErgebnisseByWissenstestOrderByFrageUndRichtig(
 			List<ErgebnisBo> ergebnisseByWissenstestOrderByFrageUndRichtig) {
 		this.ergebnisseByWissenstestOrderByFrageUndRichtig = ergebnisseByWissenstestOrderByFrageUndRichtig;
+	}
+
+	public List<AuswertungsErgebnis> getAuswertungsErgebnis() {
+		return auswertungsErgebnis;
+	}
+
+	public void setAuswertungsErgebnis(
+			List<AuswertungsErgebnis> auswertungsErgebnis) {
+		this.auswertungsErgebnis = auswertungsErgebnis;
 	}
 
 }

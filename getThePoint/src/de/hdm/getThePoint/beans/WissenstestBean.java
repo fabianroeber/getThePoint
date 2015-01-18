@@ -13,7 +13,6 @@ import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 
 import de.hdm.getThePoint.bo.FrageBo;
-import de.hdm.getThePoint.bo.FrageZuordung;
 import de.hdm.getThePoint.bo.KategorieBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.DataAcces;
@@ -84,7 +83,7 @@ public class WissenstestBean implements Serializable {
 	}
 
 	public void getAllWissenstestFragen() {
-		
+
 	}
 
 	public List<FrageBo> getFragen() {
