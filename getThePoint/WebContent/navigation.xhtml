@@ -8,10 +8,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	<h:form>
 		<p:tabMenu activeIndex="#{param.i}">
-			<p:menuitem value="Quiz - Status">
+			<p:menuitem value="Quiz">
 				<f:param name="i" value="0" />
 			</p:menuitem>
-			<p:menuitem value="Quiz - Verwaltung">
+			<p:menuitem value="Quiz - Verwaltung" outcome="/wissenstest.xhtml">
 				<f:param name="i" value="1" />
 			</p:menuitem>
 			<p:menuitem value="Fragenpool" outcome="/fragenpool.xhtml">
