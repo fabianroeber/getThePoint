@@ -3,3 +3,26 @@
 .hide-column-names table thead tr {
 	display: none;
 }
+
+.ui-picklist .ui-picklist-list {
+	width: 300px;
+}
+
+.ui-picklist .ui-picklist-filter {
+	padding-right: 0px;
+	padding-right-value: 0px;
+	padding-right-ltr-source: physical;
+	padding-right-rtl-source: physical;
+	width: 98%;
+}
+
+.test {
+	width: 800px;
+}
+
+.ui-widget {
+	font-family: HdM Frutiger Next Pro Light;
+	src: url('/resources/fonts/HdMFrutigerNextPro-Light.otf') format('otf');
+}
+
+@font-face { font-family: "HdM Frutiger Next Pro Light"; src: url('#{resource["fonts/HdMFrutigerNextPro-Light.otf"]}'); }

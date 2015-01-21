@@ -37,30 +37,41 @@
 					<h:commandLink
 						action="#{auswertungenBean.createAuswertungStudenten()}"
 						title="Excel Export des kompletten Wissenstest">
-						<h:graphicImage value="resources/images/Excel_15.png"
-							height="25px" width="25px"></h:graphicImage>
+						<h:graphicImage value="resources/images/Excel_15.png" height="25"
+							width="25"></h:graphicImage>
 					</h:commandLink>
-					<p:commandLink onclick="PF('dlg').show();" title="Statistik">
-						<h:graphicImage value="resources/images/analytics.png"
-							height="25px" width="25px"></h:graphicImage>
+					<p:commandLink oncomplete="PF('dlg').show();"
+						update=":myOutputPanel"
+						action="#{auswertungenBean.createBarModels()}" ajax="true"
+						title="Statistik">
+						<h:graphicImage value="resources/images/analytics.png" height="25"
+							width="25"></h:graphicImage>
 					</p:commandLink>
 
 				</f:facet>
 			</p:dataTable>
-			<p:dialog header="Auswertung nach Fragen" widgetVar="dlg"
-				height="700px" width="1000px">
-				<p:chart type="bar" model="#{auswertungenBean.barModel}"
-					style="height:500px; width:800px" />
-			</p:dialog>
+
 
 
 			<p:dataTable value="#{auswertungenBean.auswertungsErgebnis}"
-				rowIndexVar="row">
-				<p:column headerText="%"
-					styleClass="#{auswertungenBean.isOverPerc(row) == true ? 'styleGreen' : 'stylered'}"></p:column>
+				rowIndexVar="row" id="auswertungsErgebnis" var="auswerg">
+				<p:column headerText="Name" value="#{auswerg.studentname}"></p:column>
+				<p:column headerText="Matrikel-Nr." value="#{auswerg.matrikelnr}"></p:column>
+				<p:column headerText="%" value="#{auswerg.richtigInProzent}"></p:column>
 			</p:dataTable>
 
 		</h:form>
+
+
+		<p:dialog id="myDialog" header="Auswertung nach Fragen"
+			widgetVar="dlg" height="700px" width="1000px">
+			<p:outputPanel id="myOutputPanel">
+				<p:chart type="bar" model="#{auswertungenBean.barModel}"
+					style="height:500px; width:800px" />
+			</p:outputPanel>
+		</p:dialog>
+
+
 	</ui:define>
 	<ui:define name="pagefooter">
 

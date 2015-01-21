@@ -12,7 +12,7 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form>
-
+			<p:spacer />
 			<p:outputLabel for="kategorie" value="Kategorie" />
 			<p:selectOneMenu id="kategorie"
 				value="#{wissenstestBean.selectedKategorie}"
@@ -21,21 +21,18 @@
 				filterMatchMode="startsWith">
 				<f:selectItems value="#{wissenstestBean.kategorien}" var="kateg"
 					itemLabel="#{kateg.bezeichnung}" itemValue="#{kateg}" />
-
-				
-
 				<p:column>
 					<h:outputText value="#{k.bezeichnung}" />
 				</p:column>
+				<p:spacer />
 			</p:selectOneMenu>
-
 			<p:growl id="msg" showDetail="true" escape="false" />
 			<p:pickList id="FragenPickList" value="#{wissenstestBean.dlmfragen}"
 				var="frage" effect="bounce" itemValue="#{frage}"
 				itemLabel="#{frage.text}" showSourceControls="true"
 				showTargetControls="true" showCheckbox="true"
 				showSourceFilter="true" showTargetFilter="true"
-				filterMatchMode="contains">
+				filterMatchMode="contains" styleClass="test">
 
 				<f:facet name="sourceCaption">Fragenpool</f:facet>
 				<f:facet name="targetCaption">Wissenstest</f:facet>
@@ -43,17 +40,15 @@
 				<p:ajax event="transfer" listener="#{wissenstestBean.onTransfer}"
 					update="msg" />
 
-				<p:column style="width:25%">
+				<p:column>
 					<h:outputText styleClass="ui-theme ui-theme-#{frage.text}" />
 				</p:column>
 
-				<p:column style="width:75%;">
+				<p:column>
 					<h:outputText value="#{frage.text}" />
 				</p:column>
 			</p:pickList>
-
 			<p:commandButton id="save" value="Speichern" style="margin-top:5px" />
-
 		</h:form>
 	</ui:define>
 	<ui:define name="pagefooter">

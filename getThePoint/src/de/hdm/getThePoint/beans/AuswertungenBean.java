@@ -28,6 +28,7 @@ import org.primefaces.model.chart.HorizontalBarChartModel;
 import de.hdm.getThePoint.bo.AuswertungsErgebnis;
 import de.hdm.getThePoint.bo.ErgebnisBo;
 import de.hdm.getThePoint.bo.FrageBo;
+import de.hdm.getThePoint.bo.StudentBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.DataAcces;
 import de.hdm.getThePoint.db.mapper.ErgebnisMapper;
@@ -41,6 +42,7 @@ public class AuswertungenBean implements Serializable {
 
 	private List<WissenstestBo> wissenstests;
 	private List<ErgebnisBo> ergebnisse;
+	private List<ErgebnisBo> ergebnisseByWissenstestOrderByStudent;
 	private List<ErgebnisBo> ergebnisseByWissenstest;
 	private List<ErgebnisBo> ergebnisseByWissenstestOrderByFrageUndRichtig;
 	private WissenstestBo selectedWissenstest;
@@ -59,6 +61,7 @@ public class AuswertungenBean implements Serializable {
 		ergebnisMapper = new ErgebnisMapper();
 		getAllWissenstests();
 		selectedWissenstest = wissenstests.get(0);
+		createAuswertungsErgebnisse();
 	}
 
 	@PostConstruct
@@ -67,11 +70,42 @@ public class AuswertungenBean implements Serializable {
 	}
 
 	/**
-	 * Diese Methode bef&uumllt die Liste von Auswertungsergebnis, in der in der
+	 * Diese Methode befüllt die Liste von Auswertungsergebnis, in der in der
 	 * View ersichtlich macht, welche Studenten einen Bonuspunkt bekommen.
 	 */
 	private void createAuswertungsErgebnisse() {
-		// hier Markus logik TODO
+		getErgebnisseByWissenstestOrderByStudent(selectedWissenstest);
+
+//		int anzrichtig = 0;
+//		int anzfalsch = 0;
+//		AuswertungsErgebnis auswerg;
+//		ErgebnisBo lasterg = null;
+//
+//		for (ErgebnisBo erg : ergebnisseByWissenstestOrderByStudent) {
+//			if (lasterg != null)
+//				if (erg.getStudent().getId() != lasterg.getStudent().getId()) {
+//					auswerg = new AuswertungsErgebnis(erg.getStudent()
+//							.getName(), erg.getStudent().getMatrikelnummer(),
+//							(anzrichtig
+//									* 100
+//									/ selectedWissenstest.getFrageZuordungen()
+//											.size()));
+//					auswertungsErgebnis.add(auswerg);
+//					anzrichtig = 0;
+//					anzfalsch = 0;
+//				}
+//
+//			if (erg.isRichtig())
+//				anzrichtig++;
+//			else
+//				anzfalsch++;
+//
+//			lasterg = erg;
+//		}
+//		auswerg = new AuswertungsErgebnis(lasterg.getStudent().getName(),
+//				lasterg.getStudent().getMatrikelnummer(), anzrichtig * 100
+//						/ lasterg.getWissenstest().getFrageZuordungen().size());
+//		auswertungsErgebnis.add(auswerg);
 
 	}
 
@@ -126,7 +160,7 @@ public class AuswertungenBean implements Serializable {
 		return model;
 	}
 
-	private void createBarModels() {
+	public void createBarModels() {
 		createBarModel();
 	}
 
@@ -252,8 +286,8 @@ public class AuswertungenBean implements Serializable {
 	}
 
 	/**
-	 * Diese Methode pr&uuml;ft ob eine Ergebnis unter oder &uuml;ber der
-	 * eingegeben Prozentzahl liegt.
+	 * Diese Methode prüft ob ein Ergebnis unter oder über der eingegeben
+	 * Prozentzahl liegt.
 	 * 
 	 * @param index
 	 * @return
@@ -276,6 +310,13 @@ public class AuswertungenBean implements Serializable {
 	public void getErgebnisseByWissenstest(WissenstestBo selektierterWissenstest) {
 		ergebnisseByWissenstest = ergebnisMapper.getModelsAsList(dataAccess
 				.getErgebnisseByWissenstest(selektierterWissenstest));
+	}
+
+	public void getErgebnisseByWissenstestOrderByStudent(
+			WissenstestBo selektierterWissenstest) {
+		ergebnisseByWissenstestOrderByStudent = ergebnisMapper
+				.getModelsAsList(dataAccess
+						.getErgebnisseByWissenstest(selektierterWissenstest));
 	}
 
 	public void getErgebnisseByWissenstestOrderByFrageUndRichtig(
