@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import de.hdm.getThePoint.db.DataAcces;
+import de.hdm.getThePoint.db.DataAccess;
 import de.hdm.getThePoint.db.dbmodel.Frage;
 
 public class QueryTestingFrageByKategorie {
@@ -12,7 +12,7 @@ public class QueryTestingFrageByKategorie {
 	@Test
 	public void test() {
 
-		DataAcces dataAcces = new DataAcces();
+		DataAccess dataAcces = new DataAccess();
 
 		List<Frage> liste = dataAcces.getFragenByKategorie(1);
 

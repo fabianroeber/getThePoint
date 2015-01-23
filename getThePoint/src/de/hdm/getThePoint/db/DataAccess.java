@@ -20,7 +20,7 @@ import de.hdm.getThePoint.db.dbmodel.Wissenstest;
  * @author Fabian
  *
  */
-public class DataAcces implements Serializable {
+public class DataAccess implements Serializable {
 
 	private static final long serialVersionUID = -7993963883289903662L;
 
@@ -30,7 +30,7 @@ public class DataAcces implements Serializable {
 
 	private static final String PERSISTENCEUNIT = "getthepoint";
 
-	public DataAcces() {
+	public DataAccess() {
 		getEntityManager();
 	}
 
@@ -121,7 +121,7 @@ public class DataAcces implements Serializable {
 	}
 
 	/**
-	 * Schließt den {@link EntityManager} und die {@link EntityManagerFactory};
+	 * Schlieï¿½t den {@link EntityManager} und die {@link EntityManagerFactory};
 	 */
 	public void closeEntityManagerAndFactory() {
 		entityManager.close();

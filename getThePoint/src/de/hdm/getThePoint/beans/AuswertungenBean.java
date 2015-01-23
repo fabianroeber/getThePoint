@@ -30,7 +30,7 @@ import de.hdm.getThePoint.bo.ErgebnisBo;
 import de.hdm.getThePoint.bo.FrageBo;
 import de.hdm.getThePoint.bo.StudentBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
-import de.hdm.getThePoint.db.DataAcces;
+import de.hdm.getThePoint.db.DataAccess;
 import de.hdm.getThePoint.db.mapper.ErgebnisMapper;
 import de.hdm.getThePoint.db.mapper.WissenstestMapper;
 
@@ -48,7 +48,7 @@ public class AuswertungenBean implements Serializable {
 	private WissenstestBo selectedWissenstest;
 	private WissenstestMapper wissenstestMapper;
 	private ErgebnisMapper ergebnisMapper;
-	private DataAcces dataAccess;
+	private DataAccess dataAccess;
 	private BarChartModel barModel;
 	private List<AuswertungsErgebnis> auswertungsErgebnis;
 	private int definedPercentage;
@@ -56,7 +56,7 @@ public class AuswertungenBean implements Serializable {
 	private int maxanz = 0;
 
 	public AuswertungenBean() {
-		dataAccess = new DataAcces();
+		dataAccess = new DataAccess();
 		wissenstestMapper = new WissenstestMapper();
 		ergebnisMapper = new ErgebnisMapper();
 		getAllWissenstests();

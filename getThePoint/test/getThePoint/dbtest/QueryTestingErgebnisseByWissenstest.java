@@ -4,7 +4,7 @@ import java.util.List;
 import org.junit.Test;
 
 import de.hdm.getThePoint.bo.WissenstestBo;
-import de.hdm.getThePoint.db.DataAcces;
+import de.hdm.getThePoint.db.DataAccess;
 import de.hdm.getThePoint.db.dbmodel.Ergebnis;
 import de.hdm.getThePoint.db.dbmodel.Kategorie;
 import de.hdm.getThePoint.db.dbmodel.Wissenstest;
@@ -14,7 +14,7 @@ public class QueryTestingErgebnisseByWissenstest {
 	@Test
 	public void test() {
 
-		DataAcces dataAcces = new DataAcces();
+		DataAccess dataAcces = new DataAccess();
 
 		List<Ergebnis> liste = dataAcces.getErgebnisseByWissenstest(new WissenstestBo());
 

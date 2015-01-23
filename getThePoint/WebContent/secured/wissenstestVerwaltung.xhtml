@@ -1,4 +1,4 @@
-<ui:composition template="template.xhtml"
+<ui:composition template="../template.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -15,11 +15,11 @@
 			<p:spacer />
 			<p:outputLabel for="kategorie" value="Kategorie" />
 			<p:selectOneMenu id="kategorie"
-				value="#{wissenstestBean.selectedKategorie}"
+				value="#{wissenstestVerwaltungBean.selectedKategorie}"
 				converter="omnifaces.SelectItemsConverter" panelStyle="width:180px"
 				effect="fade" var="k" style="width:160px" filter="true"
 				filterMatchMode="startsWith">
-				<f:selectItems value="#{wissenstestBean.kategorien}" var="kateg"
+				<f:selectItems value="#{wissenstestVerwaltungBean.kategorien}" var="kateg"
 					itemLabel="#{kateg.bezeichnung}" itemValue="#{kateg}" />
 				<p:column>
 					<h:outputText value="#{k.bezeichnung}" />
@@ -27,7 +27,7 @@
 				<p:spacer />
 			</p:selectOneMenu>
 			<p:growl id="msg" showDetail="true" escape="false" />
-			<p:pickList id="FragenPickList" value="#{wissenstestBean.dlmfragen}"
+			<p:pickList id="FragenPickList" value="#{wissenstestVerwaltungBean.dlmfragen}"
 				var="frage" effect="bounce" itemValue="#{frage}"
 				itemLabel="#{frage.text}" showSourceControls="true"
 				showTargetControls="true" showCheckbox="true"
@@ -37,7 +37,7 @@
 				<f:facet name="sourceCaption">Fragenpool</f:facet>
 				<f:facet name="targetCaption">Wissenstest</f:facet>
 
-				<p:ajax event="transfer" listener="#{wissenstestBean.onTransfer}"
+				<p:ajax event="transfer" listener="#{wissenstestVerwaltungBean.onTransfer}"
 					update="msg" />
 
 				<p:column>

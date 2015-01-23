@@ -1,5 +1,6 @@
 package de.hdm.getThePoint.beans;
 
+import java.io.Serializable;
 import java.security.GeneralSecurityException;
 
 import javax.faces.application.FacesMessage;
@@ -10,9 +11,6 @@ import javax.faces.context.FacesContext;
 
 import com.unboundid.ldap.sdk.LDAPException;
 
-import de.hdm.getThePoint.bo.LehrenderBo;
-import de.hdm.getThePoint.bo.StudentBo;
-import de.hdm.getThePoint.db.dbmodel.Admin;
 import de.hdm.getThePoint.ldap.LdapAuthentificator;
 
 /**
@@ -24,42 +22,56 @@ import de.hdm.getThePoint.ldap.LdapAuthentificator;
  */
 @ManagedBean(name = "userBean")
 @SessionScoped
-public class UserBean {
+public class UserBean implements Serializable {
 
-	@ManagedProperty(value = "#{mitarbeiterBo}")
-	private StudentBo mitarbeiterBo;
+	private static final long serialVersionUID = 6129158197703648244L;
 
-	private LehrenderBo lehrenderBo;
+	private LdapAuthentificator ldapAuthentificator;
 
-	private Admin admin;
-
-	LdapAuthentificator ldapAuthentificator;
-
-	public UserBean() {
-		ldapAuthentificator = new LdapAuthentificator();
-	}
+	private boolean loggedIn;
 
 	private String userName;
 
 	private String password;
 
+	/**
+	 * Hier wird die Klasse {@link DataAccessBean} injiziert, die den
+	 * Datenbankzugriff bereitstellt.
+	 */
+	@ManagedProperty(value = "#{dataAccesBean}")
+	private DataAccessBean dataAccessBean;
+
+	/**
+	 * Hier wird die Klasse {@link NavigationBean} injiziert, um Zugriff auf
+	 * Navigationsaktionen zu bekommen.
+	 */
+	@ManagedProperty(value = "#{navigationBean}")
+	private NavigationBean navigationBean;
+
+	/**
+	 * Diese Methode regelt die Authentifizierung des Benutzers.
+	 */
 	public String login() {
 
 		if (userName != null && password != null) {
 
 			if (userName.equalsIgnoreCase("devmode")) {
 
-				// dummy user erstellen
-
-				return "/content_mobile.xhtml";
+				loggedIn = true;
+				// organizeUserData();
+				return navigationBean.redirectToWelcome();
 
 			} else {
 
 				try {
-					String username = ldapAuthentificator.authenticate(
+					String ldapuser = ldapAuthentificator.authenticate(
 							userName, password);
 
-					// Datenbankzugriff auf Tabelle lehrender oder student TODO
+					if (ldapuser != null && ldapuser.equals(userName)) {
+						loggedIn = true;
+						// organizeUserData();
+						return navigationBean.redirectToWelcome();
+					}
 
 				} catch (LDAPException | GeneralSecurityException e) {
 					FacesContext.getCurrentInstance().addMessage(
@@ -67,21 +79,57 @@ public class UserBean {
 							new FacesMessage(FacesMessage.SEVERITY_ERROR,
 									"Error",
 									"Nutzer konnte nicht autorisiert werden"));
-					return "";
-
+					loggedIn = false;
+					return navigationBean.redirectToLogin();
 				}
 
 			}
 
 		}
-		return "/content_mobile.xhtml";
+		return "";
 
 	}
 
+	/**
+	 * Diese Methode organisiert das laden der Nutzerdaten. Sie sucht nach der
+	 * erfolgreichen Authentifizierung in der Datenbank, ob der Mitarbetier
+	 * bereits vorhanden ist. Ist dies nicht der Fall, wird ein neuer
+	 * Mitarbeiter in der Datenbank persistiert.
+	 */
+	// public void organizeUserData() {
+	//
+	// getUserData();
+	// if (mitarbeiter == null) {
+	// registerNewUser();
+	// }
+	// }
+
+	/**
+	 * Meldet den Benutzer von der Anwendung ab.
+	 * 
+	 * @return
+	 */
 	public String logout() {
-		// Logoug Sachen machen
-		return "/logout.xhtml"; // TODO erstellen
+		loggedIn = false;
+		return navigationBean.redirectToLogout();
 	}
+
+	// /**
+	// * Diese Methode l&auml;dt die Mitarbeiterdaten aus der Datenbank.
+	// */
+	// public void getUserData() {
+	// mitarbeiter = new MitarbeiterMapper().getBo(dataAccessBean
+	// .getDataAccess().getMitarbeiterByUserName(userName));
+	// }
+	//
+	// /**
+	// * Diese Methode schreibt einen neuen Benutzer in die Datenbank.
+	// */
+	// public void registerNewUser() {
+	// mitarbeiter = new MitarbeiterBo(userName);
+	// dataAccessBean.getDataAccess().saveMitarbeiter(
+	// new MitarbeiterMapper().getDbObject(mitarbeiter));
+	// }
 
 	public String getUserName() {
 		return userName;
@@ -99,28 +147,34 @@ public class UserBean {
 		this.password = password;
 	}
 
-	public StudentBo getMitarbeiterBo() {
-		return mitarbeiterBo;
+	public boolean isLoggedIn() {
+		return loggedIn;
 	}
 
-	public void setMitarbeiterBo(StudentBo mitarbeiterBo) {
-		this.mitarbeiterBo = mitarbeiterBo;
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
 	}
 
-	public LehrenderBo getLehrenderBo() {
-		return lehrenderBo;
+	public UserBean() {
+		ldapAuthentificator = new LdapAuthentificator();
 	}
 
-	public void setLehrenderBo(LehrenderBo lehrenderBo) {
-		this.lehrenderBo = lehrenderBo;
+	public DataAccessBean getDataAccessBean() {
+		return dataAccessBean;
 	}
 
-	public Admin getAdmin() {
-		return admin;
+	public void setDataAccessBean(DataAccessBean dataAccessBean) {
+		this.dataAccessBean = dataAccessBean;
 	}
 
-	public void setAdmin(Admin admin) {
-		this.admin = admin;
+	public NavigationBean getNavigationBean() {
+		return navigationBean;
 	}
+
+	public void setNavigationBean(NavigationBean navigationBean) {
+		this.navigationBean = navigationBean;
+	}
+
+	
 
 }

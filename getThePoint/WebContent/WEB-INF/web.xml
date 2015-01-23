@@ -5,7 +5,7 @@
 	id="WebApp_ID" version="3.1">
 	<display-name>getThePoint</display-name>
 	<welcome-file-list>
-		<welcome-file>getThePoint/index.xhtml</welcome-file>
+		<welcome-file>getThePoint/secured/wissenstestVerwaltung.xhtml</welcome-file>
 	</welcome-file-list>
 
 	<servlet-mapping>
@@ -37,4 +37,12 @@
 	<listener>
 		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
 	</listener>
+	<filter>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>de.hdm.getThePoint.filter.LoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/secured/*</url-pattern>
+	</filter-mapping>
 </web-app>

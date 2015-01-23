@@ -3,7 +3,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import de.hdm.getThePoint.db.DataAcces;
+import de.hdm.getThePoint.db.DataAccess;
 import de.hdm.getThePoint.db.dbmodel.Ergebnis;
 
 public class QueryTestingErgebnis {
@@ -11,7 +11,7 @@ public class QueryTestingErgebnis {
 	@Test
 	public void test() {
 
-		DataAcces dataAcces = new DataAcces();
+		DataAccess dataAcces = new DataAccess();
 
 		List<Ergebnis> liste = dataAcces.getAllErgebnisse();
 

@@ -10,7 +10,7 @@ import javax.faces.bean.ViewScoped;
 import de.hdm.getThePoint.bo.AntwortBo;
 import de.hdm.getThePoint.bo.FrageBo;
 import de.hdm.getThePoint.bo.KategorieBo;
-import de.hdm.getThePoint.db.DataAcces;
+import de.hdm.getThePoint.db.DataAccess;
 import de.hdm.getThePoint.db.mapper.FrageMapper;
 import de.hdm.getThePoint.db.mapper.KategorieMapper;
 
@@ -26,10 +26,10 @@ public class FrageBean implements Serializable {
 	private FrageMapper frageMapper;
 	private KategorieMapper kategorieMapper;
 
-	private DataAcces dataAccess;
+	private DataAccess dataAccess;
 
 	public FrageBean() {
-		dataAccess = new DataAcces();
+		dataAccess = new DataAccess();
 		frageMapper = new FrageMapper();
 		kategorieMapper = new KategorieMapper();
 		getAllFragen();

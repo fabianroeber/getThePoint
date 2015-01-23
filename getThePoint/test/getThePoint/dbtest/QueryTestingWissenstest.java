@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import de.hdm.getThePoint.bo.FrageZuordung;
 import de.hdm.getThePoint.bo.WissenstestBo;
-import de.hdm.getThePoint.db.DataAcces;
+import de.hdm.getThePoint.db.DataAccess;
 import de.hdm.getThePoint.db.dbmodel.Wissenstest;
 import de.hdm.getThePoint.db.mapper.WissenstestMapper;
 
@@ -15,7 +15,7 @@ public class QueryTestingWissenstest {
 	@Test
 	public void test() {
 
-		DataAcces dataAcces = new DataAcces();
+		DataAccess dataAcces = new DataAccess();
 		WissenstestMapper wissenstestMapper = new WissenstestMapper();
 
 		List<Wissenstest> liste = dataAcces.getAllWissentests();
