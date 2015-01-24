@@ -11,7 +11,7 @@ import javax.faces.bean.SessionScoped;
  * @author Fabian
  *
  */
-@ManagedBean(name = "#{navigationBean}")
+@ManagedBean(name = "navigationBean")
 @SessionScoped
 public class NavigationBean implements Serializable {
 

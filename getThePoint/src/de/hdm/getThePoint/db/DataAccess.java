@@ -6,16 +6,21 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.dbmodel.Ergebnis;
 import de.hdm.getThePoint.db.dbmodel.Frage;
 import de.hdm.getThePoint.db.dbmodel.Kategorie;
 import de.hdm.getThePoint.db.dbmodel.Lehrender;
+import de.hdm.getThePoint.db.dbmodel.Student;
 import de.hdm.getThePoint.db.dbmodel.Wissenstest;
 
 /**
- * Klasse f&uuml;r alle Datenbankzugriffe.
+ * Klasse f&uuml;r alle Datenbankzugriffe. Die Entitymanager Factory wird einmal
+ * ge%oouml;ffnet, der EntityManager f&uuml;r jeden Transaktion. Er darf nur bei
+ * "Singleresults" geschlossen werden, da sonst die Funktion des Lazy Loading
+ * nicht funktioniert.
  * 
  * @author Fabian
  *
@@ -31,7 +36,7 @@ public class DataAccess implements Serializable {
 	private static final String PERSISTENCEUNIT = "getthepoint";
 
 	public DataAccess() {
-		getEntityManager();
+		getEntityManagerFactory();
 	}
 
 	/**
@@ -39,7 +44,10 @@ public class DataAccess implements Serializable {
 	 * 
 	 * @return
 	 */
-	public List<Wissenstest> getAllWissentests() {
+	public List<Wissenstest> getAllWissentests() throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
 		List<Wissenstest> list = entityManager.createQuery(
 				"Select wissenstest FROM Wissenstest wissenstest",
 				Wissenstest.class).getResultList();
@@ -51,7 +59,9 @@ public class DataAccess implements Serializable {
 	 * Methode zum Abrugen aller {@link Kategorie).
 	 * @return
 	 */
-	public List<Kategorie> getAllKategorie() {
+	public List<Kategorie> getAllKategorie() throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
 
 		List<Kategorie> list = entityManager.createQuery(
 				"Select kategorie FROM Kategorie kategorie", Kategorie.class)
@@ -60,14 +70,20 @@ public class DataAccess implements Serializable {
 		return list;
 	}
 
-	public List<Frage> getAllFrage() {
+	public List<Frage> getAllFrage() throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
 		List<Frage> list = entityManager.createQuery(
 				"SELECT frage FROM Frage frage", Frage.class).getResultList();
 		return list;
 
 	}
 
-	public List<Lehrender> getAllLehrende() {
+	public List<Lehrender> getAllLehrende() throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
 		List<Lehrender> list = entityManager.createQuery(
 				"SELECT lehrender FROM Lehrender lehrender", Lehrender.class)
 				.getResultList();
@@ -75,7 +91,10 @@ public class DataAccess implements Serializable {
 
 	}
 
-	public List<Ergebnis> getAllErgebnisse() {
+	public List<Ergebnis> getAllErgebnisse() throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
 		List<Ergebnis> list = entityManager.createQuery(
 				"SELECT ergebnis FROM Ergebnis ergebnis", Ergebnis.class)
 				.getResultList();
@@ -83,23 +102,38 @@ public class DataAccess implements Serializable {
 
 	}
 
-	public List<Ergebnis> getErgebnisseByWissenstest(WissenstestBo selektierterWissenstest) {
+	public List<Ergebnis> getErgebnisseByWissenstest(
+			WissenstestBo selektierterWissenstest) throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
 		List<Ergebnis> list = entityManager.createQuery(
 				"SELECT ergebnis FROM Ergebnis ergebnis where ergebnis.wissenstest = "
-						+ selektierterWissenstest.getId() + " ORDER BY ergebnis.student.id", Ergebnis.class).getResultList();
+						+ selektierterWissenstest.getId()
+						+ " ORDER BY ergebnis.student.id", Ergebnis.class)
+				.getResultList();
 		return list;
 
 	}
-	
-	public List<Ergebnis> getErgebnisseByWissenstestOrderByFrageUndRichtig(WissenstestBo selektierterWissenstest) {
+
+	public List<Ergebnis> getErgebnisseByWissenstestOrderByFrageUndRichtig(
+			WissenstestBo selektierterWissenstest) throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
 		List<Ergebnis> list = entityManager.createQuery(
 				"SELECT ergebnis FROM Ergebnis ergebnis where ergebnis.wissenstest = "
-						+ selektierterWissenstest.getId() + " ORDER BY ergebnis.frage.id, ergebnis.richtig", Ergebnis.class).getResultList();
+						+ selektierterWissenstest.getId()
+						+ " ORDER BY ergebnis.frage.id, ergebnis.richtig",
+				Ergebnis.class).getResultList();
 		return list;
 
 	}
 
-	public List<Frage> getFragenByKategorie(int kategorie_id) {
+	public List<Frage> getFragenByKategorie(int kategorie_id)
+			throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
 
 		List<Frage> list = entityManager.createQuery(
 				"Select frage FROM Frage frage where frage.kategorie = "
@@ -109,21 +143,63 @@ public class DataAccess implements Serializable {
 	}
 
 	/**
+	 * Ermittelt einen Studenten anhand seines Kuerzels.
+	 * 
+	 * @param kuerzel
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public Student getStudentByKuerzel(int kuerzel) throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
+		Student student = entityManager.createQuery(
+				"Select student FROM Student student where student.kuerzel = '"
+						+ kuerzel + "'", Student.class).getSingleResult();
+
+		entityManager.close();
+
+		return student;
+	}
+
+	/**
+	 * Ermittelt einen Lehrenden anhand seines Kuerzels.s
+	 * 
+	 * @param kuerzel
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public Lehrender getLehrenderByKuerzel(int kuerzel)
+			throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
+		Lehrender lehrender = entityManager.createQuery(
+				"Select lehrender FROM Lehrender lehrender where lehrender.kuerzel = '"
+						+ kuerzel + "'", Lehrender.class).getSingleResult();
+
+		entityManager.close();
+
+		return lehrender;
+
+	}
+
+	/**
 	 * Erstellt eine neue {@link EntityManagerFactory} und einen neuen
 	 * {@link EntityManager}.
 	 * 
 	 * @return
 	 */
-	private void getEntityManager() {
+	private void getEntityManagerFactory() {
 		entityManagerFactory = Persistence
 				.createEntityManagerFactory(PERSISTENCEUNIT);
-		entityManager = entityManagerFactory.createEntityManager();
+
 	}
 
 	/**
 	 * Schlie�t den {@link EntityManager} und die {@link EntityManagerFactory};
 	 */
-	public void closeEntityManagerAndFactory() {
+	public void closeEntityManagerFactory() {
 		entityManager.close();
 		entityManagerFactory.close();
 	}

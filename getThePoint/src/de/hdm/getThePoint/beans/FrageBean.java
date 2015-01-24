@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import de.hdm.getThePoint.bo.AntwortBo;
@@ -26,29 +28,35 @@ public class FrageBean implements Serializable {
 	private FrageMapper frageMapper;
 	private KategorieMapper kategorieMapper;
 
-	private DataAccess dataAccess;
-
 	public FrageBean() {
-		dataAccess = new DataAccess();
 		frageMapper = new FrageMapper();
 		kategorieMapper = new KategorieMapper();
+
+	}
+
+	@PostConstruct
+	public void init() {
 		getAllFragen();
 		getAllKategorien();
 	}
+
+	@ManagedProperty(value = "#{dataAccesBean}")
+	public DataAccessBean dataAccessBean;
 
 	/**
 	 * Diese Methode ruft alle Kategorien aus der Datenbank ab.
 	 */
 	public void getAllKategorien() {
-		kategorien = kategorieMapper.getModelsAsList(dataAccess
-				.getAllKategorie());
+		kategorien = kategorieMapper.getModelsAsList(dataAccessBean
+				.getDataAccess().getAllKategorie());
 	}
 
 	/**
 	 * Diese Methode ruft alle Fragen aus der Datenbank ab
 	 */
 	public void getAllFragen() {
-		fragen = frageMapper.getModelsAsList(dataAccess.getAllFrage());
+		fragen = frageMapper.getModelsAsList(dataAccessBean.getDataAccess()
+				.getAllFrage());
 	}
 
 	/**
@@ -94,6 +102,14 @@ public class FrageBean implements Serializable {
 
 	public void setKategorien(List<KategorieBo> kategorien) {
 		this.kategorien = kategorien;
+	}
+
+	public DataAccessBean getDataAccessBean() {
+		return dataAccessBean;
+	}
+
+	public void setDataAccessBean(DataAccessBean dataAccessBean) {
+		this.dataAccessBean = dataAccessBean;
 	}
 
 }
