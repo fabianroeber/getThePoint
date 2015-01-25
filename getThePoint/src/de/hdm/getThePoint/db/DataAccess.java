@@ -290,7 +290,8 @@ public class DataAccess implements Serializable {
 			throws PersistenceException {
 		entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
-		entityManager.remove(lehrender);
+		entityManager.remove(entityManager.contains(lehrender) ? lehrender
+				: entityManager.merge(lehrender));
 		entityManager.getTransaction().commit();
 		entityManager.close();
 	}

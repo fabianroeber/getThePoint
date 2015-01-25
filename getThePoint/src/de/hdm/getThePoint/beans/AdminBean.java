@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.PersistenceException;
 
 import de.hdm.getThePoint.bo.LehrenderBo;
@@ -80,6 +82,9 @@ public class AdminBean {
 	 * Speichert die Lehrenden.
 	 */
 	public void saveLehrende() {
+
+		FacesContext context = FacesContext.getCurrentInstance();
+
 		try {
 			for (LehrenderBo lehrenderBo : lehrende) {
 				dataAccessBean.getDataAccess().saveLehrender(
@@ -89,11 +94,17 @@ public class AdminBean {
 				dataAccessBean.getDataAccess().deleteLehrender(
 						lehrenderMapper.getDbModel(lehrenderBo));
 			}
+			context.addMessage(null, new FacesMessage("Speichern Erfolreich!",
+					"Die Lehrenden wurden erfolgreich gespeichert"));
 		} catch (PersistenceException e) {
 			e.printStackTrace();
-			System.out.print("Fehler beim Speichern der Lehrenden");
-			// TODO FacesMessages
+			context.addMessage(
+					null,
+					new FacesMessage(
+							"Fehler beim Speichern!",
+							"Beim Speichern der Lehrenden ist ein Fehler aufgetreten. Einer oder mehrere Einträge konnte nicht in die Datenbank geschrieben werden"));
 		}
+		getAllLehrende();
 
 	}
 

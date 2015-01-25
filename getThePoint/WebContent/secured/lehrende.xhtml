@@ -12,6 +12,7 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form rendered="#{roleBean.hasAdminRole()}">
+			<p:growl id="growl" showDetail="true" sticky="true" />
 			<p:dataTable id="lehrende" value="#{adminBean.lehrende}"
 				var="lehrender" rowIndexVar="row">
 				<p:column headerText="Vorname">
@@ -33,7 +34,7 @@
 				icon="ui-icon-plus" onclick="PF('d1').show();">
 			</p:commandButton>
 			<p:spacer></p:spacer>
-			<p:commandButton icon="ui-icon-disk" title="Speichern"
+			<p:commandButton icon="ui-icon-disk" title="Speichern" update="growl lehrende"
 				action="#{adminBean.saveLehrende}"></p:commandButton>
 			<p:dialog id="lehrenderdialog" header="Neuer Lehrender"
 				widgetVar="d1">
@@ -48,6 +49,7 @@
 				<p:commandButton value="Hinzufügen" onclick="PF('d1').hide();"
 					action="#{adminBean.addLehrender()}" update="lehrende"></p:commandButton>
 			</p:dialog>
+
 		</h:form>
 	</ui:define>
 </ui:composition>
