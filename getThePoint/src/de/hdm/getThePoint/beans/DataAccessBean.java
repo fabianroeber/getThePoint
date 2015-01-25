@@ -2,6 +2,7 @@ package de.hdm.getThePoint.beans;
 
 import java.io.Serializable;
 
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -14,7 +15,7 @@ import de.hdm.getThePoint.db.DataAccess;
  *
  */
 @ManagedBean(name = "dataAccesBean")
-@SessionScoped
+@ApplicationScoped
 public class DataAccessBean implements Serializable {
 
 	private static final long serialVersionUID = 6527490600640418751L;

@@ -13,20 +13,20 @@
 	<meta http-equiv="
 	Content-Type"
 		content="text/html; charset=ISO-8859-1" />
-	<title>GetThePoint - Verwaltung</title>
+	<title>HdM - Clicker</title>
 </h:head>
 <h:body>
 	<h:outputStylesheet library="css" name="main.css" />
-	<p:layout>
+	<p:layout fullPage="true">
 		<p:layoutUnit position="north" minSize="86">
 			<p:graphicImage id="headimg"
 				value="/resources/images/Quiz-Games-red.png" height="60px"
 				width="60px"></p:graphicImage>
 			<p:outputLabel for="headimg"
 				style="font-size: 40px; position: absolute; bottom: 15px; left: 70px;"
-				value="Get The Point - Das interaktive Lehrveranstaltungsquiz der HdM Stuttgart"></p:outputLabel>
+				value="HdM Clicker"></p:outputLabel>
 		</p:layoutUnit>
-		<p:layoutUnit position="center" minSize="1200">
+		<p:layoutUnit position="center">
 			<ui:include src="navigation.xhtml"></ui:include>
 			<ui:insert name="content"></ui:insert>
 		</p:layoutUnit>
