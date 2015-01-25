@@ -81,7 +81,7 @@ public class UserBean implements Serializable {
 							userName);
 					if (password.equals(admin.getPasswort())) {
 						loggedIn = true;
-						return navigationBean.redirectToWelcome();
+						return navigationBean.redirectToAdmin();
 					}
 				} catch (PersistenceException e) {
 					e.printStackTrace();

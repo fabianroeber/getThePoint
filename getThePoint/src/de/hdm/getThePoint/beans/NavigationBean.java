@@ -44,6 +44,14 @@ public class NavigationBean implements Serializable {
 		return "/secured/wissenstest.xhtml?faces-redirect=true";
 	}
 
+	public String redirectToAdmin() {
+		return "/secured/lehrende.xhtml?faces-redirect=true";
+	}
+
+	public String toAdmin() {
+		return "/secured/lehrende.xhtml";
+	}
+
 	/**
 	 * Go to welcome page.
 	 * 
