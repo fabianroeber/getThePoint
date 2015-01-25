@@ -41,7 +41,7 @@ public class NavigationBean implements Serializable {
 	 * @return Welcome page name.
 	 */
 	public String redirectToWelcome() {
-		return "secured/fragenpool.xhtml?faces-redirect=true";
+		return "/secured/wissenstest.xhtml?faces-redirect=true";
 	}
 
 	/**

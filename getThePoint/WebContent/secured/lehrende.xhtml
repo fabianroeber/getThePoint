@@ -11,8 +11,42 @@
 
 	</ui:define>
 	<ui:define name="content">
-		<h:form>
-			<p:outputLabel value="Hier entsteht das Quiz" ></p:outputLabel>
+		<h:form rendered="#{roleBean.hasAdminRole()}">
+			<p:dataGrid id="lehrende" value="#{adminBean.lehrende}"
+				var="lehrender" rowIndexVar="row">
+				<p:column headerText="Vorname">
+					<p:inputText value="#{lehrender.vorname}"></p:inputText>
+				</p:column>
+				<p:column headerText="Nachname">
+					<p:inputText value="#{lehrender.nachname}"></p:inputText>
+				</p:column>
+				<p:column headerText="HdM - Kürzel">
+					<p:outputLabel value="#{lehrender.kuerzel}"></p:outputLabel>
+				</p:column>
+				<p:column>
+					<p:commandButton icon="ui-icon-circle-minus" title="Entfernen"
+						action="#{adminBean.deleteLehrender(row)}" update="lehrende"></p:commandButton>
+				</p:column>
+			</p:dataGrid>
+			<br></br>
+			<p:commandButton title="Neuen Lehrenden hinzufügen"
+				icon="ui-icon-plus" onclick="PF('newLehrender').show();)"></p:commandButton>
+			<p:spacer></p:spacer>
+			<p:commandButton value="Speichern" action="#{adminBean.saveLehrende}"></p:commandButton>
+			<p:dialog header="Neuer Lehrender" widgetVar="newLehrender"
+				modal="true">
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Vorname"></p:outputLabel>
+					<p:inputText value="#{adminBean.vorname}"></p:inputText>
+					<p:outputLabel value="Nachname"></p:outputLabel>
+					<p:inputText value="#{adminBean.name}"></p:inputText>
+					<p:outputLabel value="Kuerzel"></p:outputLabel>
+					<p:inputText value="#{adminBean.kuerzel}"></p:inputText>
+				</p:panelGrid>
+
+				<p:commandButton value="Hinzufügen"
+					action="#{adminBean.addLehrender()}" update="lehrende"></p:commandButton>
+			</p:dialog>
 		</h:form>
 	</ui:define>
 

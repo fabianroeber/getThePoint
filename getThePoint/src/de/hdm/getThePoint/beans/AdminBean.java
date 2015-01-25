@@ -1,11 +1,13 @@
 package de.hdm.getThePoint.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.persistence.PersistenceException;
 
 import de.hdm.getThePoint.bo.LehrenderBo;
 import de.hdm.getThePoint.db.mapper.LehrenderMapper;
@@ -24,6 +26,12 @@ public class AdminBean {
 	private List<LehrenderBo> lehrende;
 
 	private LehrenderMapper lehrenderMapper;
+
+	private String kuerzel;
+
+	private String name;
+
+	private String vorname;
 
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
@@ -45,11 +53,42 @@ public class AdminBean {
 				.getDataAccess().getAllLehrende());
 	}
 
-	public void saveLehrender() {
+	public void addLehrender() {
+		LehrenderBo lehrender = new LehrenderBo();
+		lehrender.setKuerzel(kuerzel);
+		lehrender.setVorname(vorname);
+		lehrender.setNachname(name);
+		if (lehrende == null) {
+			lehrende = new ArrayList<LehrenderBo>();
+		}
+		lehrende.add(lehrender);
+		name = null;
+		kuerzel = null;
+		vorname = null;
+	}
+
+	public void saveLehrende() {
+		try {
+			for (LehrenderBo lehrenderBo : lehrende) {
+				dataAccessBean.getDataAccess().saveLehrender(
+						lehrenderMapper.getDbModel(lehrenderBo));
+			}
+
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			// TODO FacesMessages
+		}
 
 	}
 
-	public void deleteLehrender() {
+	public void deleteLehrender(int index) {
+		try {
+			dataAccessBean.getDataAccess().deleteLehrender(
+					lehrenderMapper.getDbModel(lehrende.get(index)));
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			// TODO FacesMessage
+		}
 
 	}
 
@@ -75,6 +114,30 @@ public class AdminBean {
 
 	public void setDataAccessBean(DataAccessBean dataAccessBean) {
 		this.dataAccessBean = dataAccessBean;
+	}
+
+	public String getKuerzel() {
+		return kuerzel;
+	}
+
+	public void setKuerzel(String kuerzel) {
+		this.kuerzel = kuerzel;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getVorname() {
+		return vorname;
+	}
+
+	public void setVorname(String vorname) {
+		this.vorname = vorname;
 	}
 
 }

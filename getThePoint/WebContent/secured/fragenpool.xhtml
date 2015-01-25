@@ -31,11 +31,11 @@
 								value="Doppelklick, um Antwortmöglichkeit zu bearbeiten" />
 						</p:column>
 						<p:column>
-							<p:commandButton icon="ui-icon-circle-minus"
+							<p:commandButton icon="ui-icon-circle-minus" title="Entfernen"
 								action="#{frageBean.deleteAntwortmoeg(frageRow, antwortRow)}"></p:commandButton>
 						</p:column>
 					</p:dataTable>
-					<p:commandButton icon="ui-icon-plus"
+					<p:commandButton icon="ui-icon-plus" title="Hinzufügen"
 						action="#{frageBean.addAntwortmoeg(frageRow)}"
 						update="antwortmoeg" rendered="#{!frage.hasMaxAntworten()}" />
 

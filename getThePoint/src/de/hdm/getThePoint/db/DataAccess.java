@@ -71,6 +71,12 @@ public class DataAccess implements Serializable {
 		return list;
 	}
 
+	/**
+	 * Methode zum Abrufen aller Fragen
+	 * 
+	 * @return
+	 * @throws PersistenceException
+	 */
 	public List<Frage> getAllFrage() throws PersistenceException {
 
 		entityManager = entityManagerFactory.createEntityManager();
@@ -81,6 +87,12 @@ public class DataAccess implements Serializable {
 
 	}
 
+	/**
+	 * Methode zum Abrufen aller Lehrenden
+	 * 
+	 * @return
+	 * @throws PersistenceException
+	 */
 	public List<Lehrender> getAllLehrende() throws PersistenceException {
 
 		entityManager = entityManagerFactory.createEntityManager();
@@ -92,6 +104,12 @@ public class DataAccess implements Serializable {
 
 	}
 
+	/**
+	 * Methode zum Abrufen aller Ergebnisse
+	 * 
+	 * @return
+	 * @throws PersistenceException
+	 */
 	public List<Ergebnis> getAllErgebnisse() throws PersistenceException {
 
 		entityManager = entityManagerFactory.createEntityManager();
@@ -187,6 +205,7 @@ public class DataAccess implements Serializable {
 
 	/**
 	 * Ermittelt einen Adminuser.
+	 * 
 	 * @param name
 	 * @return
 	 * @throws PersistenceException
@@ -196,13 +215,56 @@ public class DataAccess implements Serializable {
 		entityManager = entityManagerFactory.createEntityManager();
 
 		Admin admin = entityManager.createQuery(
-				"Select admin FROM Admin WHERE admin.login = '" + name + "'",
-				Admin.class).getSingleResult();
+				"Select admin FROM Admin admin WHERE admin.login = '" + name
+						+ "'", Admin.class).getSingleResult();
 
 		entityManager.close();
 
 		return admin;
 
+	}
+
+	/**
+	 * Methode zum Speichern eines Lehrenden
+	 * 
+	 * @param lehrender
+	 * @throws PersistenceException
+	 */
+	public void saveLehrender(Lehrender lehrender) throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+
+		Lehrender lehrenderToSave;
+
+		if (lehrender.getId() != null) {
+			lehrenderToSave = entityManager.find(Lehrender.class,
+					lehrender.getId());
+		} else {
+			lehrenderToSave = new Lehrender();
+		}
+		lehrenderToSave.setName(lehrender.getName());
+		lehrenderToSave.setVorname(lehrender.getVorname());
+		// TODO Kürzel!
+		entityManager.persist(lehrenderToSave);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+
+	}
+
+	/**
+	 * Methode zum L&ouml;schen eines Lehrenden.
+	 * 
+	 * @param lehrender
+	 * @throws PersistenceException
+	 */
+	public void deleteLehrender(Lehrender lehrender)
+			throws PersistenceException {
+		entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		entityManager.remove(lehrender);
+		entityManager.getTransaction().commit();
+		entityManager.close();
 	}
 
 	/**

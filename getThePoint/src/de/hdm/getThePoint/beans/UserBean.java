@@ -8,9 +8,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.PersistenceException;
 
 import com.unboundid.ldap.sdk.LDAPException;
 
+import de.hdm.getThePoint.bo.LehrenderBo;
+import de.hdm.getThePoint.bo.StudentBo;
+import de.hdm.getThePoint.db.dbmodel.Admin;
 import de.hdm.getThePoint.ldap.LdapAuthentificator;
 
 /**
@@ -34,6 +38,12 @@ public class UserBean implements Serializable {
 
 	private String password;
 
+	private Admin admin;
+
+	private LehrenderBo lehrender;
+
+	private StudentBo student;
+
 	/**
 	 * Hier wird die Klasse {@link DataAccessBean} injiziert, die den
 	 * Datenbankzugriff bereitstellt.
@@ -54,13 +64,29 @@ public class UserBean implements Serializable {
 	public String login() {
 
 		if (userName != null && password != null) {
-
-			if (userName.equalsIgnoreCase("devmode")) {
+			// nur für Test
+			if (userName.equalsIgnoreCase("testlehrender")) {
 
 				loggedIn = true;
 				// organizeUserData();
 				return navigationBean.redirectToWelcome();
+				// nur für Test
+			} else if (userName.equalsIgnoreCase("teststudent")) {
+				loggedIn = true;
+				// TODO
 
+			} else if (userName.equalsIgnoreCase("admin")) {
+				try {
+					admin = dataAccessBean.getDataAccess().getAdminByUserName(
+							userName);
+					if (password.equals(admin.getPasswort())) {
+						loggedIn = true;
+						return navigationBean.redirectToWelcome();
+					}
+				} catch (PersistenceException e) {
+					e.printStackTrace();
+					loginFailed();
+				}
 			} else {
 
 				try {
@@ -74,13 +100,8 @@ public class UserBean implements Serializable {
 					}
 
 				} catch (LDAPException | GeneralSecurityException e) {
-					FacesContext.getCurrentInstance().addMessage(
-							null,
-							new FacesMessage(FacesMessage.SEVERITY_ERROR,
-									"Error",
-									"Nutzer konnte nicht autorisiert werden"));
-					loggedIn = false;
-					return navigationBean.redirectToLogin();
+					e.printStackTrace();
+					loginFailed();
 				}
 
 			}
@@ -88,6 +109,14 @@ public class UserBean implements Serializable {
 		}
 		return "";
 
+	}
+
+	private void loginFailed() {
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
+						"Nutzer konnte nicht autorisiert werden"));
+		loggedIn = false;
 	}
 
 	/**
@@ -111,6 +140,9 @@ public class UserBean implements Serializable {
 	 */
 	public String logout() {
 		loggedIn = false;
+		lehrender = null;
+		admin = null;
+		student = null;
 		return navigationBean.redirectToLogout();
 	}
 
@@ -148,6 +180,7 @@ public class UserBean implements Serializable {
 	}
 
 	public boolean isLoggedIn() {
+
 		return loggedIn;
 	}
 
@@ -175,6 +208,28 @@ public class UserBean implements Serializable {
 		this.navigationBean = navigationBean;
 	}
 
-	
+	public Admin getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
+	}
+
+	public LehrenderBo getLehrender() {
+		return lehrender;
+	}
+
+	public void setLehrender(LehrenderBo lehrender) {
+		this.lehrender = lehrender;
+	}
+
+	public StudentBo getStudent() {
+		return student;
+	}
+
+	public void setStudent(StudentBo student) {
+		this.student = student;
+	}
 
 }
