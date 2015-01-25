@@ -15,7 +15,7 @@ import de.hdm.getThePoint.db.DataAccess;
  *
  */
 @ManagedBean(name = "dataAccesBean")
-@ApplicationScoped
+@SessionScoped
 public class DataAccessBean implements Serializable {
 
 	private static final long serialVersionUID = 6527490600640418751L;

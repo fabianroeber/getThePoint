@@ -9,6 +9,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
 import de.hdm.getThePoint.bo.WissenstestBo;
+import de.hdm.getThePoint.db.dbmodel.Admin;
 import de.hdm.getThePoint.db.dbmodel.Ergebnis;
 import de.hdm.getThePoint.db.dbmodel.Frage;
 import de.hdm.getThePoint.db.dbmodel.Kategorie;
@@ -181,6 +182,26 @@ public class DataAccess implements Serializable {
 		entityManager.close();
 
 		return lehrender;
+
+	}
+
+	/**
+	 * Ermittelt einen Adminuser.
+	 * @param name
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public Admin getAdminByUserName(String name) throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
+		Admin admin = entityManager.createQuery(
+				"Select admin FROM Admin WHERE admin.login = '" + name + "'",
+				Admin.class).getSingleResult();
+
+		entityManager.close();
+
+		return admin;
 
 	}
 

@@ -5,7 +5,7 @@
 	id="WebApp_ID" version="3.1">
 	<display-name>getThePoint</display-name>
 	<welcome-file-list>
-		<welcome-file>getThePoint/secured/wissenstestVerwaltung.xhtml</welcome-file>
+		<welcome-file>getThePoint/secured/wissenstest.xhtml</welcome-file>
 	</welcome-file-list>
 
 	<servlet-mapping>

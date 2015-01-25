@@ -30,8 +30,16 @@
 			<ui:include src="navigation.xhtml"></ui:include>
 			<ui:insert name="content"></ui:insert>
 		</p:layoutUnit>
-		<p:layoutUnit position="south">
-			<ui:insert name="pagefooter"></ui:insert>
+		<p:layoutUnit position="south" minSize="80" style="border: none;">
+			<h:form rendered="#{userBean.loggedIn}">
+				<p:panelGrid columns="2" layout="grid">
+					<p:outputLabel value="Angemeldet als: #{userBean.userName}"></p:outputLabel>
+					<div align="right">
+						<p:commandButton value="Abmelden" action="#{userBean.logout()}"
+							style="color: #CF012F"></p:commandButton>
+					</div>
+				</p:panelGrid>
+			</h:form>
 		</p:layoutUnit>
 	</p:layout>
 </h:body>
