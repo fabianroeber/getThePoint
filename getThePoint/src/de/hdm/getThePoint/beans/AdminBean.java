@@ -25,6 +25,8 @@ public class AdminBean {
 
 	private List<LehrenderBo> lehrende;
 
+	private List<LehrenderBo> deleteList;
+
 	private LehrenderMapper lehrenderMapper;
 
 	private String kuerzel;
@@ -41,6 +43,7 @@ public class AdminBean {
 
 	public AdminBean() {
 		lehrenderMapper = new LehrenderMapper();
+		deleteList = new ArrayList<LehrenderBo>();
 	}
 
 	@PostConstruct
@@ -48,11 +51,17 @@ public class AdminBean {
 		getAllLehrende();
 	}
 
+	/**
+	 * Diese Methode holt alle Lehrenden aus der Datenbank.
+	 */
 	public void getAllLehrende() {
 		lehrende = lehrenderMapper.getModelsAsList(dataAccessBean
 				.getDataAccess().getAllLehrende());
 	}
 
+	/**
+	 * F&uuml;gt einen Lehrendne zur Liste hinzu.
+	 */
 	public void addLehrender() {
 		LehrenderBo lehrender = new LehrenderBo();
 		lehrender.setKuerzel(kuerzel);
@@ -67,13 +76,19 @@ public class AdminBean {
 		vorname = null;
 	}
 
+	/**
+	 * Speichert die Lehrenden.
+	 */
 	public void saveLehrende() {
 		try {
 			for (LehrenderBo lehrenderBo : lehrende) {
 				dataAccessBean.getDataAccess().saveLehrender(
 						lehrenderMapper.getDbModel(lehrenderBo));
 			}
-
+			for (LehrenderBo lehrenderBo : deleteList) {
+				dataAccessBean.getDataAccess().deleteLehrender(
+						lehrenderMapper.getDbModel(lehrenderBo));
+			}
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			System.out.print("Fehler beim Speichern der Lehrenden");
@@ -82,7 +97,13 @@ public class AdminBean {
 
 	}
 
+	/**
+	 * Diese Methode legt einen Lehrenden fest, der gel&ouml;scht werden soll.
+	 * 
+	 * @param index
+	 */
 	public void deleteLehrender(int index) {
+		deleteList.add(lehrende.get(index));
 		lehrende.remove(index);
 	}
 
