@@ -15,6 +15,8 @@ import com.unboundid.ldap.sdk.LDAPException;
 import de.hdm.getThePoint.bo.LehrenderBo;
 import de.hdm.getThePoint.bo.StudentBo;
 import de.hdm.getThePoint.db.dbmodel.Admin;
+import de.hdm.getThePoint.db.mapper.LehrenderMapper;
+import de.hdm.getThePoint.db.mapper.StudentMapper;
 import de.hdm.getThePoint.ldap.LdapAuthentificator;
 
 /**
@@ -44,6 +46,10 @@ public class UserBean implements Serializable {
 
 	private StudentBo student;
 
+	private LehrenderMapper lehrenderMapper;
+
+	private StudentMapper studentMapper;
+
 	/**
 	 * Hier wird die Klasse {@link DataAccessBean} injiziert, die den
 	 * Datenbankzugriff bereitstellt.
@@ -59,25 +65,47 @@ public class UserBean implements Serializable {
 	private NavigationBean navigationBean;
 
 	/**
-	 * Diese Methode regelt die Authentifizierung des Benutzers.
+	 * Konstrukor l&auml;dt Mapper und LDAP Schnittstelle.
+	 */
+	public UserBean() {
+		lehrenderMapper = new LehrenderMapper();
+		studentMapper = new StudentMapper();
+		ldapAuthentificator = new LdapAuthentificator();
+	}
+
+	/**
+	 * Diese Methode regelt die Authentifizierung des Benutzers. Dabei wird
+	 * zun&auml;chst versucht, den Benutzer als Admin zu identifizieren. Ist der
+	 * User kein Admin, wird der LDAP Login angestoßen. Ist dieser erfolgreich,
+	 * wird abgefragt, ob der Benutzer die Rolle eines Lehrenden hat. Wenn ja,
+	 * wird er als Lehrender eingeloggt. Wenn nicht, wird er als Student
+	 * eingeloggt.
+	 * 
+	 * Für die Entwicklung der Applikation sind hier zwei Testuser (1 Lehrender
+	 * und 1 Student) implementiert, die sich unabhängig vom LDAP anmelden
+	 * können.
 	 */
 	public String login(boolean mobile) {
 
 		if (userName != null && password != null) {
 
+			// Dieser Teil dient nur zum Testen
 			if (userName.equalsIgnoreCase("testlehrender")) {
 
 				loggedIn = true;
-				// organizeUserData();
+				checkLehrender();
 				if (mobile) {
 					return navigationBean.redirectToMobileWelcome();
 				}
 
 				return navigationBean.redirectToWelcome();
 
-			} else if (userName.equalsIgnoreCase("teststudent")) {
+			}
+			// Dieser Teil dient nur zum Testen
+			else if (userName.equalsIgnoreCase("teststudent")) {
 				loggedIn = true;
-				// TODO
+				organizeStudentUserData();
+				return navigationBean.redirectToWelcome();
 
 			} else if (userName.equalsIgnoreCase("admin")) {
 				try {
@@ -92,14 +120,19 @@ public class UserBean implements Serializable {
 					loginFailed();
 				}
 			} else {
-
+				// LDAP CHECK
 				try {
 					String ldapuser = ldapAuthentificator.authenticate(
 							userName, password);
 
 					if (ldapuser != null && ldapuser.equals(userName)) {
 						loggedIn = true;
-						// organizeUserData();
+
+						checkLehrender();
+						if (lehrender == null) {
+							organizeStudentUserData();
+							return navigationBean.redirectToWelcome();
+						}
 						return navigationBean.redirectToWelcome();
 					}
 
@@ -115,6 +148,9 @@ public class UserBean implements Serializable {
 
 	}
 
+	/**
+	 * Fehlermeldung, wenn der LDAP Login gescheitert ist.
+	 */
 	private void loginFailed() {
 		FacesContext.getCurrentInstance().addMessage(
 				null,
@@ -124,18 +160,26 @@ public class UserBean implements Serializable {
 	}
 
 	/**
-	 * Diese Methode organisiert das laden der Nutzerdaten. Sie sucht nach der
-	 * erfolgreichen Authentifizierung in der Datenbank, ob der Mitarbetier
-	 * bereits vorhanden ist. Ist dies nicht der Fall, wird ein neuer
-	 * Mitarbeiter in der Datenbank persistiert.
+	 * Versucht, einen Lehrenden aus der Datenbank zu ermitteln.
 	 */
-	// public void organizeUserData() {
-	//
-	// getUserData();
-	// if (mitarbeiter == null) {
-	// registerNewUser();
-	// }
-	// }
+	private void checkLehrender() {
+		lehrender = lehrenderMapper.getModel(dataAccessBean.getDataAccess()
+				.getLehrenderByKuerzel(userName));
+	}
+
+	/**
+	 * Diese Methode organisiert das laden der Nutzerdaten. Sie sucht nach der
+	 * erfolgreichen Authentifizierung in der Datenbank, ob der Student bereits
+	 * vorhanden ist. Ist dies nicht der Fall, wird ein neuer Student in der
+	 * Datenbank persistiert.
+	 */
+	private void organizeStudentUserData() {
+
+		checkStudent();
+		if (student == null) {
+			registerNewUser();
+		}
+	}
 
 	/**
 	 * Meldet den Benutzer von der Anwendung ab.
@@ -154,22 +198,23 @@ public class UserBean implements Serializable {
 		return navigationBean.redirectToLogout();
 	}
 
-	// /**
-	// * Diese Methode l&auml;dt die Mitarbeiterdaten aus der Datenbank.
-	// */
-	// public void getUserData() {
-	// mitarbeiter = new MitarbeiterMapper().getBo(dataAccessBean
-	// .getDataAccess().getMitarbeiterByUserName(userName));
-	// }
-	//
-	// /**
-	// * Diese Methode schreibt einen neuen Benutzer in die Datenbank.
-	// */
-	// public void registerNewUser() {
-	// mitarbeiter = new MitarbeiterBo(userName);
-	// dataAccessBean.getDataAccess().saveMitarbeiter(
-	// new MitarbeiterMapper().getDbObject(mitarbeiter));
-	// }
+	/**
+	 * Diese Methode l&auml;dt die Daten eines Studenten aus der Datenbank.
+	 */
+	private void checkStudent() {
+		student = studentMapper.getModel(dataAccessBean.getDataAccess()
+				.getStudentByKuerzel(userName));
+	}
+
+	/**
+	 * Diese Methode schreibt einen neuen Studenten in die Datenbank.
+	 */
+	private void registerNewUser() {
+		student = new StudentBo();
+		student.setKuerzel(userName);
+		dataAccessBean.getDataAccess().saveStudent(
+				studentMapper.getDbModel(student));
+	}
 
 	public String getUserName() {
 		return userName;
@@ -194,10 +239,6 @@ public class UserBean implements Serializable {
 
 	public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
-	}
-
-	public UserBean() {
-		ldapAuthentificator = new LdapAuthentificator();
 	}
 
 	public DataAccessBean getDataAccessBean() {

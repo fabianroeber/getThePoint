@@ -22,6 +22,7 @@ public class Lehrender extends HibernateModel {
 	private Integer id;
 	private String name;
 	private String vorname;
+	private String kuerzel;
 	private Set<Wissenstest> wissenstests = new HashSet<Wissenstest>(0);
 	private Set<Kategorie> kategories = new HashSet<Kategorie>(0);
 
@@ -32,11 +33,12 @@ public class Lehrender extends HibernateModel {
 		this.id = id;
 	}
 
-	public Lehrender(Integer id, String name, String vorname,
+	public Lehrender(Integer id, String name, String vorname, String kuerzel,
 			Set<Wissenstest> wissenstests, Set<Kategorie> kategories) {
 		this.id = id;
 		this.name = name;
 		this.vorname = vorname;
+		this.kuerzel = kuerzel;
 		this.wissenstests = wissenstests;
 		this.kategories = kategories;
 	}
@@ -85,6 +87,15 @@ public class Lehrender extends HibernateModel {
 
 	public void setKategories(Set<Kategorie> kategories) {
 		this.kategories = kategories;
+	}
+
+	@Column(name = "kuerzel", length = 45)
+	public String getKuerzel() {
+		return kuerzel;
+	}
+
+	public void setKuerzel(String kuerzel) {
+		this.kuerzel = kuerzel;
 	}
 
 }

@@ -6,8 +6,8 @@ import java.util.List;
 import de.hdm.getThePoint.bo.LehrenderBo;
 import de.hdm.getThePoint.db.dbmodel.Lehrender;
 
-
-public class LehrenderMapper implements DbMapperInterface<LehrenderBo, Lehrender> {
+public class LehrenderMapper implements
+		DbMapperInterface<LehrenderBo, Lehrender> {
 
 	@Override
 	public List<LehrenderBo> getModelsAsList(List<Lehrender> dbmodels) {
@@ -24,15 +24,19 @@ public class LehrenderMapper implements DbMapperInterface<LehrenderBo, Lehrender
 		lehrenderBo.setId(dbmodel.getId());
 		lehrenderBo.setVorname(dbmodel.getVorname());
 		lehrenderBo.setNachname(dbmodel.getName());
-	
+		lehrenderBo.setKuerzel(dbmodel.getKuerzel());
+
 		return lehrenderBo;
 	}
 
 	@Override
 	public Lehrender getDbModel(LehrenderBo model) {
-		// TODO Auto-generated method stub
-		return null;
+		Lehrender lehrender = new Lehrender();
+		lehrender.setId(model.getId());
+		lehrender.setVorname(model.getVorname());
+		lehrender.setName(model.getNachname());
+		lehrender.setKuerzel(model.getKuerzel());
+		return lehrender;
 	}
 
-	
 }

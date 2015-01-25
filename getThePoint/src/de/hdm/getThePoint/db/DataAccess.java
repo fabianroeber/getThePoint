@@ -168,7 +168,8 @@ public class DataAccess implements Serializable {
 	 * @return
 	 * @throws PersistenceException
 	 */
-	public Student getStudentByKuerzel(int kuerzel) throws PersistenceException {
+	public Student getStudentByKuerzel(String kuerzel)
+			throws PersistenceException {
 
 		entityManager = entityManagerFactory.createEntityManager();
 
@@ -188,7 +189,7 @@ public class DataAccess implements Serializable {
 	 * @return
 	 * @throws PersistenceException
 	 */
-	public Lehrender getLehrenderByKuerzel(int kuerzel)
+	public Lehrender getLehrenderByKuerzel(String kuerzel)
 			throws PersistenceException {
 
 		entityManager = entityManagerFactory.createEntityManager();
@@ -225,6 +226,32 @@ public class DataAccess implements Serializable {
 	}
 
 	/**
+	 * Methode zum Speichern eines Studenten.
+	 * 
+	 * @param dbModel
+	 */
+	public void saveStudent(Student student) {
+		entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+
+		Student studentToSave;
+
+		if (student.getId() != null) {
+			studentToSave = entityManager.find(Student.class, student.getId());
+		} else {
+			studentToSave = new Student();
+		}
+		studentToSave.setKuerzel(student.getKuerzel());
+		studentToSave.setMatrikelNr(student.getMatrikelNr());
+		studentToSave.setName(student.getName());
+		studentToSave.setVorname(student.getVorname());
+
+		entityManager.persist(studentToSave);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+	}
+
+	/**
 	 * Methode zum Speichern eines Lehrenden
 	 * 
 	 * @param lehrender
@@ -245,7 +272,8 @@ public class DataAccess implements Serializable {
 		}
 		lehrenderToSave.setName(lehrender.getName());
 		lehrenderToSave.setVorname(lehrender.getVorname());
-		// TODO Kürzel!
+		lehrenderToSave.setKuerzel(lehrender.getKuerzel());
+
 		entityManager.persist(lehrenderToSave);
 		entityManager.getTransaction().commit();
 		entityManager.close();

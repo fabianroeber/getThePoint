@@ -1,18 +1,26 @@
 package de.hdm.getThePoint.beans;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.event.FileUploadEvent;
 
 import de.hdm.getThePoint.bo.AntwortBo;
 import de.hdm.getThePoint.bo.FrageBo;
 import de.hdm.getThePoint.bo.KategorieBo;
-import de.hdm.getThePoint.db.DataAccess;
 import de.hdm.getThePoint.db.mapper.FrageMapper;
 import de.hdm.getThePoint.db.mapper.KategorieMapper;
 
@@ -28,10 +36,11 @@ public class FrageBean implements Serializable {
 	private FrageMapper frageMapper;
 	private KategorieMapper kategorieMapper;
 
+	private static final String FILEDESTINATION = "C:/temp/images";
+
 	public FrageBean() {
 		frageMapper = new FrageMapper();
 		kategorieMapper = new KategorieMapper();
-
 	}
 
 	@PostConstruct
@@ -86,6 +95,44 @@ public class FrageBean implements Serializable {
 		fragen.get(indexFrage).getAntwortmoeglichkeiten()
 				.remove(indexAntwortmoeg);
 
+	}
+
+	public void upload(FileUploadEvent event) {
+		FacesMessage msg = new FacesMessage("Erfolgreich! ", event.getFile()
+				.getFileName() + " wurde hochgeladen.");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+
+		try {
+			copyFile(event.getFile().getFileName(), event.getFile()
+					.getInputstream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void copyFile(String fileName, InputStream in) {
+		try {
+
+			// write the inputStream to a FileOutputStream
+			OutputStream out = new FileOutputStream(new File(FILEDESTINATION
+					+ fileName));
+
+			int read = 0;
+			byte[] bytes = new byte[1024];
+
+			while ((read = in.read(bytes)) != -1) {
+				out.write(bytes, 0, read);
+			}
+
+			in.close();
+			out.flush();
+			out.close();
+
+			System.out.println("Neue Datei erstellt!");
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public List<FrageBo> getFragen() {

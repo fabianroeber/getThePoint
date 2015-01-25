@@ -58,6 +58,9 @@
 
 				<p:column headerText="Bild">
 					<p:graphicImage value="#{frage.bild}"></p:graphicImage>
+					<p:fileUpload fileUploadListener="#{frageBean.upload}"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="100000"
+						description="Bild auswählen" />
 				</p:column>
 				<p:column headerText="Schwierigkeit">
 					<p:outputLabel value="#{frage.schwierigkeit.text}"></p:outputLabel>
