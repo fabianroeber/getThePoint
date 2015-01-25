@@ -36,7 +36,7 @@ public class AdminBean {
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
 
-	@ManagedProperty(value = "#{dataAccessBean}")
+	@ManagedProperty(value = "#{dataAccesBean}")
 	private DataAccessBean dataAccessBean;
 
 	public AdminBean() {
@@ -45,7 +45,7 @@ public class AdminBean {
 
 	@PostConstruct
 	public void init() {
-
+		getAllLehrende();
 	}
 
 	public void getAllLehrende() {
@@ -76,20 +76,14 @@ public class AdminBean {
 
 		} catch (PersistenceException e) {
 			e.printStackTrace();
+			System.out.print("Fehler beim Speicher der Lehrenden");
 			// TODO FacesMessages
 		}
 
 	}
 
 	public void deleteLehrender(int index) {
-		try {
-			dataAccessBean.getDataAccess().deleteLehrender(
-					lehrenderMapper.getDbModel(lehrende.get(index)));
-		} catch (PersistenceException e) {
-			e.printStackTrace();
-			// TODO FacesMessage
-		}
-
+		lehrende.remove(index);
 	}
 
 	public List<LehrenderBo> getLehrende() {
@@ -106,14 +100,6 @@ public class AdminBean {
 
 	public void setUserBean(UserBean userBean) {
 		this.userBean = userBean;
-	}
-
-	public DataAccessBean getDataAccessBean() {
-		return dataAccessBean;
-	}
-
-	public void setDataAccessBean(DataAccessBean dataAccessBean) {
-		this.dataAccessBean = dataAccessBean;
 	}
 
 	public String getKuerzel() {
@@ -138,6 +124,14 @@ public class AdminBean {
 
 	public void setVorname(String vorname) {
 		this.vorname = vorname;
+	}
+
+	public DataAccessBean getDataAccessBean() {
+		return dataAccessBean;
+	}
+
+	public void setDataAccessBean(DataAccessBean dataAccessBean) {
+		this.dataAccessBean = dataAccessBean;
 	}
 
 }
