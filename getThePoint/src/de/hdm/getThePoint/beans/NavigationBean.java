@@ -52,6 +52,19 @@ public class NavigationBean implements Serializable {
 		return "/secured/lehrende.xhtml";
 	}
 
+	public String redirectToMobileLogin() {
+		return "login_mobile.xhtml?faces-redirect=true";
+	}
+	
+	public String redirectToMobileLogout() {
+		return "login_mobile.xhtml?faces-redirect=true";
+	}
+
+	public String redirectToMobileWelcome() {
+
+		return "/secured/wissenstest_mobile.xhtml?faces-redirect=true";
+	}
+
 	/**
 	 * Go to welcome page.
 	 * 

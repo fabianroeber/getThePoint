@@ -61,16 +61,20 @@ public class UserBean implements Serializable {
 	/**
 	 * Diese Methode regelt die Authentifizierung des Benutzers.
 	 */
-	public String login() {
+	public String login(boolean mobile) {
 
 		if (userName != null && password != null) {
-			// nur für Test
+
 			if (userName.equalsIgnoreCase("testlehrender")) {
 
 				loggedIn = true;
 				// organizeUserData();
+				if (mobile) {
+					return navigationBean.redirectToMobileWelcome();
+				}
+
 				return navigationBean.redirectToWelcome();
-				// nur für Test
+
 			} else if (userName.equalsIgnoreCase("teststudent")) {
 				loggedIn = true;
 				// TODO
@@ -138,11 +142,15 @@ public class UserBean implements Serializable {
 	 * 
 	 * @return
 	 */
-	public String logout() {
+	public String logout(boolean mobile) {
 		loggedIn = false;
 		lehrender = null;
 		admin = null;
 		student = null;
+		if (mobile) {
+			return navigationBean.redirectToMobileLogout();
+		}
+
 		return navigationBean.redirectToLogout();
 	}
 

@@ -31,7 +31,7 @@
 								value="Doppelklick, um Antwortmöglichkeit zu bearbeiten" />
 						</p:column>
 						<p:column>
-							<p:commandButton icon="ui-icon-circle-minus" title="Entfernen"
+							<p:commandButton icon="ui-icon-trash" title="Entfernen"
 								action="#{frageBean.deleteAntwortmoeg(frageRow, antwortRow)}"></p:commandButton>
 						</p:column>
 					</p:dataTable>
@@ -64,11 +64,11 @@
 				</p:column>
 			</p:dataTable>
 			<br></br>
-			<p:commandButton value="Neue Frage hinzufügen"
+			<p:commandButton title="Neue Frage hinzufügen" icon="ui-icon-plus"
 				action="#{frageBean.addFrage()}" update="fragen"></p:commandButton>
 			<br></br>
 			<br></br>
-			<p:commandButton value="Speichern" id="save" update="fragen"
+			<p:commandButton title="Speichern" id="save" update="fragen"
 				icon="ui-icon-disk" />
 		</h:form>
 	</ui:define>

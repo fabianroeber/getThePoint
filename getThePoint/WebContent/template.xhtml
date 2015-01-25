@@ -35,7 +35,7 @@
 				<p:panelGrid columns="2" layout="grid">
 					<p:outputLabel value="Angemeldet als: #{userBean.userName}"></p:outputLabel>
 					<div align="right">
-						<p:commandButton value="Abmelden" action="#{userBean.logout()}"
+						<p:commandButton icon="ui-icon-extlink" value="Abmelden" title="Abmelden" action="#{userBean.logout(false)}"
 							style="color: #CF012F"></p:commandButton>
 					</div>
 				</p:panelGrid>

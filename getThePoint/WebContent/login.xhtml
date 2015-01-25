@@ -15,7 +15,7 @@
 					<p:inputText id="benutzername" value="#{userBean.userName}" />
 					<p:outputLabel value="Passwort" for="passwort" />
 					<p:password id="passwort" value="#{userBean.password}" />
-					<p:commandButton value="Login" action="#{userBean.login()}" />
+					<p:commandButton value="Login" action="#{userBean.login(false)}" />
 				</h:panelGrid>
 			</p:panel>
 		</h:form>
