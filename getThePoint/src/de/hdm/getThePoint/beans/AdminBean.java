@@ -76,7 +76,7 @@ public class AdminBean {
 
 		} catch (PersistenceException e) {
 			e.printStackTrace();
-			System.out.print("Fehler beim Speicher der Lehrenden");
+			System.out.print("Fehler beim Speichern der Lehrenden");
 			// TODO FacesMessages
 		}
 
