@@ -21,7 +21,7 @@ import de.hdm.getThePoint.ldap.LdapAuthentificator;
 
 /**
  * Diese Klassen verwaltet das An- und Abmelden von Benutzern und stellt
- * Informationen &uuml;ber den aktuell angemeldeten Benutzer beresit.
+ * Informationen &uuml;ber den aktuell angemeldeten Benutzer bereit.
  * 
  * @author Fabian
  *

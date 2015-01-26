@@ -8,45 +8,40 @@
 	xmlns:of="http://omnifaces.org/functions"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	<ui:define name="content">
-		<h:form>
-
+		<h:form rendered="#{menuBean.hasLehrenderRole()}">
 			<p:dataTable rowIndexVar="frageRow" id="fragen" var="frage"
-				value="#{frageBean.fragen}">
+				value="#{frageBean.fragen}" editable="true" tableStyle="width:auto">
 				<p:column headerText="Frage">
 					<p:inplace id="ajax" editor="true">
 						<p:inputText value="#{frage.text}" />
 					</p:inplace>
 				</p:column>
 				<p:column headerText="Antwortmöglichkeiten">
-					<p:dataTable id="antwortmoeg" rowIndexVar="antwortRow"
-						value="#{frage.antwortmoeglichkeiten}" var="antwort"
-						styleClass="hide-column-names" selection="#{frage.loesung}"
-						selectionMode="single" type="ordered" rowKey="#{antwort.id}"
-						rendered="#{frage.antwortmoeglichkeiten.size() > 0}">
-						<p:column>
-							<p:inplace id="antwortbearbeiten" editor="true" event="dblclick">
-								<p:inputText value="#{antwort.text}"></p:inputText>
-							</p:inplace>
-							<p:tooltip id="tooltipAntwort" for="antwortbearbeiten"
-								value="Doppelklick, um Antwortmöglichkeit zu bearbeiten" />
-						</p:column>
-						<p:column>
-							<p:commandButton icon="ui-icon-trash" title="Entfernen"
-								action="#{frageBean.deleteAntwortmoeg(frageRow, antwortRow)}"></p:commandButton>
-						</p:column>
-					</p:dataTable>
-					<p:commandButton icon="ui-icon-plus" title="Hinzufügen"
-						action="#{frageBean.addAntwortmoeg(frageRow)}"
-						update="antwortmoeg" rendered="#{!frage.hasMaxAntworten()}" />
-
-					<!-- <p:outputLabel for="selectloesung" value="Lösung: " />
-					<p:selectOneButton id="selectloesung" value="#{frage.loesung}"
-						required="false" converter="omnifaces.SelectItemsConverter">
-						<f:selectItems value="#{frage.antwortmoeglichkeiten}" var="antw"
-							itemValue="#{antw}"
-							itemLabel="#{frage.antwortmoeglichkeiten.indexOf(antw)+1}"></f:selectItems>
-					</p:selectOneButton> -->
-
+					<p:panel id="horizontal" header="#{frage.loesung.text}" 
+						collapsed="true" toggleTitle="Antwortmöglichkeiten bearbeiten"
+						toggleable="true">
+						<p:dataTable id="antwortmoeg" rowIndexVar="antwortRow"
+							draggableColumns="true" value="#{frage.antwortmoeglichkeiten}"
+							var="antwort" styleClass="hide-column-names"
+							selection="#{frage.loesung}" selectionMode="single"
+							type="ordered" rowKey="#{antwort.id}" tableStyle="width:auto"
+							rendered="#{frage.antwortmoeglichkeiten.size() > 0}">
+							<p:column>
+								<p:inplace id="antwortbearbeiten" editor="true" event="dblclick">
+									<p:inputText value="#{antwort.text}"></p:inputText>
+								</p:inplace>
+								<p:tooltip id="tooltipAntwort" for="antwortbearbeiten"
+									value="Doppelklick, um Antwortmöglichkeit zu bearbeiten" />
+							</p:column>
+							<p:column>
+								<p:commandButton icon="ui-icon-trash" title="Entfernen"
+									action="#{frageBean.deleteAntwortmoeg(frageRow, antwortRow)}"></p:commandButton>
+							</p:column>
+						</p:dataTable>
+						<p:commandButton icon="ui-icon-plus" title="Hinzufügen"
+							action="#{frageBean.addAntwortmoeg(frageRow)}"
+							update="antwortmoeg" rendered="#{!frage.hasMaxAntworten()}" />
+					</p:panel>
 				</p:column>
 				<p:column headerText="Kategorie">
 					<p:selectOneMenu value="#{frage.kategorie}"
@@ -57,10 +52,14 @@
 				</p:column>
 
 				<p:column headerText="Bild">
-					<p:graphicImage value="#{frage.bild}"></p:graphicImage>
-					<p:fileUpload fileUploadListener="#{frageBean.upload}"
-						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="100000"
-						description="Bild auswählen" />
+					<p:commandButton id="imageBtn" icon="ui-icon-image" type="button" />
+					<p:overlayPanel id="imagePanel" for="imageBtn" hideEffect="fade">
+						<p:graphicImage value="#{frage.bild}"></p:graphicImage>
+					</p:overlayPanel>
+
+					<p:commandButton icon="ui-icon-folder-open"
+						onclick="PF('d1').show();" title="Bild Hochladen"></p:commandButton>
+
 				</p:column>
 				<p:column headerText="Schwierigkeit">
 					<p:outputLabel value="#{frage.schwierigkeit.text}"></p:outputLabel>
@@ -69,11 +68,18 @@
 			<br></br>
 			<p:commandButton title="Neue Frage hinzufügen" icon="ui-icon-plus"
 				action="#{frageBean.addFrage()}" update="fragen"></p:commandButton>
-			<br></br>
-			<br></br>
 			<p:commandButton title="Speichern" id="save" update="fragen"
 				icon="ui-icon-disk" />
+
+
 		</h:form>
+		<p:dialog id="bild" header="Bild hochladen" widgetVar="d1">
+			<p:fileUpload fileUploadListener="#{frageBean.upload}"
+				allowTypes="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="100000"
+				description="Bild auswählen" />
+			<p:commandButton value="Ok" onclick="PF('d1').hide();" type="button"
+				update="lehrende"></p:commandButton>
+		</p:dialog>
 	</ui:define>
 
 </ui:composition>

@@ -19,13 +19,14 @@ import de.hdm.getThePoint.db.dbmodel.Wissenstest;
 
 /**
  * Klasse f&uuml;r alle Datenbankzugriffe. Die Entitymanager Factory wird einmal
- * ge%oouml;ffnet, der EntityManager f&uuml;r jeden Transaktion. Er darf nur bei
+ * ge&ouml;ffnet, der EntityManager f&uuml;r jeden Transaktion. Er darf nur bei
  * "Singleresults" geschlossen werden, da sonst die Funktion des Lazy Loading
  * nicht funktioniert.
  * 
  * @author Fabian
  *
  */
+
 public class DataAccess implements Serializable {
 
 	private static final long serialVersionUID = -7993963883289903662L;
@@ -56,9 +57,11 @@ public class DataAccess implements Serializable {
 
 	}
 
-/**
-	 * Methode zum Abrugen aller {@link Kategorie).
+	/**
+	 * Methode zum Abrufen aller {@link Kategorie}
+	 * 
 	 * @return
+	 * @throws PersistenceException
 	 */
 	public List<Kategorie> getAllKategorie() throws PersistenceException {
 

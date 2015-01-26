@@ -11,7 +11,7 @@
 
 	</ui:define>
 	<ui:define name="content">
-		<h:form>
+		<h:form rendered="#{menuBean.hasLehrenderRole()}">
 			<p:spacer />
 			<p:outputLabel for="kategorie" value="Kategorie" />
 			<p:selectOneMenu id="kategorie"
@@ -19,26 +19,26 @@
 				converter="omnifaces.SelectItemsConverter" panelStyle="width:180px"
 				effect="fade" var="k" style="width:160px" filter="true"
 				filterMatchMode="startsWith">
-				<f:selectItems value="#{wissenstestVerwaltungBean.kategorien}" var="kateg"
-					itemLabel="#{kateg.bezeichnung}" itemValue="#{kateg}" />
+				<f:selectItems value="#{wissenstestVerwaltungBean.kategorien}"
+					var="kateg" itemLabel="#{kateg.bezeichnung}" itemValue="#{kateg}" />
 				<p:column>
 					<h:outputText value="#{k.bezeichnung}" />
 				</p:column>
 				<p:spacer />
 			</p:selectOneMenu>
 			<p:growl id="msg" showDetail="true" escape="false" />
-			<p:pickList id="FragenPickList" value="#{wissenstestVerwaltungBean.dlmfragen}"
-				var="frage" effect="bounce" itemValue="#{frage}"
-				itemLabel="#{frage.text}" showSourceControls="true"
-				showTargetControls="true" showCheckbox="true"
-				showSourceFilter="true" showTargetFilter="true"
+			<p:pickList id="FragenPickList"
+				value="#{wissenstestVerwaltungBean.dlmfragen}" var="frage"
+				effect="bounce" itemValue="#{frage}" itemLabel="#{frage.text}"
+				showSourceControls="true" showTargetControls="true"
+				showCheckbox="true" showSourceFilter="true" showTargetFilter="true"
 				filterMatchMode="contains" styleClass="test">
 
 				<f:facet name="sourceCaption">Fragenpool</f:facet>
 				<f:facet name="targetCaption">Wissenstest</f:facet>
 
-				<p:ajax event="transfer" listener="#{wissenstestVerwaltungBean.onTransfer}"
-					update="msg" />
+				<p:ajax event="transfer"
+					listener="#{wissenstestVerwaltungBean.onTransfer}" update="msg" />
 
 				<p:column>
 					<h:outputText styleClass="ui-theme ui-theme-#{frage.text}" />
@@ -51,5 +51,5 @@
 			<p:commandButton id="save" value="Speichern" style="margin-top:5px" />
 		</h:form>
 	</ui:define>
-	
+
 </ui:composition>

@@ -55,7 +55,7 @@ public class NavigationBean implements Serializable {
 	public String redirectToMobileLogin() {
 		return "login_mobile.xhtml?faces-redirect=true";
 	}
-	
+
 	public String redirectToMobileLogout() {
 		return "login_mobile.xhtml?faces-redirect=true";
 	}
