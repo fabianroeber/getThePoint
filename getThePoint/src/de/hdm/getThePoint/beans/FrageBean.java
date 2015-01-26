@@ -49,6 +49,9 @@ public class FrageBean implements Serializable {
 		getAllKategorien();
 	}
 
+	@ManagedProperty(value = "#{userBean}")
+	private UserBean userBean;
+
 	@ManagedProperty(value = "#{dataAccesBean}")
 	public DataAccessBean dataAccessBean;
 
@@ -157,6 +160,14 @@ public class FrageBean implements Serializable {
 
 	public void setDataAccessBean(DataAccessBean dataAccessBean) {
 		this.dataAccessBean = dataAccessBean;
+	}
+
+	public UserBean getUserBean() {
+		return userBean;
+	}
+
+	public void setUserBean(UserBean userBean) {
+		this.userBean = userBean;
 	}
 
 }

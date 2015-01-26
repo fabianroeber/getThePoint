@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -15,16 +17,29 @@ import org.primefaces.model.DualListModel;
 import de.hdm.getThePoint.bo.FrageBo;
 import de.hdm.getThePoint.bo.KategorieBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
-import de.hdm.getThePoint.db.DataAccess;
 import de.hdm.getThePoint.db.mapper.FrageMapper;
 import de.hdm.getThePoint.db.mapper.KategorieMapper;
 import de.hdm.getThePoint.db.mapper.WissenstestMapper;
 
+/**
+ * 
+ * Dieses Bean stellt alle Daten und Methoden zur Verwaltung der Wissenstests
+ * bereit.
+ * 
+ * @author Fabian
+ *
+ */
 @ManagedBean(name = "wissenstestVerwaltungBean")
 @ViewScoped
 public class WissenstestVerwaltungBean implements Serializable {
 
 	private static final long serialVersionUID = -5837697454989959201L;
+
+	@ManagedProperty(value = "#{userBean}")
+	private UserBean userBean;
+
+	@ManagedProperty(value = "#{dataAccesBean}")
+	public DataAccessBean dataAccessBean;
 
 	private List<FrageBo> fragen;
 	private List<WissenstestBo> wissenstests;
@@ -36,18 +51,18 @@ public class WissenstestVerwaltungBean implements Serializable {
 	private FrageMapper frageMapper;
 	private KategorieMapper kategorieMapper;
 	private WissenstestMapper wissenstestMapper;
-	private DataAccess dataAccess;
 
 	public WissenstestVerwaltungBean() {
-		dataAccess = new DataAccess();
 		frageMapper = new FrageMapper();
 		wissenstestMapper = new WissenstestMapper();
 		kategorieMapper = new KategorieMapper();
+		dlmfragen = new DualListModel<FrageBo>(fragen, fragen);
+	}
+
+	@PostConstruct
+	public void init() {
 		getAllFragen();
 		getAllKategorien();
-
-		dlmfragen = new DualListModel<FrageBo>(fragen, fragen);
-
 		getAllWissenstests();
 		getAllWissenstestFragen();
 	}
@@ -68,18 +83,19 @@ public class WissenstestVerwaltungBean implements Serializable {
 
 	public void getAllFragen() {
 		fragen = new ArrayList<FrageBo>();
-		fragen = frageMapper.getModelsAsList(dataAccess.getAllFrage());
+		fragen = frageMapper.getModelsAsList(dataAccessBean.getDataAccess()
+				.getAllFrage());
 	}
 
 	public void getAllWissenstests() {
 		wissenstests = new ArrayList<WissenstestBo>();
-		wissenstests = wissenstestMapper.getModelsAsList(dataAccess
-				.getAllWissentests());
+		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
+				.getDataAccess().getAllWissentests());
 	}
 
 	public void getAllKategorien() {
-		kategorien = kategorieMapper.getModelsAsList(dataAccess
-				.getAllKategorie());
+		kategorien = kategorieMapper.getModelsAsList(dataAccessBean
+				.getDataAccess().getAllKategorie());
 	}
 
 	public void getAllWissenstestFragen() {
@@ -124,5 +140,21 @@ public class WissenstestVerwaltungBean implements Serializable {
 
 	public void setSelectedKategorie(KategorieBo selectedKategorie) {
 		this.selectedKategorie = selectedKategorie;
+	}
+
+	public UserBean getUserBean() {
+		return userBean;
+	}
+
+	public void setUserBean(UserBean userBean) {
+		this.userBean = userBean;
+	}
+
+	public DataAccessBean getDataAccessBean() {
+		return dataAccessBean;
+	}
+
+	public void setDataAccessBean(DataAccessBean dataAccessBean) {
+		this.dataAccessBean = dataAccessBean;
 	}
 }

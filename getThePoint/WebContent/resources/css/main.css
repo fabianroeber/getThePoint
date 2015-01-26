@@ -25,4 +25,9 @@
 	src: url('/resources/fonts/HdMFrutigerNextPro-Light.otf') format('otf');
 }
 
+.noBorders tr, .noBorders td {
+    background: none !important;
+    border: none !important;
+}
+
 @font-face { font-family: "HdM Frutiger Next Pro Light"; src: url('#{resource["fonts/HdMFrutigerNextPro-Light.otf"]}'); }

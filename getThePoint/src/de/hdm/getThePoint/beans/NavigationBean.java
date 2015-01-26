@@ -83,4 +83,7 @@ public class NavigationBean implements Serializable {
 		return "/logout.xhtml?faces-redirect=true";
 	}
 
+	public String redirectToWelcomeVeraltung() {
+		return "/secured/wissenstestVerwaltung.xhtml?faces-redirect=true";
+	}
 }

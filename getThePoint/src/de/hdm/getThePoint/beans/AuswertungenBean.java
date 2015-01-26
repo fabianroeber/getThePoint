@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -28,7 +29,6 @@ import org.primefaces.model.chart.HorizontalBarChartModel;
 import de.hdm.getThePoint.bo.AuswertungsErgebnis;
 import de.hdm.getThePoint.bo.ErgebnisBo;
 import de.hdm.getThePoint.bo.FrageBo;
-import de.hdm.getThePoint.bo.StudentBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.DataAccess;
 import de.hdm.getThePoint.db.mapper.ErgebnisMapper;
@@ -55,17 +55,22 @@ public class AuswertungenBean implements Serializable {
 
 	private int maxanz = 0;
 
+	@ManagedProperty(value = "#{userBean}")
+	private UserBean userBean;
+
+	@ManagedProperty(value = "#{dataAccesBean}")
+	public DataAccessBean dataAccessBean;
+
 	public AuswertungenBean() {
-		dataAccess = new DataAccess();
 		wissenstestMapper = new WissenstestMapper();
 		ergebnisMapper = new ErgebnisMapper();
-		getAllWissenstests();
-		selectedWissenstest = wissenstests.get(0);
-		createAuswertungsErgebnisse();
 	}
 
 	@PostConstruct
 	public void init() {
+		getAllWissenstests();
+		createAuswertungsErgebnisse();
+		selectedWissenstest = wissenstests.get(0);
 		createBarModels();
 	}
 
@@ -76,36 +81,36 @@ public class AuswertungenBean implements Serializable {
 	private void createAuswertungsErgebnisse() {
 		getErgebnisseByWissenstestOrderByStudent(selectedWissenstest);
 
-//		int anzrichtig = 0;
-//		int anzfalsch = 0;
-//		AuswertungsErgebnis auswerg;
-//		ErgebnisBo lasterg = null;
-//
-//		for (ErgebnisBo erg : ergebnisseByWissenstestOrderByStudent) {
-//			if (lasterg != null)
-//				if (erg.getStudent().getId() != lasterg.getStudent().getId()) {
-//					auswerg = new AuswertungsErgebnis(erg.getStudent()
-//							.getName(), erg.getStudent().getMatrikelnummer(),
-//							(anzrichtig
-//									* 100
-//									/ selectedWissenstest.getFrageZuordungen()
-//											.size()));
-//					auswertungsErgebnis.add(auswerg);
-//					anzrichtig = 0;
-//					anzfalsch = 0;
-//				}
-//
-//			if (erg.isRichtig())
-//				anzrichtig++;
-//			else
-//				anzfalsch++;
-//
-//			lasterg = erg;
-//		}
-//		auswerg = new AuswertungsErgebnis(lasterg.getStudent().getName(),
-//				lasterg.getStudent().getMatrikelnummer(), anzrichtig * 100
-//						/ lasterg.getWissenstest().getFrageZuordungen().size());
-//		auswertungsErgebnis.add(auswerg);
+		// int anzrichtig = 0;
+		// int anzfalsch = 0;
+		// AuswertungsErgebnis auswerg;
+		// ErgebnisBo lasterg = null;
+		//
+		// for (ErgebnisBo erg : ergebnisseByWissenstestOrderByStudent) {
+		// if (lasterg != null)
+		// if (erg.getStudent().getId() != lasterg.getStudent().getId()) {
+		// auswerg = new AuswertungsErgebnis(erg.getStudent()
+		// .getName(), erg.getStudent().getMatrikelnummer(),
+		// (anzrichtig
+		// * 100
+		// / selectedWissenstest.getFrageZuordungen()
+		// .size()));
+		// auswertungsErgebnis.add(auswerg);
+		// anzrichtig = 0;
+		// anzfalsch = 0;
+		// }
+		//
+		// if (erg.isRichtig())
+		// anzrichtig++;
+		// else
+		// anzfalsch++;
+		//
+		// lasterg = erg;
+		// }
+		// auswerg = new AuswertungsErgebnis(lasterg.getStudent().getName(),
+		// lasterg.getStudent().getMatrikelnummer(), anzrichtig * 100
+		// / lasterg.getWissenstest().getFrageZuordungen().size());
+		// auswertungsErgebnis.add(auswerg);
 
 	}
 
@@ -382,6 +387,22 @@ public class AuswertungenBean implements Serializable {
 
 	public void setDefinedPercentage(int definedPercentage) {
 		this.definedPercentage = definedPercentage;
+	}
+
+	public UserBean getUserBean() {
+		return userBean;
+	}
+
+	public void setUserBean(UserBean userBean) {
+		this.userBean = userBean;
+	}
+
+	public DataAccessBean getDataAccessBean() {
+		return dataAccessBean;
+	}
+
+	public void setDataAccessBean(DataAccessBean dataAccessBean) {
+		this.dataAccessBean = dataAccessBean;
 	}
 
 }

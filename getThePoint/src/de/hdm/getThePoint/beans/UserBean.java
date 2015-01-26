@@ -98,7 +98,7 @@ public class UserBean implements Serializable {
 					return navigationBean.redirectToMobileWelcome();
 				}
 
-				return navigationBean.redirectToWelcome();
+				return navigationBean.redirectToWelcomeVeraltung();
 
 			}
 			// Dieser Teil dient nur zum Testen

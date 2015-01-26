@@ -1,5 +1,6 @@
 package de.hdm.getThePoint.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,9 @@ import de.hdm.getThePoint.bo.GTPMenuItem;
 
 @ManagedBean(name = "menuBean")
 @RequestScoped
-public class MenuBean {
+public class MenuBean implements Serializable {
+
+	private static final long serialVersionUID = 5919604358733105104L;
 
 	private MenuModel menu = new DefaultMenuModel();
 

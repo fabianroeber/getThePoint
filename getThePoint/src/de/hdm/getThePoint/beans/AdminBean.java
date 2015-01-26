@@ -1,5 +1,6 @@
 package de.hdm.getThePoint.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,9 @@ import de.hdm.getThePoint.db.mapper.LehrenderMapper;
  */
 @ManagedBean(name = "adminBean")
 @ViewScoped
-public class AdminBean {
+public class AdminBean implements Serializable {
+
+	private static final long serialVersionUID = 3793373712563153751L;
 
 	private List<LehrenderBo> lehrende;
 

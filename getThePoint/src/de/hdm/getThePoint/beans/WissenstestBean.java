@@ -1,5 +1,6 @@
 package de.hdm.getThePoint.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -16,8 +17,9 @@ import de.hdm.getThePoint.bo.WissenstestBo;
  */
 @ManagedBean(name = "wissenstestBean")
 @ViewScoped
-public class WissenstestBean {
+public class WissenstestBean implements Serializable {
 
+	private static final long serialVersionUID = 4292557396761753803L;
 	List<WissenstestBo> wissenstests;
 
 	public List<WissenstestBo> getWissenstests() {
