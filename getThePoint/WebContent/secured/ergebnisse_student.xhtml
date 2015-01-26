@@ -11,8 +11,35 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form>
-			<p:outputLabel
-				value="Hier entstehen die Ergebnisse für die Studenten"></p:outputLabel>
+			<p:dataTable id="wissenstests" var="wissenstest"
+				selectionMode="single"
+				selection="#{ergebnisseStudentBean.selectedWissenstest}"
+				value="#{ergebnisseStudentBean.wissenstests}" rowKey="#{wissenstest.id}">
+				<f:facet name="header">Auswahl des Wissenstests</f:facet>
+				<p:column headerText="Bezeichnung"
+					selection="#{ergebnisseStudentBean.selectedWissenstest}"
+					style="text-align:left">
+					<p:outputLabel value="#{wissenstest.bezeichnung}" />
+				</p:column>
+				<p:column headerText="Beginn">
+					<p:outputLabel value="#{wissenstest.startzeit}">
+						<f:convertDateTime pattern="dd.MM.yyyy hh:mm:ss" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Ende">
+					<p:outputLabel value="#{wissenstest.endzeit}">
+						<f:convertDateTime pattern="dd.MM.yyyy hh:mm:ss" />
+					</p:outputLabel>
+				</p:column>
+				<f:facet name="footer">
+					
+					
+
+				</f:facet>
+			</p:dataTable>
+				
 		</h:form>
+		
+		
 	</ui:define>
 </ui:composition>
