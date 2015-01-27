@@ -26,8 +26,52 @@
 
 		<pm:header title="HdM Clicker"></pm:header>
 		<pm:content>
-			<h:form>
-				<p:outputLabel value="Hier entsteht das mobile Quiz"></p:outputLabel>
+			<h:form id="wissenstest">
+				<p:growl id="growl" showDetail="true" sticky="true" />
+				<p:panel header="Verfügbare Wissenstests"
+					rendered="#{!wissenstestBean.testInProgress}">
+					<p:poll interval="10"
+						listener="#{wissenstestBean.getAllWissenstests()}"
+						update="testlist, @form" />
+					<p:dataList id="testlist" value="#{wissenstestBean.wissenstests}"
+						var="test" rowIndexVar="row" itemType="none">
+						<p:commandButton
+							value="#{test.bezeichnung} | #{test.lehrender.vorname} #{test.lehrender.nachname} "
+							action="#{wissenstestBean.startTest(row)}" update="@form"
+							icon="ui-icon-play"></p:commandButton>
+
+					</p:dataList>
+				</p:panel>
+				<p:panel id="fragepanel"
+					header="Frage Nr. #{wissenstestBean.frageindex}"
+					rendered="#{wissenstestBean.testInProgress}">
+					<p:poll interval="#{wissenstestBean.zeitFrage}"
+						listener="#{wissenstestBean.nextFrage()}"
+						update="fragen fragepanel"></p:poll>
+					<p:poll interval="1" listener="#{wissenstestBean.timerDown()}"
+						update="timer"></p:poll>
+
+					<p:panelGrid id="timer" columns="2">
+						<p:outputLabel value="Verbleibende Zeit"></p:outputLabel>
+						<p:outputLabel value="#{wissenstestBean.timer} s"></p:outputLabel>
+					</p:panelGrid>
+					<p:panelGrid id="fragen" columns="1" style="margin-bottom:10px"
+						cellpadding="5">
+						<p:outputLabel value="#{wissenstestBean.frage.text}"></p:outputLabel>
+						<p:selectOneRadio id="antwort"
+							converter="omnifaces.SelectItemsConverter"
+							value="#{wissenstestBean.ergebnis.antwort}" layout="grid"
+							columns="1">
+							<f:selectItems
+								value="#{wissenstestBean.frage.antwortmoeglichkeiten}"
+								var="antwort" itemLabel="#{antwort.text}" itemValue="#{antwort}" />
+						</p:selectOneRadio>
+					</p:panelGrid>
+					<p:commandButton value="Nächste Frage"
+						action="#{wissenstestBean.nextFrage()}" update="fragen"></p:commandButton>
+					<p:commandButton value="Test abbrechen"
+						action="#{wissenstestBean.testAbbrechen()}" update="@form"></p:commandButton>
+				</p:panel>
 			</h:form>
 		</pm:content>
 		<ui:include src="footer_mobile.xhtml"></ui:include>

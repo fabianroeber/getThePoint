@@ -13,13 +13,14 @@
 	<ui:define name="content">
 		<h:form id="wissenstest">
 			<p:growl id="growl" showDetail="true" sticky="true" />
-			<p:panel header="Verfügbare Tests"
-				rendered="#{!wissenstestBean.testInProgress}">
+			<p:panel rendered="#{!wissenstestBean.testInProgress}">
 				<p:poll interval="10"
 					listener="#{wissenstestBean.getAllWissenstests()}"
 					update="testlist, @form" />
 				<p:dataList id="testlist" value="#{wissenstestBean.wissenstests}"
-					var="test" rowIndexVar="row">
+					rows="8" type="ordered" paginator="true" var="test"
+					rowIndexVar="row" itemType="none">
+					<f:facet name="header">Verfügbare Tests</f:facet>
 					<p:column>
 						<p:commandButton
 							value="#{test.bezeichnung} | #{test.lehrender.vorname} #{test.lehrender.nachname} "
@@ -28,20 +29,19 @@
 					</p:column>
 				</p:dataList>
 			</p:panel>
-
-			<p:panel rendered="#{wissenstestBean.testInProgress}">
+			<p:panel id="fragepanel"
+				header="Frage Nr. #{wissenstestBean.frageindex}"
+				rendered="#{wissenstestBean.testInProgress}">
 				<p:poll interval="#{wissenstestBean.zeitFrage}"
-					listener="#{wissenstestBean.nextFrage()}" update="fragen growl"></p:poll>
+					listener="#{wissenstestBean.nextFrage()}"
+					update="fragen growl fragepanel"></p:poll>
 				<p:poll interval="1" listener="#{wissenstestBean.timerDown()}"
 					update="timer"></p:poll>
 
 				<p:panelGrid id="timer" columns="2">
 					<p:outputLabel value="Verbleibende Zeit"></p:outputLabel>
 					<p:outputLabel value="#{wissenstestBean.timer} s"></p:outputLabel>
-					<p:outputLabel value="Frage Nr."></p:outputLabel>
-					<p:outputLabel value="#{wissenstestBean.frageindex}"></p:outputLabel>
 				</p:panelGrid>
-
 				<p:panelGrid id="fragen" columns="1" style="margin-bottom:10px"
 					cellpadding="5">
 					<p:outputLabel value="#{wissenstestBean.frage.text}"></p:outputLabel>
@@ -54,17 +54,11 @@
 							var="antwort" itemLabel="#{antwort.text}" itemValue="#{antwort}" />
 					</p:selectOneRadio>
 				</p:panelGrid>
-
-
 				<p:commandButton value="Nächste Frage"
 					action="#{wissenstestBean.nextFrage()}" update="fragen"></p:commandButton>
 				<p:commandButton value="Test abbrechen"
 					action="#{wissenstestBean.testAbbrechen()}" update="@form growl"></p:commandButton>
-
 			</p:panel>
-
-
 		</h:form>
 	</ui:define>
-
 </ui:composition>
