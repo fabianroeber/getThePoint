@@ -21,7 +21,7 @@ public class WissenstestMapper implements
 
 	public WissenstestMapper() {
 		lehrenderMapper = new LehrenderMapper();
-		ergebnisMapper = new ErgebnisMapper();
+		//ergebnisMapper = new ErgebnisMapper();
 		frageMapper = new FrageMapper();
 	}
 
@@ -70,10 +70,10 @@ public class WissenstestMapper implements
 		wissenstestBo.setId(dbmodel.getId());
 		wissenstestBo.setLehrender(lehrenderMapper.getModel(dbmodel
 				.getLehrender()));
-		List<ErgebnisBo> ergebnisse = new ArrayList<ErgebnisBo>();
-		for (Ergebnis ergebnis : dbmodel.getErgebnises()) {
-			ergebnisse.add(ergebnisMapper.getModel(ergebnis));
-		}
+//		List<ErgebnisBo> ergebnisse = new ArrayList<ErgebnisBo>();
+//		for (Ergebnis ergebnis : dbmodel.getErgebnises()) {
+//			ergebnisse.add(ergebnisMapper.getModel(ergebnis));
+//		}
 
 		List<FrageZuordung> fragezuordnungen = new ArrayList<FrageZuordung>();
 		for (ZuordungWissenstestFrage zuordungWissenstestFrage : dbmodel
@@ -114,11 +114,11 @@ public class WissenstestMapper implements
 			wissenstest.setRandom('n');
 		}
 
-		Set<Ergebnis> ergebnisse = new HashSet<Ergebnis>();
-
-		for (ErgebnisBo ergebnisBo : model.getErgebnisse()) {
-			ergebnisse.add(ergebnisMapper.getDbModel(ergebnisBo));
-		}
+//		Set<Ergebnis> ergebnisse = new HashSet<Ergebnis>();
+//
+//		for (ErgebnisBo ergebnisBo : model.getErgebnisse()) {
+//			ergebnisse.add(ergebnisMapper.getDbModel(ergebnisBo));
+//		}
 
 		Set<ZuordungWissenstestFrage> zuordungWissenstestFrages = new HashSet<ZuordungWissenstestFrage>();
 

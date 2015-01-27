@@ -11,11 +11,13 @@ public class ErgebnisMapper implements DbMapperInterface<ErgebnisBo, Ergebnis> {
 	private StudentMapper studentMapper;
 	private FrageMapper frageMapper;
 	private AntwortMapper antwortMapper;
+	private WissenstestMapper wissenstestMapper;
 
 	public ErgebnisMapper() {
 		studentMapper = new StudentMapper();
 		frageMapper = new FrageMapper();
 		antwortMapper = new AntwortMapper();
+		wissenstestMapper = new WissenstestMapper();
 	}
 
 	@Override
@@ -48,6 +50,8 @@ public class ErgebnisMapper implements DbMapperInterface<ErgebnisBo, Ergebnis> {
 		ergebnis.setAntwort(antwortMapper.getDbModel(model.getAntwort()));
 		ergebnis.setFrage(frageMapper.getDbModel(model.getFrage()));
 		ergebnis.setStudent(studentMapper.getDbModel(model.getStudent()));
+		ergebnis.setWissenstest(wissenstestMapper.getDbModel(model
+				.getWissenstest()));
 		if (model.isRichtig()) {
 			ergebnis.setRichtig('y');
 		} else {

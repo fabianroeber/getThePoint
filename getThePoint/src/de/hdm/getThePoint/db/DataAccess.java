@@ -9,6 +9,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
 import de.hdm.getThePoint.bo.StudentBo;
+import de.hdm.getThePoint.bo.ErgebnisBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.dbmodel.Admin;
 import de.hdm.getThePoint.db.dbmodel.Ergebnis;
@@ -199,6 +200,53 @@ public class DataAccess implements Serializable {
 						+ kategorie_id, Frage.class).getResultList();
 
 		return list;
+	}
+
+	/**
+	 * Ermittelt alle Ergebnisse f&uuml;r einen Studenten.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public List<Ergebnis> getErgebnisseByStudent(int id) {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
+		List<Ergebnis> ergebnisse = entityManager.createQuery(
+				"Select ergebnis FROM Ergebnis ergebnis WHERE ergebnis.student.id = "
+						+ id, Ergebnis.class).getResultList();
+
+		return ergebnisse;
+	}
+
+	/**
+	 * Diese Methode speichert ein Ergebnis in der Datenbank.
+	 * 
+	 * @param ergebnis
+	 */
+	public void saveErgebnis(Ergebnis ergebnis) {
+
+		entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+
+		Ergebnis ergebnisToSave;
+
+		if (ergebnis.getId() != null) {
+			ergebnisToSave = entityManager.find(Ergebnis.class,
+					ergebnis.getId());
+		} else {
+			ergebnisToSave = new Ergebnis();
+		}
+		ergebnisToSave.setAntwort(ergebnis.getAntwort());
+		ergebnisToSave.setFrage(ergebnis.getFrage());
+		ergebnisToSave.setStudent(ergebnis.getStudent());
+		ergebnisToSave.setWissenstest(ergebnis.getWissenstest());
+		ergebnisToSave.setRichtig(ergebnis.getRichtig());
+
+		entityManager.persist(ergebnisToSave);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+
 	}
 
 	/**
