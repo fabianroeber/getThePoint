@@ -33,7 +33,9 @@ public class ErgebnisMapper implements DbMapperInterface<ErgebnisBo, Ergebnis> {
 	public ErgebnisBo getModel(Ergebnis dbmodel) {
 		ErgebnisBo ergebnisBo = new ErgebnisBo();
 		ergebnisBo.setId(dbmodel.getId());
-		ergebnisBo.setAntwort(antwortMapper.getModel(dbmodel.getAntwort()));
+		if (dbmodel.getAntwort() != null) {
+			ergebnisBo.setAntwort(antwortMapper.getModel(dbmodel.getAntwort()));
+		}
 		ergebnisBo.setFrage(frageMapper.getModel(dbmodel.getFrage()));
 		ergebnisBo.setStudent(studentMapper.getModel(dbmodel.getStudent()));
 		if (dbmodel.getRichtig() == 'y') {
@@ -47,7 +49,9 @@ public class ErgebnisMapper implements DbMapperInterface<ErgebnisBo, Ergebnis> {
 	@Override
 	public Ergebnis getDbModel(ErgebnisBo model) {
 		Ergebnis ergebnis = new Ergebnis(model.getId());
-		ergebnis.setAntwort(antwortMapper.getDbModel(model.getAntwort()));
+		if (model.getAntwort() != null) {
+			ergebnis.setAntwort(antwortMapper.getDbModel(model.getAntwort()));
+		}
 		ergebnis.setFrage(frageMapper.getDbModel(model.getFrage()));
 		ergebnis.setStudent(studentMapper.getDbModel(model.getStudent()));
 		ergebnis.setWissenstest(wissenstestMapper.getDbModel(model

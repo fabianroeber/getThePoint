@@ -5,10 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import de.hdm.getThePoint.bo.ErgebnisBo;
 import de.hdm.getThePoint.bo.FrageZuordung;
 import de.hdm.getThePoint.bo.WissenstestBo;
-import de.hdm.getThePoint.db.dbmodel.Ergebnis;
 import de.hdm.getThePoint.db.dbmodel.Wissenstest;
 import de.hdm.getThePoint.db.dbmodel.ZuordungWissenstestFrage;
 

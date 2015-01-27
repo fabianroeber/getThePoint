@@ -37,14 +37,22 @@ public class WissenstestBean implements Serializable {
 	private FrageBo frage;
 	private ErgebnisBo ergebnis = new ErgebnisBo();
 
+	/**
+	 * Zeit pro Frage
+	 */
 	private int zeitFrage = 0;
+	/**
+	 * Aktuelle Frage
+	 */
 	private int frageindex = 0;
+	/**
+	 * Timer f&uuml;r die aktuelle Frage, der herunterl&auml;uft.
+	 */
 	private int timer = 0;
 
 	private WissenstestMapper wissenstestMapper;
 	private ErgebnisMapper ergebnismapper;
 
-	private List<ErgebnisBo> ergebnisse;
 	private List<WissenstestBo> wissenstests;
 	private boolean testInProgress = false;
 
@@ -72,10 +80,6 @@ public class WissenstestBean implements Serializable {
 
 		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
 				.getDataAccess().getAllWissentests());
-	}
-
-	public void getAllErgebnisse() {
-
 	}
 
 	/**

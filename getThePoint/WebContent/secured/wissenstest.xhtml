@@ -45,7 +45,7 @@
 				<p:panelGrid id="fragen" columns="1" style="margin-bottom:10px"
 					cellpadding="5">
 					<p:outputLabel value="#{wissenstestBean.frage.text}"></p:outputLabel>
-					<p:selectOneRadio id="antwort"
+					<p:selectOneRadio id="antwort" required="false"
 						converter="omnifaces.SelectItemsConverter"
 						value="#{wissenstestBean.ergebnis.antwort}" layout="grid"
 						columns="1">

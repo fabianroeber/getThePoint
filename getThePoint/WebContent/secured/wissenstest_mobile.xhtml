@@ -22,6 +22,7 @@
 </h:head>
 <h:body>
 	<h:outputStylesheet library="css" name="main.css" />
+	<h:outputScript library="primefaces/poll" name="poll.js" />
 	<pm:page id="first" swatch="a">
 
 		<pm:header title="HdM Clicker"></pm:header>
@@ -38,8 +39,7 @@
 						<p:commandButton
 							value="#{test.bezeichnung} | #{test.lehrender.vorname} #{test.lehrender.nachname} "
 							action="#{wissenstestBean.startTest(row)}" update="@form"
-							icon="ui-icon-play"></p:commandButton>
-
+							icon="ui-icon-action"></p:commandButton>
 					</p:dataList>
 				</p:panel>
 				<p:panel id="fragepanel"
@@ -47,7 +47,8 @@
 					rendered="#{wissenstestBean.testInProgress}">
 					<p:poll interval="#{wissenstestBean.zeitFrage}"
 						listener="#{wissenstestBean.nextFrage()}"
-						update="fragen fragepanel"></p:poll>
+						update="@form fragen fragepanel">
+					</p:poll>
 					<p:poll interval="1" listener="#{wissenstestBean.timerDown()}"
 						update="timer"></p:poll>
 
@@ -58,7 +59,7 @@
 					<p:panelGrid id="fragen" columns="1" style="margin-bottom:10px"
 						cellpadding="5">
 						<p:outputLabel value="#{wissenstestBean.frage.text}"></p:outputLabel>
-						<p:selectOneRadio id="antwort"
+						<p:selectOneRadio id="antwort" required="false"
 							converter="omnifaces.SelectItemsConverter"
 							value="#{wissenstestBean.ergebnis.antwort}" layout="grid"
 							columns="1">
