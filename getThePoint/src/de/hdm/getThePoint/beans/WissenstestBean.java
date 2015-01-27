@@ -69,9 +69,9 @@ public class WissenstestBean implements Serializable {
 	}
 
 	public void getAllWissenstests() {
+
 		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
 				.getDataAccess().getAllWissentests());
-
 	}
 
 	public void getAllErgebnisse() {
