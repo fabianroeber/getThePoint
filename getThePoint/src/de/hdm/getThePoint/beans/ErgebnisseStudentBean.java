@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import de.hdm.getThePoint.bo.ErgebnisBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.DataAccess;
 import de.hdm.getThePoint.db.mapper.ErgebnisMapper;
@@ -28,6 +29,8 @@ public class ErgebnisseStudentBean implements Serializable {
 	private ErgebnisMapper ergebnisMapper;
 	private StudentMapper studentMapper;
 
+	private List<ErgebnisBo> ergebnisse;
+
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
 
@@ -42,16 +45,20 @@ public class ErgebnisseStudentBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-
-		getAllWissenstests();
+		if (userBean.getStudent() != null) {
+			getAllWissenstests();
+		}
 	}
 
 	public void getAllWissenstests() {
-		if (userBean.getStudent() != null) {
-			wissenstests = wissenstestMapper.getModelsAsList(dataAccess
-					.getWissentestsByStudentWithErgebnis(studentMapper
-							.getDbModel(userBean.getStudent())));
-		}
+
+		wissenstests = wissenstestMapper.getModelsAsList(dataAccess
+				.getWissentestsByStudentWithErgebnis(studentMapper
+						.getDbModel(userBean.getStudent())));
+
+	}
+
+	public void loadErgebnisse() {
 
 	}
 
@@ -69,6 +76,14 @@ public class ErgebnisseStudentBean implements Serializable {
 
 	public void setSelectedWissenstest(WissenstestBo selectedWissenstest) {
 		this.selectedWissenstest = selectedWissenstest;
+	}
+
+	public List<ErgebnisBo> getErgebnisse() {
+		return ergebnisse;
+	}
+
+	public void setErgebnisse(List<ErgebnisBo> ergebnisse) {
+		this.ergebnisse = ergebnisse;
 	}
 
 	public UserBean getUserBean() {

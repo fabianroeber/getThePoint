@@ -16,26 +16,28 @@
 				selection="#{ergebnisseStudentBean.selectedWissenstest}"
 				value="#{ergebnisseStudentBean.wissenstests}"
 				rowKey="#{wissenstest.id}">
-				<f:facet name="header">Auswahl des Wissenstests</f:facet>
+				<f:facet name="header">Wissenstests</f:facet>
 				<p:column headerText="Bezeichnung"
 					selection="#{ergebnisseStudentBean.selectedWissenstest}"
 					style="text-align:left">
 					<p:outputLabel value="#{wissenstest.bezeichnung}" />
 				</p:column>
 				<p:column headerText="Lehrender">
-					<p:outputLabel value="#{wissenstest.lehrender}" />
 				</p:column>
-				<p:column headerText="Ende">
-					<p:outputLabel value="#{wissenstest.endzeit}">
-						<f:convertDateTime pattern="dd.MM.yyyy hh:mm:ss" />
-					</p:outputLabel>
+				<p:column>
+					<p:outputLabel
+						value="#{wissenstest.lehrender.vorname} {wissenstest.lehrender.nachname}" />
+				</p:column>
+				<p:column headerText="Anzahl Fragen">
+					<p:outputLabel value="#{wissenstest.fragen.size()}"></p:outputLabel>
 				</p:column>
 				<f:facet name="footer">
-
-
-
+					<p:commandButton value="Ergebnisse anzeigen" icon="ui-icon-play"
+						action="#{ergebnisseStudentBean.loadErgebnisse}" update="ergebnispanel"></p:commandButton>
 				</f:facet>
 			</p:dataTable>
+			<p:panel id="ergebnispanel" header="Ergebnisse"></p:panel>
+
 
 		</h:form>
 
