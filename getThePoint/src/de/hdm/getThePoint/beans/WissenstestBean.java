@@ -113,11 +113,17 @@ public class WissenstestBean implements Serializable {
 		ergebnis.setFrage(frage);
 		ergebnis.setWissenstest(wissenstest);
 		ergebnis.setStudent(userBean.getStudent());
-		if (ergebnis.getAntwort().equals(frage.getLoesung())) {
-			ergebnis.setRichtig(true);
+
+		if (ergebnis.getAntwort() != null) {
+			if (ergebnis.getAntwort().equals(frage.getLoesung())) {
+				ergebnis.setRichtig(true);
+			} else {
+				ergebnis.setRichtig(false);
+			}
 		} else {
 			ergebnis.setRichtig(false);
 		}
+
 		dataAccessBean.getDataAccess().saveErgebnis(
 				ergebnismapper.getDbModel(ergebnis));
 		ergebnis = new ErgebnisBo();

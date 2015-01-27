@@ -34,12 +34,12 @@
 					listener="#{wissenstestBean.nextFrage()}" update="fragen growl"></p:poll>
 				<p:poll interval="1" listener="#{wissenstestBean.timerDown()}"
 					update="timer"></p:poll>
+
 				<p:panelGrid id="timer" columns="2">
 					<p:outputLabel value="Verbleibende Zeit"></p:outputLabel>
 					<p:outputLabel value="#{wissenstestBean.timer} s"></p:outputLabel>
 					<p:outputLabel value="Frage Nr."></p:outputLabel>
-					<p:outputLabel
-						value="#{wissenstestBean.frageindex}"></p:outputLabel>
+					<p:outputLabel value="#{wissenstestBean.frageindex}"></p:outputLabel>
 				</p:panelGrid>
 
 				<p:panelGrid id="fragen" columns="1" style="margin-bottom:10px"

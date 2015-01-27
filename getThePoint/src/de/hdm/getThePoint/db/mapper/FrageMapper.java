@@ -38,18 +38,21 @@ public class FrageMapper implements DbMapperInterface<FrageBo, Frage> {
 		frageBo.setBild(dbmodel.getBild());
 		frageBo.setKategorie(kategorieMapper.getModel(dbmodel.getKategorie()));
 
-		switch (dbmodel.getSchwierigkeit()) {
-		case 0:
-			frageBo.setSchwierigkeit(Schwierigkeit.LEICHT);
-			break;
-		case 1:
-			frageBo.setSchwierigkeit(Schwierigkeit.MITTEL);
-			break;
-		case 2:
-			frageBo.setSchwierigkeit(Schwierigkeit.SCHWER);
-			break;
-		default:
-			break;
+		if (dbmodel.getSchwierigkeit() != null) {
+
+			switch (dbmodel.getSchwierigkeit()) {
+			case 0:
+				frageBo.setSchwierigkeit(Schwierigkeit.LEICHT);
+				break;
+			case 1:
+				frageBo.setSchwierigkeit(Schwierigkeit.MITTEL);
+				break;
+			case 2:
+				frageBo.setSchwierigkeit(Schwierigkeit.SCHWER);
+				break;
+			default:
+				break;
+			}
 		}
 
 		frageBo.setAntwortmoeglichkeiten(antwortMapper
@@ -70,19 +73,22 @@ public class FrageMapper implements DbMapperInterface<FrageBo, Frage> {
 			antwortmoeglichkeiten.add(antwortMapper.getDbModel(antwort));
 		}
 
-		switch (model.getSchwierigkeit()) {
-		case LEICHT:
-			frage.setSchwierigkeit(0);
-			break;
-		case MITTEL:
-			frage.setSchwierigkeit(1);
-			break;
-		case SCHWER:
-			frage.setSchwierigkeit(2);
-			break;
+		if (model.getSchwierigkeit() != null) {
 
-		default:
-			break;
+			switch (model.getSchwierigkeit()) {
+			case LEICHT:
+				frage.setSchwierigkeit(0);
+				break;
+			case MITTEL:
+				frage.setSchwierigkeit(1);
+				break;
+			case SCHWER:
+				frage.setSchwierigkeit(2);
+				break;
+
+			default:
+				break;
+			}
 		}
 
 		frage.setAntworts(antwortmoeglichkeiten);
