@@ -23,6 +23,7 @@
 		<pm:header title="HdM Clicker"></pm:header>
 		<pm:content>
 			<h:form>
+				<p:growl id="growl" showDetail="true" sticky="true" />
 				<p:outputLabel for="user" value="HdM-Kürzel: "></p:outputLabel>
 				<p:inputText value="#{userBean.userName}" id="user"></p:inputText>
 				<p:spacer></p:spacer>
@@ -31,7 +32,8 @@
 				<p:password value="#{userBean.password}" id="passwort"></p:password>
 				<p:spacer></p:spacer>
 				<p:message for="passwort"></p:message>
-				<p:commandButton ajax="false" value="Anmelden" action="#{userBean.login(true)}" />
+				<p:commandButton ajax="false" value="Anmelden"
+					action="#{userBean.login(true)}" />
 			</h:form>
 		</pm:content>
 	</pm:page>

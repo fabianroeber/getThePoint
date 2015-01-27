@@ -3,6 +3,7 @@ package de.hdm.getThePoint.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -17,12 +18,17 @@ import de.hdm.getThePoint.bo.FrageBo;
 import de.hdm.getThePoint.bo.FrageZuordung;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.mapper.ErgebnisMapper;
+import de.hdm.getThePoint.db.mapper.StudentMapper;
 import de.hdm.getThePoint.db.mapper.WissenstestMapper;
 
 /**
  * Diese Bean stellt Daten f&uuml;r ein Quiz bereit und verarbeitet die
  * Benutzerangaben.
  * 
+ * @author Fabian
+ *
+ */
+/**
  * @author Fabian
  *
  */
@@ -33,9 +39,9 @@ public class WissenstestBean implements Serializable {
 	private static final long serialVersionUID = 4292557396761753803L;
 
 	private WissenstestBo wissenstest;
-	private List<FrageBo> fragen = new ArrayList<FrageBo>();
+	private List<FrageBo> fragen;
 	private FrageBo frage;
-	private ErgebnisBo ergebnis = new ErgebnisBo();
+	private ErgebnisBo ergebnis;
 
 	/**
 	 * Zeit pro Frage
@@ -52,8 +58,13 @@ public class WissenstestBean implements Serializable {
 
 	private WissenstestMapper wissenstestMapper;
 	private ErgebnisMapper ergebnismapper;
+	private StudentMapper studentMapper;
 
 	private List<WissenstestBo> wissenstests;
+
+	/**
+	 * Gibt an, ob sich der Test in Bearbeitungen befindet
+	 */
 	private boolean testInProgress = false;
 
 	@ManagedProperty(value = "#{userBean}")
@@ -69,6 +80,10 @@ public class WissenstestBean implements Serializable {
 	public WissenstestBean() {
 		wissenstestMapper = new WissenstestMapper();
 		ergebnismapper = new ErgebnisMapper();
+		studentMapper = new StudentMapper();
+		ergebnis = new ErgebnisBo();
+		fragen = new ArrayList<FrageBo>();
+		wissenstests = new ArrayList<WissenstestBo>();
 	}
 
 	@PostConstruct
@@ -78,8 +93,28 @@ public class WissenstestBean implements Serializable {
 
 	public void getAllWissenstests() {
 
-		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
-				.getDataAccess().getAllWissentests());
+		if (userBean.getStudent() != null) {
+
+			wissenstests = new ArrayList<WissenstestBo>();
+
+			// Wissenstests laden, an denen der Student schon teilgenommen hat
+			List<WissenstestBo> wissenstestsAlreadyDone = wissenstestMapper
+					.getModelsAsList(dataAccessBean.getDataAccess()
+							.getWissentestsByStudentWithErgebnis(
+									studentMapper.getDbModel(userBean
+											.getStudent())));
+			// Alle Wissenstests laden
+			List<WissenstestBo> newWissenstests = wissenstestMapper
+					.getModelsAsList(dataAccessBean.getDataAccess()
+							.getAllWissentests());
+			// Filter der Tests. Nur noch nicht Bearbeitete werden angezeigt
+			for (WissenstestBo wissenstestNew : newWissenstests) {
+				if (!wissenstestsAlreadyDone.contains(wissenstestNew)
+						&& isWissenstestActivated(wissenstestNew)) {
+					wissenstests.add(wissenstestNew);
+				}
+			}
+		}
 	}
 
 	/**
@@ -97,6 +132,7 @@ public class WissenstestBean implements Serializable {
 				fragen.add(frageObj.getFrage());
 			}
 			if (wissenstest.isRandom()) {
+				// Bei Modus 'Random' Liste mischen.
 				Collections.shuffle(fragen);
 			}
 			frage = fragen.get(frageindex++);
@@ -140,9 +176,28 @@ public class WissenstestBean implements Serializable {
 					.addMessage(
 							null,
 							new FacesMessage("Test Abgeschlossen!",
-									"Die Ergebnisse können Sie nun unter dem Menupunkte 'Ergebnisse' einsehen."));
+									"Die Ergebnisse können Sie nun unter dem Menupunkt 'Ergebnisse' einsehen."));
 		}
 		timer = zeitFrage;
+	}
+
+	/**
+	 * Diese Mehtode &uuml;berpr&uuml;ft, ob ein Wissenstest Aktiv ist.
+	 * 
+	 * @param wissenstest
+	 * @return
+	 */
+	private boolean isWissenstestActivated(WissenstestBo wissenstest) {
+
+		Date now = new Date(System.currentTimeMillis());
+
+		if (wissenstest.isAktiv()) {
+			return true;
+		} else if (now.after(wissenstest.getStartzeit())
+				&& now.before(wissenstest.getEndzeit())) {
+			return true;
+		} else
+			return false;
 	}
 
 	/**

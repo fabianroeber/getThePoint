@@ -8,7 +8,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
-import de.hdm.getThePoint.bo.StudentBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.dbmodel.Admin;
 import de.hdm.getThePoint.db.dbmodel.Ergebnis;

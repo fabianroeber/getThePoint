@@ -31,8 +31,6 @@ public class WissenstestBo extends BusinessObject {
 
 	private List<FrageZuordung> frageZuordungen;
 
-	private List<ErgebnisBo> ergebnisse;
-
 	public LehrenderBo getLehrender() {
 		return lehrender;
 	}
@@ -95,14 +93,6 @@ public class WissenstestBo extends BusinessObject {
 
 	public void setBezeichnung(String bezeichnung) {
 		this.bezeichnung = bezeichnung;
-	}
-
-	public List<ErgebnisBo> getErgebnisse() {
-		return ergebnisse;
-	}
-
-	public void setErgebnisse(List<ErgebnisBo> ergebnisse) {
-		this.ergebnisse = ergebnisse;
 	}
 
 	public List<FrageZuordung> getFrageZuordungen() {

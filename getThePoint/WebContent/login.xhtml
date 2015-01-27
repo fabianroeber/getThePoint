@@ -9,13 +9,14 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	<ui:define name="content">
 		<h:form>
+			<p:growl id="growl" showDetail="true" sticky="true" />
 			<p:panel id="basic" header="Login" style="margin-bottom:20px">
 				<h:panelGrid columns="2" cellpadding="5">
 					<p:outputLabel for="benutzername" value="Hdm-Kürzel" />
 					<p:inputText id="benutzername" value="#{userBean.userName}" />
 					<p:outputLabel value="Passwort" for="passwort" />
 					<p:password id="passwort" value="#{userBean.password}" />
-					<p:commandButton value="Login" action="#{userBean.login(false)}" />
+					<p:commandButton value="Login" update="growl" action="#{userBean.login(false)}" />
 				</h:panelGrid>
 			</p:panel>
 		</h:form>

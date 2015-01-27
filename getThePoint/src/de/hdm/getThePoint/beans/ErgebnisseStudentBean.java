@@ -1,7 +1,5 @@
 package de.hdm.getThePoint.beans;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,29 +7,11 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.primefaces.model.chart.Axis;
-import org.primefaces.model.chart.AxisType;
-import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.HorizontalBarChartModel;
-
-import de.hdm.getThePoint.bo.AuswertungsErgebnis;
-import de.hdm.getThePoint.bo.ErgebnisBo;
-import de.hdm.getThePoint.bo.FrageBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.DataAccess;
 import de.hdm.getThePoint.db.mapper.ErgebnisMapper;
+import de.hdm.getThePoint.db.mapper.StudentMapper;
 import de.hdm.getThePoint.db.mapper.WissenstestMapper;
 
 @ManagedBean(name = "ergebnisseStudentBean")
@@ -39,12 +19,14 @@ import de.hdm.getThePoint.db.mapper.WissenstestMapper;
 public class ErgebnisseStudentBean implements Serializable {
 
 	private static final long serialVersionUID = 3371866323292299244L;
-	
+
 	private List<WissenstestBo> wissenstests;
-	private DataAccess dataAccess; 
+	private DataAccess dataAccess;
+	private WissenstestBo selectedWissenstest;
+
 	private WissenstestMapper wissenstestMapper;
 	private ErgebnisMapper ergebnisMapper;
-	private WissenstestBo selectedWissenstest;
+	private StudentMapper studentMapper;
 
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
@@ -55,17 +37,22 @@ public class ErgebnisseStudentBean implements Serializable {
 	public ErgebnisseStudentBean() {
 		wissenstestMapper = new WissenstestMapper();
 		ergebnisMapper = new ErgebnisMapper();
+		studentMapper = new StudentMapper();
 	}
 
-//	@PostConstruct
+	@PostConstruct
 	public void init() {
+
 		getAllWissenstests();
-		selectedWissenstest = wissenstests.get(0);
 	}
-	
+
 	public void getAllWissenstests() {
-		wissenstests = wissenstestMapper.getModelsAsList(dataAccess
-				.getAllWissentests());
+		if (userBean.getStudent() != null) {
+			wissenstests = wissenstestMapper.getModelsAsList(dataAccess
+					.getWissentestsByStudentWithErgebnis(studentMapper
+							.getDbModel(userBean.getStudent())));
+		}
+
 	}
 
 	public List<WissenstestBo> getWissenstests() {
@@ -99,5 +86,5 @@ public class ErgebnisseStudentBean implements Serializable {
 	public void setDataAccessBean(DataAccessBean dataAccessBean) {
 		this.dataAccessBean = dataAccessBean;
 	}
-	
+
 }
