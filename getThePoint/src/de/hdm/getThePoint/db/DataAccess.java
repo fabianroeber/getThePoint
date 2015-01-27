@@ -82,13 +82,14 @@ public class DataAccess implements Serializable {
 	 * 
 	 * @return
 	 */
-	public List<Wissenstest> getWissentestsWithErgebnis() throws PersistenceException {
+	public List<Wissenstest> getWissentestsWithErgebnis()
+			throws PersistenceException {
 
 		entityManager = entityManagerFactory.createEntityManager();
 
 		List<Wissenstest> list = entityManager
 				.createQuery(
-					"SELECT DISTINCT wissenstest FROM Wissenstest wissenstest, Ergebnis ergebnis WHERE wissenstest MEMBER OF ergebnis.wissenstest",
+						"SELECT DISTINCT wissenstest FROM Wissenstest wissenstest, Ergebnis ergebnis WHERE wissenstest MEMBER OF ergebnis.wissenstest",
 						Wissenstest.class).getResultList();
 		return list;
 	}
@@ -213,6 +214,25 @@ public class DataAccess implements Serializable {
 		List<Ergebnis> ergebnisse = entityManager.createQuery(
 				"Select ergebnis FROM Ergebnis ergebnis WHERE ergebnis.student.id = "
 						+ id, Ergebnis.class).getResultList();
+
+		return ergebnisse;
+	}
+
+	/**
+	 * Ermittelt alle Ergebnisse f&uuml;r einen Studenten und einen Wissenstest.
+	 * 
+	 * @param wissenstest, student
+	 * @return
+	 */
+	public List<Ergebnis> getErgebnisseByWissenstestAndStudent(Student student,
+			Wissenstest wissenstest) {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
+		List<Ergebnis> ergebnisse = entityManager.createQuery(
+				"Select ergebnis FROM Ergebnis ergebnis WHERE ergebnis.student.id = "
+						+ student.getId() + " AND ergebnis.wissenstest.id = "
+						+ wissenstest.getId(), Ergebnis.class).getResultList();
 
 		return ergebnisse;
 	}
