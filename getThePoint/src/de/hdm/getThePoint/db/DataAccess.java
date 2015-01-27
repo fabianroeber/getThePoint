@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
+import de.hdm.getThePoint.bo.StudentBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.dbmodel.Admin;
 import de.hdm.getThePoint.db.dbmodel.Ergebnis;
@@ -55,6 +56,42 @@ public class DataAccess implements Serializable {
 				Wissenstest.class).getResultList();
 		return list;
 
+	}
+
+	/**
+	 * Methode zum Abrufen aller {@link Wissenstest} eines Studenten, für
+	 * welchen Ergebnisse vorhanden sind.
+	 * 
+	 * @return
+	 */
+	public List<Wissenstest> getWissentestsByStudentWithErgebnis(Student student)
+			throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
+		List<Wissenstest> list = entityManager
+				.createQuery(
+						"SELECT DISTINCT wissenstest FROM Wissenstest wissenstest, Ergebnis ergebnis WHERE wissenstest MEMBER OF ergebnis.wissenstest AND ergebnis.student.id = "
+								+ student.getId(), Wissenstest.class)
+				.getResultList();
+		return list;
+	}
+
+	/**
+	 * Methode zum Abrufen aller {@link Wissenstest}, für welchen Ergebnisse
+	 * vorhanden sind.
+	 * 
+	 * @return
+	 */
+	public List<Wissenstest> getWissentestsWithErgebnis() throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
+		List<Wissenstest> list = entityManager
+				.createQuery(
+					"SELECT DISTINCT wissenstest FROM Wissenstest wissenstest, Ergebnis ergebnis WHERE wissenstest MEMBER OF ergebnis.wissenstest",
+						Wissenstest.class).getResultList();
+		return list;
 	}
 
 	/**
