@@ -5,6 +5,7 @@ package de.hdm.getThePoint.db.dbmodel;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -75,7 +76,7 @@ public class Lehrender extends HibernateModel {
 		this.vorname = vorname;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "lehrender")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "lehrender", cascade = CascadeType.ALL)
 	public Set<Wissenstest> getWissenstests() {
 		return this.wissenstests;
 	}
@@ -84,7 +85,7 @@ public class Lehrender extends HibernateModel {
 		this.wissenstests = wissenstests;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "lehrender")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "lehrender", cascade = CascadeType.ALL)
 	public Set<Kategorie> getKategories() {
 		return this.kategories;
 	}

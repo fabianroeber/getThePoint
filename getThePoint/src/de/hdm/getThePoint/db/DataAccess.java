@@ -8,14 +8,17 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
+import de.hdm.getThePoint.bo.FrageZuordung;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.dbmodel.Admin;
+import de.hdm.getThePoint.db.dbmodel.Antwort;
 import de.hdm.getThePoint.db.dbmodel.Ergebnis;
 import de.hdm.getThePoint.db.dbmodel.Frage;
 import de.hdm.getThePoint.db.dbmodel.Kategorie;
 import de.hdm.getThePoint.db.dbmodel.Lehrender;
 import de.hdm.getThePoint.db.dbmodel.Student;
 import de.hdm.getThePoint.db.dbmodel.Wissenstest;
+import de.hdm.getThePoint.db.dbmodel.ZuordungWissenstestFrage;
 
 /**
  * Klasse f&uuml;r alle Datenbankzugriffe. Die Entitymanager Factory wird einmal
@@ -221,7 +224,8 @@ public class DataAccess implements Serializable {
 	/**
 	 * Ermittelt alle Ergebnisse f&uuml;r einen Studenten und einen Wissenstest.
 	 * 
-	 * @param wissenstest, student
+	 * @param wissenstest
+	 *            , student
 	 * @return
 	 */
 	public List<Ergebnis> getErgebnisseByWissenstestAndStudent(Student student,
@@ -328,6 +332,121 @@ public class DataAccess implements Serializable {
 		entityManager.close();
 
 		return admin;
+
+	}
+
+	/**
+	 * Methode, die eine Liste von Fragen in die Datenbank speichert.
+	 * 
+	 * @param fragen
+	 */
+	public void saveFragen(List<Frage> fragen) {
+
+		entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+
+		for (Frage frage : fragen) {
+			Frage frageToSave;
+			if (frage.getId() != null) {
+				frageToSave = entityManager.find(Frage.class, frage.getId());
+			} else {
+				frageToSave = new Frage();
+			}
+			frageToSave.setBild(frage.getBild());
+			frageToSave.setKategorie(frage.getKategorie());
+			frageToSave.setSchwierigkeit(frage.getSchwierigkeit());
+			frageToSave.setText(frage.getText());
+
+			entityManager.persist(frageToSave);
+
+			for (Antwort antwort : frage.getAntworts()) {
+				Antwort antwortToSave;
+				if (antwort.getId() != null) {
+					antwortToSave = entityManager.find(Antwort.class,
+							antwort.getId());
+				} else {
+					antwortToSave = new Antwort();
+				}
+				antwort.setText(antwort.getText());
+				antwort.setFrage(frageToSave);
+				entityManager.persist(antwortToSave);
+			}
+			frageToSave.setAntwort(frage.getAntwort());
+			entityManager.persist(frageToSave);
+
+		}
+		entityManager.getTransaction().commit();
+		entityManager.close();
+	}
+
+	/**
+	 * Diese Methode speichert einen Wissenstest in die Datenbank.
+	 * 
+	 * @param wissenstest
+	 */
+	public void saveWissenstest(Wissenstest wissenstest) {
+
+		entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+
+		Wissenstest wissenstestToSave;
+		if (wissenstest.getId() != null) {
+			wissenstestToSave = entityManager.find(Wissenstest.class,
+					wissenstest.getId());
+		} else {
+			wissenstestToSave = new Wissenstest();
+		}
+		wissenstestToSave.setBezeichnung(wissenstest.getBezeichnung());
+		wissenstestToSave.setEndzeit(wissenstest.getEndzeit());
+		wissenstestToSave.setAktiv(wissenstest.getAktiv());
+		wissenstestToSave.setStartzeit(wissenstest.getStartzeit());
+		wissenstestToSave.setLehrender(wissenstest.getLehrender());
+		wissenstestToSave.setRandom(wissenstest.getRandom());
+		wissenstestToSave.setZeitFrage(wissenstest.getZeitFrage());
+		entityManager.persist(wissenstestToSave);
+
+		for (ZuordungWissenstestFrage zuordungWissenstestFrage : wissenstest
+				.getZuordungWissenstestFrages()) {
+			ZuordungWissenstestFrage zuordungWissenstestFrageToSave;
+			if (zuordungWissenstestFrage.getId() != null) {
+				zuordungWissenstestFrageToSave = entityManager.find(
+						ZuordungWissenstestFrage.class,
+						zuordungWissenstestFrage.getId());
+			} else {
+				zuordungWissenstestFrageToSave = new ZuordungWissenstestFrage();
+			}
+			zuordungWissenstestFrageToSave.setFrage(zuordungWissenstestFrage
+					.getFrage());
+			zuordungWissenstestFrageToSave.setWissenstest(wissenstestToSave);
+			entityManager.persist(zuordungWissenstestFrageToSave);
+		}
+		entityManager.getTransaction().commit();
+		entityManager.close();
+	}
+
+	/**
+	 * Diese Methode l&oouml;scht einen Wissenstest aus der Datenbank.
+	 * 
+	 * @param wissenstest
+	 */
+	public void deleteWissenstest(Wissenstest wissenstest) {
+
+	}
+
+	/**
+	 * L&ouml;scht eine Frage aus der Datenbank.
+	 * 
+	 * @param frage
+	 */
+	public void deleteFrage(Frage frage) {
+
+		entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		entityManager.remove(entityManager.contains(frage) ? frage
+				: entityManager.merge(frage));
+
+		entityManager.getTransaction().commit();
+		entityManager.close();
 
 	}
 

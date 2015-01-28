@@ -24,6 +24,13 @@ import de.hdm.getThePoint.bo.KategorieBo;
 import de.hdm.getThePoint.db.mapper.FrageMapper;
 import de.hdm.getThePoint.db.mapper.KategorieMapper;
 
+/**
+ * Diese Bean stellt alle n&ouml;tigen Daten und Methoden zur Verwaltung der
+ * Fragen bereit.
+ * 
+ * @author Fabian
+ *
+ */
 @ManagedBean(name = "frageBean")
 @ViewScoped
 public class FrageBean implements Serializable {
@@ -32,6 +39,7 @@ public class FrageBean implements Serializable {
 
 	private List<FrageBo> fragen;
 	private List<KategorieBo> kategorien;
+	private List<KategorieBo> selectedKategorie;
 
 	private FrageMapper frageMapper;
 	private KategorieMapper kategorieMapper;
@@ -100,6 +108,11 @@ public class FrageBean implements Serializable {
 
 	}
 
+	/**
+	 * L&auml;dt ein Bild des Benutzers auf den Server hoch.
+	 * 
+	 * @param event
+	 */
 	public void upload(FileUploadEvent event) {
 		FacesMessage msg = new FacesMessage("Erfolgreich! ", event.getFile()
 				.getFileName() + " wurde hochgeladen.");
@@ -168,6 +181,14 @@ public class FrageBean implements Serializable {
 
 	public void setUserBean(UserBean userBean) {
 		this.userBean = userBean;
+	}
+
+	public List<KategorieBo> getSelectedKategorie() {
+		return selectedKategorie;
+	}
+
+	public void setSelectedKategorie(List<KategorieBo> selectedKategorie) {
+		this.selectedKategorie = selectedKategorie;
 	}
 
 }

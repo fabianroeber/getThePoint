@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -163,7 +164,7 @@ public class Wissenstest extends HibernateModel {
 		this.bezeichnung = bezeichnung;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "wissenstest")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "wissenstest", cascade = CascadeType.ALL)
 	public Set<ZuordungWissenstestFrage> getZuordungWissenstestFrages() {
 		return this.zuordungWissenstestFrages;
 	}
