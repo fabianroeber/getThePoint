@@ -30,7 +30,7 @@
 
 				<f:facet name="footer">
 					<p:commandButton value="Ergebnisse anzeigen" icon="ui-icon-play"
-						action="#{ergebnisseStudentBean.loadErgebnisse}"
+						action="#{ergebnisseStudentBean.loadErgebnisse}" global="true"
 						update="@form :ergebnisform:growl"></p:commandButton>
 				</f:facet>
 			</p:dataTable>

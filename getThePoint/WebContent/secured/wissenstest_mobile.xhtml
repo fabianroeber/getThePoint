@@ -25,13 +25,16 @@
 	<h:outputScript library="primefaces/poll" name="poll.js" />
 	<pm:page id="first" swatch="a">
 
-		<pm:header title="HdM Clicker"></pm:header>
+		<pm:header title="HdM Clicker: Wissenstest">
+			<p:commandButton id="menu" value="Menu" icon="ui-icon-bullets">
+			</p:commandButton>
+		</pm:header>
 		<pm:content>
 			<h:form id="wissenstest">
 				<p:growl id="growl" showDetail="true" sticky="true" />
 				<p:panel header="Verfügbare Wissenstests"
 					rendered="#{!wissenstestBean.testInProgress}">
-					<p:poll interval="10"
+					<p:poll interval="10" global="false"
 						listener="#{wissenstestBean.getAllWissenstests()}"
 						update="testlist, @form" />
 					<p:dataList id="testlist" value="#{wissenstestBean.wissenstests}"
@@ -45,12 +48,12 @@
 				<p:panel id="fragepanel"
 					header="Frage Nr. #{wissenstestBean.frageindex}"
 					rendered="#{wissenstestBean.testInProgress}">
-					<p:poll interval="#{wissenstestBean.zeitFrage}"
+					<p:poll interval="#{wissenstestBean.zeitFrage}" global="false"
 						listener="#{wissenstestBean.nextFrage()}"
 						update="@form fragen fragepanel">
 					</p:poll>
 					<p:poll interval="1" listener="#{wissenstestBean.timerDown()}"
-						update="timer"></p:poll>
+						update="timer" global="false"></p:poll>
 
 					<p:panelGrid id="timer" columns="2">
 						<p:outputLabel value="Verbleibende Zeit"></p:outputLabel>
@@ -75,6 +78,16 @@
 				</p:panel>
 			</h:form>
 		</pm:content>
+		<p:overlayPanel for="menu" widgetVar="menuVar" at="left"
+			showEffect="overlay">
+			<h2>Menu</h2>
+			<p:menu>
+				<p:menuitem value="Wissenstest"
+					outcome="/secured/wissenstest_mobile.xhtml" />
+				<p:menuitem value="Ergebnisse"
+					outcome="/secured/ergebnisse_student_mobile.xhtml" />
+			</p:menu>
+		</p:overlayPanel>
 		<ui:include src="footer_mobile.xhtml"></ui:include>
 	</pm:page>
 

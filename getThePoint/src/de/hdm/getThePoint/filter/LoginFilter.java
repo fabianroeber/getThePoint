@@ -36,14 +36,24 @@ public class LoginFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 
+		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+
 		UserBean userBean = (UserBean) ((HttpServletRequest) request)
 				.getSession().getAttribute("userBean");
 
 		if (userBean == null || !userBean.isLoggedIn()) {
 			String contextPath = ((HttpServletRequest) request)
 					.getContextPath();
-			((HttpServletResponse) response).sendRedirect(contextPath
-					+ "/login.xhtml");
+
+			if (httpServletRequest.getHeader("User-Agent").indexOf("Mobile") != -1) {
+				((HttpServletResponse) response).sendRedirect(contextPath
+						+ "/login_mobile.xhtml");
+			} else {
+				((HttpServletResponse) response).sendRedirect(contextPath
+						+ "/login.xhtml");
+
+			}
+
 		}
 
 		chain.doFilter(request, response);

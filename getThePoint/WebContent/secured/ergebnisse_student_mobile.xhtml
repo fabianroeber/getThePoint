@@ -25,7 +25,10 @@
 	<h:outputScript library="primefaces/poll" name="poll.js" />
 	<pm:page id="first" swatch="a">
 
-		<pm:header title="HdM Clicker"></pm:header>
+		<pm:header title="HdM Clicker: Ergebnisse">
+			<p:commandButton id="menu" value="Menu" icon="ui-icon-bullets">
+			</p:commandButton>
+		</pm:header>
 		<pm:content>
 			<h:form id="ergebnisform">
 				<p:growl id="growl" showDetail="true" sticky="true" />
@@ -62,6 +65,16 @@
 				</p:panel>
 			</h:form>
 		</pm:content>
+		<p:overlayPanel for="menu" widgetVar="menuVar" at="left"
+			showEffect="overlay">
+			<h2>Menu</h2>
+			<p:menu>
+				<p:menuitem value="Wissenstest"
+					outcome="/secured/wissenstest_mobile.xhtml" />
+				<p:menuitem value="Ergebnisse"
+					outcome="/secured/ergebnisse_student_mobile.xhtml" />
+			</p:menu>
+		</p:overlayPanel>
 		<ui:include src="footer_mobile.xhtml"></ui:include>
 	</pm:page>
 

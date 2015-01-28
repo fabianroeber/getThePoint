@@ -105,6 +105,9 @@ public class UserBean implements Serializable {
 			else if (userName.equalsIgnoreCase("teststudent")) {
 				loggedIn = true;
 				organizeStudentUserData();
+				if (mobile) {
+					return navigationBean.redirectToMobileWelcome();
+				}
 				return navigationBean.redirectToWelcome();
 
 			} else if (userName.equalsIgnoreCase("admin")) {
@@ -131,7 +134,13 @@ public class UserBean implements Serializable {
 						checkLehrender();
 						if (lehrender == null) {
 							organizeStudentUserData();
+							if (mobile) {
+								return navigationBean.redirectToMobileWelcome();
+							}
 							return navigationBean.redirectToWelcome();
+						}
+						if (mobile) {
+							return navigationBean.redirectToMobileWelcome();
 						}
 						return navigationBean.redirectToWelcome();
 					}

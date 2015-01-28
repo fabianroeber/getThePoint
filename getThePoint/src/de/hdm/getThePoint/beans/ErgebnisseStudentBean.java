@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.PersistenceException;
 
 import de.hdm.getThePoint.bo.ErgebnisBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
@@ -62,9 +63,18 @@ public class ErgebnisseStudentBean implements Serializable {
 	 * vorliegen, aus der Datenbank.
 	 */
 	public void getAllWissenstests() {
-		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
-				.getDataAccess().getWissentestsByStudentWithErgebnis(
-						studentMapper.getDbModel(userBean.getStudent())));
+		try {
+			wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
+					.getDataAccess().getWissentestsByStudentWithErgebnis(
+							studentMapper.getDbModel(userBean.getStudent())));
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Wissenstest wurden erfolgreich geladen"));
+		} catch (PersistenceException e) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage("Keine Verbingung zur Datenbank",
+							"Es besteht keine Verbindung zur Datenbank"));
+		}
 
 	}
 
@@ -77,6 +87,10 @@ public class ErgebnisseStudentBean implements Serializable {
 					.getDataAccess().getErgebnisseByWissenstestAndStudent(
 							studentMapper.getDbModel(userBean.getStudent()),
 							wissenstestMapper.getDbModel(selectedWissenstest)));
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(
+							"Die Ergebnisse wurden erfolgreich geladen"));
 		} else {
 			FacesContext
 					.getCurrentInstance()

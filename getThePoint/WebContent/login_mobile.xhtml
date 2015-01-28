@@ -32,8 +32,7 @@
 				<p:password value="#{userBean.password}" id="passwort"></p:password>
 				<p:spacer></p:spacer>
 				<p:message for="passwort"></p:message>
-				<p:commandButton ajax="false" value="Anmelden"
-					action="#{userBean.login(true)}" />
+				<p:commandButton value="Anmelden" action="#{userBean.login(true)}" />
 			</h:form>
 		</pm:content>
 	</pm:page>

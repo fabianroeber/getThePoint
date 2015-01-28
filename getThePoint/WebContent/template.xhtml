@@ -17,6 +17,13 @@
 </h:head>
 <h:body>
 	<h:outputStylesheet library="css" name="main.css" />
+	<p:ajaxStatus onstart="PF('statusDialog').show()"
+		onsuccess="PF('statusDialog').hide()" />
+
+	<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+		closable="false" resizable="false" showHeader="false">
+		<p:graphicImage value="/themes/images/ajax-loader.gif" />
+	</p:dialog>
 	<p:layout fullPage="true">
 		<p:layoutUnit position="north" minSize="86">
 			<p:graphicImage id="headimg"
@@ -35,7 +42,8 @@
 				<p:panelGrid columns="2" layout="grid">
 					<p:outputLabel value="Angemeldet als: #{userBean.userName}"></p:outputLabel>
 					<div align="right">
-						<p:commandButton icon="ui-icon-extlink" value="Abmelden" title="Abmelden" action="#{userBean.logout(false)}"
+						<p:commandButton icon="ui-icon-extlink" value="Abmelden"
+							title="Abmelden" action="#{userBean.logout(false)}"
 							style="color: #CF012F"></p:commandButton>
 					</div>
 				</p:panelGrid>

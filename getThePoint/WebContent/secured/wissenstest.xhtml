@@ -14,7 +14,7 @@
 		<h:form id="wissenstest">
 			<p:growl id="growl" showDetail="true" sticky="true" />
 			<p:panel rendered="#{!wissenstestBean.testInProgress}">
-				<p:poll interval="10"
+				<p:poll interval="10" global="false"
 					listener="#{wissenstestBean.getAllWissenstests()}"
 					update="testlist, @form" />
 				<p:dataList id="testlist" value="#{wissenstestBean.wissenstests}"
@@ -34,9 +34,9 @@
 				rendered="#{wissenstestBean.testInProgress}">
 				<p:poll interval="#{wissenstestBean.zeitFrage}"
 					listener="#{wissenstestBean.nextFrage()}"
-					update="fragen growl fragepanel"></p:poll>
+					update="fragen growl fragepanel" global="false"></p:poll>
 				<p:poll interval="1" listener="#{wissenstestBean.timerDown()}"
-					update="timer"></p:poll>
+					update="timer" global="false"></p:poll>
 
 				<p:panelGrid id="timer" columns="2">
 					<p:outputLabel value="Verbleibende Zeit"></p:outputLabel>
