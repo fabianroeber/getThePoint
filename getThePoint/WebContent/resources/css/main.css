@@ -1,5 +1,9 @@
 @CHARSET "ISO-8859-1";
 
+.markOrange {
+	background-color: #F79F81;
+}
+
 .hide-column-names table thead tr {
 	display: none;
 }

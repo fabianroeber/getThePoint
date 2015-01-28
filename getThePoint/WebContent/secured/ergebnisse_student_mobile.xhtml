@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<f:view renderKitId="PRIMEFACES_MOBILE" />
+
+<h:head>
+	<link rel="stylesheet" href="../themes/hdm.css" />
+	<link rel="stylesheet" href="../themes/hdm.min.css" />
+	<link rel="stylesheet"
+		href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+
+	<style type="text/css">
+</style>
+</h:head>
+<h:body>
+	<h:outputStylesheet library="css" name="main.css" />
+	<h:outputScript library="primefaces/poll" name="poll.js" />
+	<pm:page id="first" swatch="a">
+
+		<pm:header title="HdM Clicker"></pm:header>
+		<pm:content>
+			<h:form id="ergebnisform">
+				<p:growl id="growl" showDetail="true" sticky="true" />
+				<p:panel header="Verfügbare Wissenstests">
+					<p:dataList id="testlist"
+						value="#{ergebnisseStudentBean.wissenstests}" var="test"
+						rowIndexVar="row" itemType="none">
+						<p:commandButton
+							value="#{test.bezeichnung} | #{test.lehrender.vorname} #{test.lehrender.nachname} "
+							action="#{ergebnisseStudentBean.getErgebnisseMobile(row)}"
+							update="@form" icon="ui-icon-action"></p:commandButton>
+					</p:dataList>
+				</p:panel>
+				<p:panel
+					header="#{ergebnisseStudentBean.selectedWissenstest.bezeichnung}"
+					rendered="#{ergebnisseStudentBean.ergebnisse != null}">
+					<p:dataTable id="ergebnisse"
+						value="#{ergebnisseStudentBean.ergebnisse}" var="ergebnis">
+						<p:column headerText="Frage">
+							<p:outputLabel value="#{ergebnis.frage.text}"></p:outputLabel>
+						</p:column>
+						<p:column headerText="Lösung">
+							<p:outputLabel value="#{ergebnis.frage.loesung.text}"></p:outputLabel>
+						</p:column>
+						<p:column headerText="Ihre Antwort">
+							<p:outputLabel value="#{ergebnis.antwort.text}"
+								styleClass="#{ergebnis.richtig ? '' : 'markOrange'}"></p:outputLabel>
+							<f:facet name="footer">
+								<p:outputLabel
+									value="Richtige Antworten: #{ergebnisseStudentBean.getAnzahlRichtige()} / #{ergebnisseStudentBean.getAnzahlErgebnisse()}"></p:outputLabel>
+							</f:facet>
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:form>
+		</pm:content>
+		<ui:include src="footer_mobile.xhtml"></ui:include>
+	</pm:page>
+
+</h:body>
+
+</html>

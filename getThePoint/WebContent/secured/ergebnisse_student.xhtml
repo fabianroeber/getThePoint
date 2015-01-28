@@ -11,6 +11,7 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="ergebnisform">
+			<p:growl id="growl" showDetail="true" sticky="true" />
 			<p:dataTable id="wissenstests" var="wissenstest"
 				selectionMode="single"
 				selection="#{ergebnisseStudentBean.selectedWissenstest}"
@@ -23,32 +24,34 @@
 					<p:outputLabel value="#{wissenstest.bezeichnung}" />
 				</p:column>
 				<p:column headerText="Lehrender">
-				</p:column>
-				<p:column>
 					<p:outputLabel
 						value="#{wissenstest.lehrender.vorname} #{wissenstest.lehrender.nachname}" />
 				</p:column>
-				<p:column headerText="Anzahl Fragen">
-					<p:outputLabel></p:outputLabel>
-				</p:column>
+
 				<f:facet name="footer">
 					<p:commandButton value="Ergebnisse anzeigen" icon="ui-icon-play"
-						action="#{ergebnisseStudentBean.loadErgebnisse}" update="@form ergebnisse"></p:commandButton>
+						action="#{ergebnisseStudentBean.loadErgebnisse}"
+						update="@form :ergebnisform:growl"></p:commandButton>
 				</f:facet>
 			</p:dataTable>
-			<p:panel 
+			<p:panel
 				header="#{ergebnisseStudentBean.selectedWissenstest.bezeichnung}"
 				rendered="#{ergebnisseStudentBean.ergebnisse != null}">
-				<p:dataTable id="ergebnisse" value="#{ergebnisseStudentBean.ergebnisse}"
-					var="ergebnis">
+				<p:dataTable id="ergebnisse"
+					value="#{ergebnisseStudentBean.ergebnisse}" var="ergebnis">
 					<p:column headerText="Frage">
 						<p:outputLabel value="#{ergebnis.frage.text}"></p:outputLabel>
 					</p:column>
 					<p:column headerText="Lösung">
-						<p:outputLabel value="#{ergebnis.loesung.text}"></p:outputLabel>
+						<p:outputLabel value="#{ergebnis.frage.loesung.text}"></p:outputLabel>
 					</p:column>
 					<p:column headerText="Ihre Antwort">
-						<p:outputLabel value="#{ergebnis.antwort.text}"></p:outputLabel>
+						<p:outputLabel value="#{ergebnis.antwort.text}"
+							styleClass="#{ergebnis.richtig ? '' : 'markOrange'}"></p:outputLabel>
+						<f:facet name="footer">
+							<p:outputLabel
+								value="Richtige Antworten: #{ergebnisseStudentBean.getAnzahlRichtige()} / #{ergebnisseStudentBean.getAnzahlErgebnisse()}"></p:outputLabel>
+						</f:facet>
 					</p:column>
 				</p:dataTable>
 			</p:panel>

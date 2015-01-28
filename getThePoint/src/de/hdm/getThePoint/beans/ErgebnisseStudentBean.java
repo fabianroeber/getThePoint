@@ -4,17 +4,25 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import de.hdm.getThePoint.bo.ErgebnisBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
-import de.hdm.getThePoint.db.DataAccess;
 import de.hdm.getThePoint.db.mapper.ErgebnisMapper;
 import de.hdm.getThePoint.db.mapper.StudentMapper;
 import de.hdm.getThePoint.db.mapper.WissenstestMapper;
 
+/**
+ * Diese Bean stellt alle ben&ouml;tigten Daten und Methoden f&uuml;r die
+ * Anzeige der Ergebnisse eines Studenten bereit.
+ * 
+ * @author Fabian
+ *
+ */
 @ManagedBean(name = "ergebnisseStudentBean")
 @ViewScoped
 public class ErgebnisseStudentBean implements Serializable {
@@ -49,6 +57,10 @@ public class ErgebnisseStudentBean implements Serializable {
 		}
 	}
 
+	/**
+	 * L&aauml;dt alle Wissenstests eines Studenten, zu dem Ergebnisse
+	 * vorliegen, aus der Datenbank.
+	 */
 	public void getAllWissenstests() {
 		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
 				.getDataAccess().getWissentestsByStudentWithErgebnis(
@@ -56,11 +68,59 @@ public class ErgebnisseStudentBean implements Serializable {
 
 	}
 
+	/**
+	 * L&auuml;dt die Ergebnisse zu einem Wissenstest aus der Datenbank.
+	 */
 	public void loadErgebnisse() {
-		ergebnisse = ergebnisMapper.getModelsAsList(dataAccessBean
-				.getDataAccess().getErgebnisseByWissenstestAndStudent(
-						studentMapper.getDbModel(userBean.getStudent()),
-						wissenstestMapper.getDbModel(selectedWissenstest)));
+		if (selectedWissenstest != null) {
+			ergebnisse = ergebnisMapper.getModelsAsList(dataAccessBean
+					.getDataAccess().getErgebnisseByWissenstestAndStudent(
+							studentMapper.getDbModel(userBean.getStudent()),
+							wissenstestMapper.getDbModel(selectedWissenstest)));
+		} else {
+			FacesContext
+					.getCurrentInstance()
+					.addMessage(
+							null,
+							new FacesMessage("Kein Wissenstest ausgewählt",
+									"Bitte wählen Sie einen Wissenstest aus der Liste aus!"));
+		}
+	}
+
+	/**
+	 * Auswahl eines Test &uuml;ber die mobile Seite per Rowindex.
+	 * 
+	 * @param index
+	 */
+	public void getErgebnisseMobile(int index) {
+		selectedWissenstest = wissenstests.get(index);
+		loadErgebnisse();
+	}
+
+	/**
+	 * Gibt die Anzahl der richtigen Antworten zur&uuml;ck
+	 * 
+	 * @return
+	 */
+	public int getAnzahlRichtige() {
+		int anzahl = 0;
+		if (ergebnisse != null) {
+			for (ErgebnisBo ergebnisBo : ergebnisse) {
+				if (ergebnisBo.isRichtig()) {
+					anzahl++;
+				}
+			}
+		}
+		return anzahl;
+	}
+
+	/**
+	 * Gibt die Anzahl der Ergebnisse zur&uuml;ck.
+	 * 
+	 * @return
+	 */
+	public int getAnzahlErgebnisse() {
+		return ergebnisse.size();
 	}
 
 	public List<WissenstestBo> getWissenstests() {

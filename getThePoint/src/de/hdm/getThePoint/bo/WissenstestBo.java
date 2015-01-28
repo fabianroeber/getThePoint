@@ -31,10 +31,6 @@ public class WissenstestBo extends BusinessObject {
 
 	private List<FrageZuordung> frageZuordungen;
 
-	public int getFragenSize() {
-		return frageZuordungen.size();
-	}
-
 	public LehrenderBo getLehrender() {
 		return lehrender;
 	}
