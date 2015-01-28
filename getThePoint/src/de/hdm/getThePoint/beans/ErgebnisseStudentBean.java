@@ -22,7 +22,6 @@ public class ErgebnisseStudentBean implements Serializable {
 	private static final long serialVersionUID = 3371866323292299244L;
 
 	private List<WissenstestBo> wissenstests;
-	private DataAccess dataAccess;
 	private WissenstestBo selectedWissenstest;
 
 	private WissenstestMapper wissenstestMapper;
@@ -51,15 +50,17 @@ public class ErgebnisseStudentBean implements Serializable {
 	}
 
 	public void getAllWissenstests() {
-
-		wissenstests = wissenstestMapper.getModelsAsList(dataAccess
-				.getWissentestsByStudentWithErgebnis(studentMapper
-						.getDbModel(userBean.getStudent())));
+		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
+				.getDataAccess().getWissentestsByStudentWithErgebnis(
+						studentMapper.getDbModel(userBean.getStudent())));
 
 	}
 
 	public void loadErgebnisse() {
-
+		ergebnisse = ergebnisMapper.getModelsAsList(dataAccessBean
+				.getDataAccess().getErgebnisseByWissenstestAndStudent(
+						studentMapper.getDbModel(userBean.getStudent()),
+						wissenstestMapper.getDbModel(selectedWissenstest)));
 	}
 
 	public List<WissenstestBo> getWissenstests() {

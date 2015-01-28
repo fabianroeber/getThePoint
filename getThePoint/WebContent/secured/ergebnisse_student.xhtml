@@ -10,7 +10,7 @@
 	<ui:define name="pageheader">
 	</ui:define>
 	<ui:define name="content">
-		<h:form>
+		<h:form id="ergebnisform">
 			<p:dataTable id="wissenstests" var="wissenstest"
 				selectionMode="single"
 				selection="#{ergebnisseStudentBean.selectedWissenstest}"
@@ -26,21 +26,32 @@
 				</p:column>
 				<p:column>
 					<p:outputLabel
-						value="#{wissenstest.lehrender.vorname} {wissenstest.lehrender.nachname}" />
+						value="#{wissenstest.lehrender.vorname} #{wissenstest.lehrender.nachname}" />
 				</p:column>
 				<p:column headerText="Anzahl Fragen">
-					<p:outputLabel value="#{wissenstest.fragen.size()}"></p:outputLabel>
+					<p:outputLabel></p:outputLabel>
 				</p:column>
 				<f:facet name="footer">
 					<p:commandButton value="Ergebnisse anzeigen" icon="ui-icon-play"
-						action="#{ergebnisseStudentBean.loadErgebnisse}" update="ergebnispanel"></p:commandButton>
+						action="#{ergebnisseStudentBean.loadErgebnisse}" update="@form ergebnisse"></p:commandButton>
 				</f:facet>
 			</p:dataTable>
-			<p:panel id="ergebnispanel" header="Ergebnisse"></p:panel>
-
-
+			<p:panel 
+				header="#{ergebnisseStudentBean.selectedWissenstest.bezeichnung}"
+				rendered="#{ergebnisseStudentBean.ergebnisse != null}">
+				<p:dataTable id="ergebnisse" value="#{ergebnisseStudentBean.ergebnisse}"
+					var="ergebnis">
+					<p:column headerText="Frage">
+						<p:outputLabel value="#{ergebnis.frage.text}"></p:outputLabel>
+					</p:column>
+					<p:column headerText="Lösung">
+						<p:outputLabel value="#{ergebnis.loesung.text}"></p:outputLabel>
+					</p:column>
+					<p:column headerText="Ihre Antwort">
+						<p:outputLabel value="#{ergebnis.antwort.text}"></p:outputLabel>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
 		</h:form>
-
-
 	</ui:define>
 </ui:composition>
