@@ -12,6 +12,11 @@ public class AntwortBo extends BusinessObject {
 		super();
 	}
 
+	public AntwortBo(String text) {
+		super();
+		this.text = text;
+	}
+
 	public AntwortBo(Integer id, String text) {
 		super();
 		this.setId(id);

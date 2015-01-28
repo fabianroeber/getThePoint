@@ -10,56 +10,9 @@
 	<ui:define name="pageheader">
 
 	</ui:define>
-	<ui:define name="content">
+	<ui:define name="content">	
 		<h:form rendered="#{menuBean.hasLehrenderRole()}">
-			<p:growl id="msg" showDetail="true" escape="false" />
-			<p:panel id="grundeinstellungen" header="Grundeinstellungen"
-				collapsed="true" toggleable="true" toggleSpeed="500">
-			</p:panel>
-			<p:panel id="fragenauswahl" header="Fragenauswahl" toggleable="true"
-				collapsed="true" toggleSpeed="500">
-				<p:panelGrid columns="2">
-					<p:outputLabel for="kategorie" value="Kategorie" />
-					<p:selectOneMenu id="kategorie"
-						value="#{wissenstestVerwaltungBean.selectedKategorie}"
-						converter="omnifaces.SelectItemsIndexConverter"
-						panelStyle="width:180px" effect="fade" var="k" style="width:160px"
-						filter="true" filterMatchMode="startsWith">
-						<f:selectItems value="#{wissenstestVerwaltungBean.kategorien}"
-							var="kateg" itemLabel="#{kateg.bezeichnung}" itemValue="#{kateg}" />
-						<p:column>
-							<h:outputText value="#{k.bezeichnung}" />
-						</p:column>
-						<p:spacer />
-					</p:selectOneMenu>
-				</p:panelGrid>
-				<p:panelGrid columns="1">
-					<p:pickList id="FragenPickList" style="width: auto;"
-						value="#{wissenstestVerwaltungBean.dlmfragen}" var="frage"
-						effect="bounce" itemValue="#{frage}" itemLabel="#{frage.text}"
-						showSourceControls="true" showTargetControls="true"
-						showCheckbox="true" showSourceFilter="true"
-						showTargetFilter="true" filterMatchMode="contains"
-						styleClass="test">
-
-						<f:facet name="sourceCaption">Fragenpool</f:facet>
-						<f:facet name="targetCaption">Wissenstest</f:facet>
-
-						<p:ajax event="transfer"
-							listener="#{wissenstestVerwaltungBean.onTransfer}" update="msg" />
-
-						<p:column>
-							<h:outputText styleClass="ui-theme ui-theme-#{frage.text}" />
-						</p:column>
-
-						<p:column>
-							<h:outputText value="#{frage.text}" />
-						</p:column>
-					</p:pickList>
-					<p:commandButton id="save" icon="ui-icon-disk" title="Speichern"
-						style="margin-top:5px" />
-				</p:panelGrid>
-			</p:panel>
+		
 		</h:form>
 	</ui:define>
 

@@ -23,6 +23,7 @@ import de.hdm.getThePoint.bo.FrageBo;
 import de.hdm.getThePoint.bo.KategorieBo;
 import de.hdm.getThePoint.db.mapper.FrageMapper;
 import de.hdm.getThePoint.db.mapper.KategorieMapper;
+import de.hdm.getThePoint.enums.Schwierigkeit;
 
 /**
  * Diese Bean stellt alle n&ouml;tigen Daten und Methoden zur Verwaltung der
@@ -39,16 +40,20 @@ public class FrageBean implements Serializable {
 
 	private List<FrageBo> fragen;
 	private List<KategorieBo> kategorien;
-	private List<KategorieBo> selectedKategorie;
+	private KategorieBo selectedKategorie;
+	private List<FrageBo> fragenToDelete;
 
 	private FrageMapper frageMapper;
 	private KategorieMapper kategorieMapper;
+
+	private Schwierigkeit[] schwierigkeiten = Schwierigkeit.values();
 
 	private static final String FILEDESTINATION = "C:/temp/images";
 
 	public FrageBean() {
 		frageMapper = new FrageMapper();
 		kategorieMapper = new KategorieMapper();
+		fragenToDelete = new ArrayList<FrageBo>();
 	}
 
 	@PostConstruct
@@ -92,20 +97,28 @@ public class FrageBean implements Serializable {
 	/**
 	 * Diese Methode f&uuml;gt einer Frage eine Antworm&ouml;glichkeit hinzu.
 	 * 
-	 * @param i
+	 * @param index
 	 */
-	public void addAntwortmoeg(int i) {
-		List<AntwortBo> antwortmoeg = fragen.get(i).getAntwortmoeglichkeiten();
-		antwortmoeg.add(new AntwortBo());
+	public void addAntwortmoeg(int index) {
+		List<AntwortBo> antwortmoeg = fragen.get(index)
+				.getAntwortmoeglichkeiten();
+		antwortmoeg.add(new AntwortBo("Hier Antworttext eingeben!"));
+		fragen.get(index).setAntwortmoeglichkeiten(antwortmoeg);
 	}
 
 	/**
 	 * Diese Methode l&ouml;scht eine Antwortm&ouml;glichkeit einer Frage.
 	 */
 	public void deleteAntwortmoeg(int indexFrage, int indexAntwortmoeg) {
-		fragen.get(indexFrage).getAntwortmoeglichkeiten()
-				.remove(indexAntwortmoeg);
-
+		List<AntwortBo> newantworten = new ArrayList<AntwortBo>();
+		List<AntwortBo> antworten = fragen.get(indexFrage)
+				.getAntwortmoeglichkeiten();
+		for (AntwortBo antwortBo : antworten) {
+			if (!antworten.get(indexAntwortmoeg).equals(antwortBo)) {
+				newantworten.add(antwortBo);
+			}
+		}
+		fragen.get(indexFrage).setAntwortmoeglichkeiten(newantworten);
 	}
 
 	/**
@@ -151,6 +164,23 @@ public class FrageBean implements Serializable {
 		}
 	}
 
+	public Schwierigkeit[] getSchwierigkeiten() {
+		return schwierigkeiten;
+	}
+
+	public void setSchwierigkeiten(Schwierigkeit[] schwierigkeiten) {
+		this.schwierigkeiten = schwierigkeiten;
+	}
+
+	public void deleteFrage(int index) {
+		fragenToDelete.add(fragen.get(index));
+		fragen.remove(index);
+	}
+
+	public void saveFragen(int index) {
+
+	}
+
 	public List<FrageBo> getFragen() {
 		return fragen;
 	}
@@ -183,11 +213,11 @@ public class FrageBean implements Serializable {
 		this.userBean = userBean;
 	}
 
-	public List<KategorieBo> getSelectedKategorie() {
+	public KategorieBo getSelectedKategorie() {
 		return selectedKategorie;
 	}
 
-	public void setSelectedKategorie(List<KategorieBo> selectedKategorie) {
+	public void setSelectedKategorie(KategorieBo selectedKategorie) {
 		this.selectedKategorie = selectedKategorie;
 	}
 
