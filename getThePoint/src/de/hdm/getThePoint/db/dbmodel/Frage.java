@@ -92,7 +92,7 @@ public class Frage extends HibernateModel {
 		this.kategorie = kategorie;
 	}
 
-	@Column(name = "text", length = 45)
+	@Column(name = "text", length = 300)
 	public String getText() {
 		return this.text;
 	}
