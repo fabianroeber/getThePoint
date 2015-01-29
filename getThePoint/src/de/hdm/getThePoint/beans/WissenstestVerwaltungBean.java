@@ -43,6 +43,7 @@ public class WissenstestVerwaltungBean implements Serializable {
 
 	private List<FrageBo> fragen;
 	private List<WissenstestBo> wissenstests;
+	private WissenstestBo selectedWissenstest;
 	private List<KategorieBo> kategorien;
 	private List<FrageBo> wissenstestfragen;
 	private DualListModel<FrageBo> dlmfragen;
@@ -65,6 +66,14 @@ public class WissenstestVerwaltungBean implements Serializable {
 		getAllKategorien();
 		getAllWissenstests();
 		getAllWissenstestFragen();
+	}
+
+	public boolean checkLoaded() {
+		if (wissenstests == null) {
+			init();
+			return true;
+		}
+		return false;
 	}
 
 	public void onTransfer(TransferEvent event) {
@@ -156,5 +165,13 @@ public class WissenstestVerwaltungBean implements Serializable {
 
 	public void setDataAccessBean(DataAccessBean dataAccessBean) {
 		this.dataAccessBean = dataAccessBean;
+	}
+
+	public WissenstestBo getSelectedWissenstest() {
+		return selectedWissenstest;
+	}
+
+	public void setSelectedWissenstest(WissenstestBo selectedWissenstest) {
+		this.selectedWissenstest = selectedWissenstest;
 	}
 }

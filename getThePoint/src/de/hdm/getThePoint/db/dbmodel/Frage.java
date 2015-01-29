@@ -72,7 +72,7 @@ public class Frage extends HibernateModel {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "loesung", nullable = true)
 	public Antwort getAntwort() {
 		return this.antwort;
@@ -129,7 +129,7 @@ public class Frage extends HibernateModel {
 		this.zuordungWissenstestFrages = zuordungWissenstestFrages;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "frage", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "frage", cascade = CascadeType.ALL)
 	@OrderBy("id DESC")
 	public Set<Antwort> getAntworts() {
 		return this.antworts;

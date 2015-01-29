@@ -117,6 +117,8 @@ public class WissenstestBean implements Serializable {
 		}
 	}
 
+	
+
 	/**
 	 * Diese Methode startet den Test.
 	 * 

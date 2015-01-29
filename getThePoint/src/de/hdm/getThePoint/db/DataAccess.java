@@ -124,7 +124,8 @@ public class DataAccess implements Serializable {
 		entityManager = entityManagerFactory.createEntityManager();
 
 		List<Frage> list = entityManager.createQuery(
-				"SELECT frage FROM Frage frage ORDER BY frage.id", Frage.class).getResultList();
+				"SELECT frage FROM Frage frage ORDER BY frage.id", Frage.class)
+				.getResultList();
 		return list;
 
 	}
@@ -198,7 +199,8 @@ public class DataAccess implements Serializable {
 
 		List<Frage> list = entityManager.createQuery(
 				"Select frage FROM Frage frage where frage.kategorie = "
-						+ kategorie_id + " ORDER BY frage.id", Frage.class).getResultList();
+						+ kategorie_id + " ORDER BY frage.id", Frage.class)
+				.getResultList();
 
 		return list;
 	}
@@ -341,10 +343,9 @@ public class DataAccess implements Serializable {
 	 */
 	public void saveFragen(List<Frage> fragen) {
 
-		entityManager = entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
-
 		for (Frage frage : fragen) {
+			entityManager = entityManagerFactory.createEntityManager();
+			entityManager.getTransaction().begin();
 			Frage frageToSave;
 			if (frage.getId() != null) {
 				frageToSave = entityManager.find(Frage.class, frage.getId());
@@ -372,10 +373,10 @@ public class DataAccess implements Serializable {
 			}
 			frageToSave.setAntwort(frage.getAntwort());
 			entityManager.persist(frageToSave);
-
+			entityManager.getTransaction().commit();
+			entityManager.close();
 		}
-		entityManager.getTransaction().commit();
-		entityManager.close();
+
 	}
 
 	/**

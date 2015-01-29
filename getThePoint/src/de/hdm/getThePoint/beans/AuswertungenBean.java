@@ -70,7 +70,6 @@ public class AuswertungenBean implements Serializable {
 	public void init() {
 		getAllWissenstests();
 		createAuswertungsErgebnisse();
-		selectedWissenstest = wissenstests.get(0);
 		createBarModels();
 	}
 

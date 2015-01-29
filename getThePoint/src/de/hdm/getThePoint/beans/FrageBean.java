@@ -13,6 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.PersistenceException;
@@ -35,7 +36,7 @@ import de.hdm.getThePoint.enums.Schwierigkeit;
  *
  */
 @ManagedBean(name = "frageBean")
-@ViewScoped
+@SessionScoped
 public class FrageBean implements Serializable {
 
 	private static final long serialVersionUID = -7885565449150992040L;
@@ -43,6 +44,7 @@ public class FrageBean implements Serializable {
 	private List<FrageBo> fragen;
 	private List<KategorieBo> kategorien;
 	private KategorieBo selectedKategorie;
+	private AntwortBo selectedLoesung;
 	private List<FrageBo> fragenToDelete;
 
 	private FrageMapper frageMapper;
@@ -208,6 +210,8 @@ public class FrageBean implements Serializable {
 			System.out.println(e.getMessage());
 		}
 	}
+	
+	
 
 	public Schwierigkeit[] getSchwierigkeiten() {
 		return schwierigkeiten;
@@ -272,6 +276,14 @@ public class FrageBean implements Serializable {
 
 	public void setSelectedSchwierigkeit(Schwierigkeit selectedSchwierigkeit) {
 		this.selectedSchwierigkeit = selectedSchwierigkeit;
+	}
+
+	public AntwortBo getSelectedLoesung() {
+		return selectedLoesung;
+	}
+
+	public void setSelectedLoesung(AntwortBo selectedLoesung) {
+		this.selectedLoesung = selectedLoesung;
 	}
 
 }
