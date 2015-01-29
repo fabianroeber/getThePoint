@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 /**
@@ -71,7 +72,7 @@ public class Frage extends HibernateModel {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "loesung", nullable = true)
 	public Antwort getAntwort() {
 		return this.antwort;
@@ -128,7 +129,8 @@ public class Frage extends HibernateModel {
 		this.zuordungWissenstestFrages = zuordungWissenstestFrages;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "frage", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "frage", cascade = CascadeType.ALL)
+	@OrderBy("id DESC")
 	public Set<Antwort> getAntworts() {
 		return this.antworts;
 	}

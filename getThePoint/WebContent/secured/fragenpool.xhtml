@@ -27,7 +27,7 @@
 						value="#{frage.antwortmoeglichkeiten}" var="antwort"
 						styleClass="hide-column-names" tableStyle="width:auto"
 						selection="#{frage.loesung}" type="ordered"
-						rowKey="#{antwort.id}#{antwort.text}"
+						rowKey="#{antwort.id}#{antwort.text}" 
 						rendered="#{frage.antwortmoeglichkeiten.size() > 0}">
 						<p:column selectionMode="single"
 							style="width:16px;text-align:center">
@@ -41,9 +41,11 @@
 						</p:column>
 						<p:column style="width:16px;text-align:center">
 							<p:commandButton icon="ui-icon-trash" title="Entfernen"
-								update="antwortmoeg" oncomplete="PF('fragenTable').filter()"
+								update="antwortmoeg @form"
+								oncomplete="PF('fragenTable').filter()"
 								action="#{frageBean.deleteAntwortmoeg(frageRow, antwortRow)}"></p:commandButton>
 						</p:column>
+
 					</p:dataTable>
 					<p:commandButton icon="ui-icon-plus" title="Hinzufügen"
 						action="#{frageBean.addAntwortmoeg(frageRow)}"
@@ -104,7 +106,8 @@
 			<p:commandButton title="Neue Frage hinzufügen" icon="ui-icon-plus"
 				action="#{frageBean.addFrage()}" update="fragen"
 				oncomplete="PF('fragenTable').filter()"></p:commandButton>
-			<p:commandButton title="Speichern" id="save" update="fragen" action="#{frageBean.saveFragen()}"
+			<p:commandButton title="Speichern" id="save" update="fragen"
+				action="#{frageBean.saveFragen()}"
 				oncomplete="PF('fragenTable').filter()" icon="ui-icon-disk" />
 
 
