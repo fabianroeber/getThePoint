@@ -124,7 +124,7 @@ public class DataAccess implements Serializable {
 		entityManager = entityManagerFactory.createEntityManager();
 
 		List<Frage> list = entityManager.createQuery(
-				"SELECT frage FROM Frage frage", Frage.class).getResultList();
+				"SELECT frage FROM Frage frage ORDER BY frage.id", Frage.class).getResultList();
 		return list;
 
 	}
@@ -198,7 +198,7 @@ public class DataAccess implements Serializable {
 
 		List<Frage> list = entityManager.createQuery(
 				"Select frage FROM Frage frage where frage.kategorie = "
-						+ kategorie_id, Frage.class).getResultList();
+						+ kategorie_id + " ORDER BY frage.id", Frage.class).getResultList();
 
 		return list;
 	}
