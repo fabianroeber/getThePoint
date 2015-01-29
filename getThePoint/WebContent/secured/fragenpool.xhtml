@@ -13,7 +13,8 @@
 			<p:dataTable rowIndexVar="frageRow" id="fragen" var="frage"
 				widgetVar="fragenTable" paginator="true" rows="3"
 				value="#{frageBean.fragen}" editable="true" tableStyle="width:auto">
-				<p:column headerText="Frage">
+				<p:column headerText="Frage" filterBy="#{frage.text}"
+					filterMatchMode="contains">
 					<p:inplace id="fragebearbeiten" editor="true" event="dblclick">
 						<p:inputText value="#{frage.text}" />
 					</p:inplace>
@@ -23,11 +24,10 @@
 				<p:column headerText="Antwortmöglichkeiten">
 
 					<p:dataTable id="antwortmoeg" rowIndexVar="antwortRow"
-						widgetVar="antwortmoegTable" draggableColumns="true"
 						value="#{frage.antwortmoeglichkeiten}" var="antwort"
 						styleClass="hide-column-names" tableStyle="width:auto"
 						selection="#{frage.loesung}" type="ordered"
-						rowKey="#{antwort.text}"
+						rowKey="#{antwort.id}#{antwort.text}"
 						rendered="#{frage.antwortmoeglichkeiten.size() > 0}">
 						<p:column selectionMode="single"
 							style="width:16px;text-align:center">
@@ -44,7 +44,6 @@
 								update="antwortmoeg" oncomplete="PF('fragenTable').filter()"
 								action="#{frageBean.deleteAntwortmoeg(frageRow, antwortRow)}"></p:commandButton>
 						</p:column>
-						<p:ajax event="rowSelect" oncomplete="PF('fragenTable').filter()" />
 					</p:dataTable>
 					<p:commandButton icon="ui-icon-plus" title="Hinzufügen"
 						action="#{frageBean.addAntwortmoeg(frageRow)}"
@@ -56,7 +55,7 @@
 						<p:selectOneMenu value="#{frageBean.selectedKategorie}"
 							converter="omnifaces.SelectItemsConverter"
 							onchange="PF('fragenTable').filter()">
-							<f:selectItem itemLabel="Select One" itemValue="#{null}"
+							<f:selectItem itemLabel="Alle" itemValue="#{null}"
 								noSelectionOption="true" />
 							<f:selectItems value="#{frageBean.kategorien}" var="kateg"
 								itemValue="#{kateg}" itemLabel="#{kateg.bezeichnung}"></f:selectItems>
@@ -79,7 +78,18 @@
 						onclick="PF('d1').show();" title="Bild Hochladen"></p:commandButton>
 
 				</p:column>
-				<p:column headerText="Schwierigkeit">
+				<p:column filterBy="#{frage.schwierigkeit}"
+					headerText="Schwierigkeit">
+					<f:facet name="filter">
+						<p:selectOneMenu value="#{frageBean.selectedSchwierigkeit}"
+							converter="omnifaces.SelectItemsConverter"
+							onchange="PF('fragenTable').filter()">
+							<f:selectItem itemLabel="Alle" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{frageBean.schwierigkeiten}" var="level"
+								itemValue="#{level}" itemLabel="#{level.text}"></f:selectItems>
+						</p:selectOneMenu>
+					</f:facet>
 					<p:selectOneMenu value="#{frage.schwierigkeit}">
 						<f:selectItems value="#{frageBean.schwierigkeiten}" var="level"
 							itemValue="#{level}" itemLabel="#{level.text}"></f:selectItems>
@@ -94,7 +104,7 @@
 			<p:commandButton title="Neue Frage hinzufügen" icon="ui-icon-plus"
 				action="#{frageBean.addFrage()}" update="fragen"
 				oncomplete="PF('fragenTable').filter()"></p:commandButton>
-			<p:commandButton title="Speichern" id="save" update="fragen"
+			<p:commandButton title="Speichern" id="save" update="fragen" action="#{frageBean.saveFragen()}"
 				oncomplete="PF('fragenTable').filter()" icon="ui-icon-disk" />
 
 

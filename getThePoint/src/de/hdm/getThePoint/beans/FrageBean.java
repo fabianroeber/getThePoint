@@ -15,12 +15,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.PersistenceException;
 
 import org.primefaces.event.FileUploadEvent;
 
 import de.hdm.getThePoint.bo.AntwortBo;
 import de.hdm.getThePoint.bo.FrageBo;
 import de.hdm.getThePoint.bo.KategorieBo;
+import de.hdm.getThePoint.db.dbmodel.Frage;
 import de.hdm.getThePoint.db.mapper.FrageMapper;
 import de.hdm.getThePoint.db.mapper.KategorieMapper;
 import de.hdm.getThePoint.enums.Schwierigkeit;
@@ -47,6 +49,7 @@ public class FrageBean implements Serializable {
 	private KategorieMapper kategorieMapper;
 
 	private Schwierigkeit[] schwierigkeiten = Schwierigkeit.values();
+	private Schwierigkeit selectedSchwierigkeit;
 
 	private static final String FILEDESTINATION = "C:/temp/images";
 
@@ -110,6 +113,7 @@ public class FrageBean implements Serializable {
 	 * Diese Methode l&ouml;scht eine Antwortm&ouml;glichkeit einer Frage.
 	 */
 	public void deleteAntwortmoeg(int indexFrage, int indexAntwortmoeg) {
+
 		List<AntwortBo> newantworten = new ArrayList<AntwortBo>();
 		List<AntwortBo> antworten = fragen.get(indexFrage)
 				.getAntwortmoeglichkeiten();
@@ -119,6 +123,47 @@ public class FrageBean implements Serializable {
 			}
 		}
 		fragen.get(indexFrage).setAntwortmoeglichkeiten(newantworten);
+
+	}
+
+	/**
+	 * Speichert Fragen in der Datenbank.
+	 */
+	public void saveFragen() {
+
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		try {
+			List<Frage> dbfragen = new ArrayList<Frage>();
+			for (FrageBo frageBo : fragen) {
+				dbfragen.add(frageMapper.getDbModel(frageBo));
+			}
+			dataAccessBean.getDataAccess().saveFragen(dbfragen);
+			context.addMessage(null, new FacesMessage(
+					"Fragen Erfolgriech gespeichert"));
+		} catch (PersistenceException e) {
+			context.addMessage(null, new FacesMessage("Fehler beim Speichern"));
+		}
+		if (fragenToDelete.size() > 0) {
+			deleteFragen();
+		}
+		getAllFragen();
+	}
+
+	/**
+	 * L&ouml;scht Fragen aus der Datenbank.
+	 */
+	public void deleteFragen() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		try {
+			for (FrageBo frageBo : fragenToDelete) {
+				dataAccessBean.getDataAccess().deleteFrage(
+						frageMapper.getDbModel(frageBo));
+			}
+		} catch (PersistenceException e) {
+			context.addMessage(null, new FacesMessage("Fehler beim Löschen"));
+		}
+
 	}
 
 	/**
@@ -219,6 +264,14 @@ public class FrageBean implements Serializable {
 
 	public void setSelectedKategorie(KategorieBo selectedKategorie) {
 		this.selectedKategorie = selectedKategorie;
+	}
+
+	public Schwierigkeit getSelectedSchwierigkeit() {
+		return selectedSchwierigkeit;
+	}
+
+	public void setSelectedSchwierigkeit(Schwierigkeit selectedSchwierigkeit) {
+		this.selectedSchwierigkeit = selectedSchwierigkeit;
 	}
 
 }

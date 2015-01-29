@@ -1,5 +1,6 @@
 package de.hdm.getThePoint.bo;
 
+
 public class AntwortBo extends BusinessObject {
 
 	private static final long serialVersionUID = 2078688206447859120L;
