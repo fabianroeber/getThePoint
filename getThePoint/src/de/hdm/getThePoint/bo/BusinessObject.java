@@ -2,6 +2,12 @@ package de.hdm.getThePoint.bo;
 
 import java.io.Serializable;
 
+/**
+ * Superklasse für alle Modelklassen der Applikation.
+ * 
+ * @author Fabian
+ *
+ */
 public class BusinessObject implements Serializable {
 
 	private static final long serialVersionUID = -3544159520355754839L;

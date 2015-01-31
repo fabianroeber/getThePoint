@@ -1,5 +1,13 @@
 package de.hdm.getThePoint.bo;
 
+/**
+ * Dieses Klasse enthält alle nötigen Informationen für eine Menuitem des
+ * dynamisch, je nach Rolle, generierten Menus. Das Menu wird beim Login
+ * generiert.
+ * 
+ * @author Fabian
+ *
+ */
 public class GTPMenuItem {
 
 	private int id;

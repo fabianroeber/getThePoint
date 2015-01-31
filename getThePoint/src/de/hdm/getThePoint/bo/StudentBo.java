@@ -1,5 +1,11 @@
 package de.hdm.getThePoint.bo;
 
+/**
+ * Dieses Model enthält alle nötigen Informationen für einen Studenten.
+ * 
+ * @author Fabian
+ *
+ */
 public class StudentBo extends BusinessObject {
 
 	private static final long serialVersionUID = 5659858238343964483L;

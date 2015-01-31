@@ -1,5 +1,10 @@
 package de.hdm.getThePoint.bo;
 
+/**
+ * Dieses Model enthält alle nötigen Informationen für ein Ergebnis.
+ * @author Fabian
+ *
+ */
 public class ErgebnisBo extends BusinessObject {
 
 	private static final long serialVersionUID = 2250934284088999510L;

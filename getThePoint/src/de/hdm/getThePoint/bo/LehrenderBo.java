@@ -1,5 +1,11 @@
 package de.hdm.getThePoint.bo;
 
+/**
+ * Dieses Model enthält alle nötigen Informationen für einen Lehrenden.
+ * 
+ * @author Fabian
+ *
+ */
 public class LehrenderBo extends BusinessObject {
 
 	private static final long serialVersionUID = 5382845302404475300L;

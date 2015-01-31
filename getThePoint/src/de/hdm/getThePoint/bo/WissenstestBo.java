@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * Dieses Model enthält alle nötigen Informationen für einen Wissenstest.
+ * 
  * @author Fabian
  *
  */

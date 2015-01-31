@@ -1,5 +1,11 @@
 package de.hdm.getThePoint.bo;
 
+/**
+ * Dieses Model enthält alle nötigen Informationen für eine Kategeorie.
+ * 
+ * @author Fabian
+ *
+ */
 public class KategorieBo extends BusinessObject {
 
 	private static final long serialVersionUID = -3274946166002195898L;

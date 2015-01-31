@@ -1,6 +1,11 @@
 package de.hdm.getThePoint.bo;
 
-
+/**
+ * Dieses Model enthält alle nötigen Informationen für eine Antwort.
+ * 
+ * @author Fabian
+ *
+ */
 public class AntwortBo extends BusinessObject {
 
 	private static final long serialVersionUID = 2078688206447859120L;

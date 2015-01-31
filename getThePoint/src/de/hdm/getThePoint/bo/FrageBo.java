@@ -4,6 +4,11 @@ import java.util.List;
 
 import de.hdm.getThePoint.enums.Schwierigkeit;
 
+/**
+ * Dieses Model enthält alle nötigen Informationen für eine Frage.
+ * @author Fabian
+ *
+ */
 public class FrageBo extends BusinessObject {
 
 	private static final long serialVersionUID = 1632688091736338890L;
