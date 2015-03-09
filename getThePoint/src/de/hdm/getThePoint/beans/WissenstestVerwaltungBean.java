@@ -2,6 +2,7 @@ package de.hdm.getThePoint.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -48,6 +49,13 @@ public class WissenstestVerwaltungBean implements Serializable {
 	private List<FrageBo> wissenstestfragen;
 	private DualListModel<FrageBo> dlmfragen;
 	private KategorieBo selectedKategorie;
+
+	// Attribute für den aktuellen Wissenstest
+	private String bezeichnung;
+	private int bearbeitungsZeit;
+	private Date startzeit;
+	private int laufzeit;
+	private boolean random;
 
 	private FrageMapper frageMapper;
 	private KategorieMapper kategorieMapper;
@@ -105,6 +113,18 @@ public class WissenstestVerwaltungBean implements Serializable {
 	public void getAllKategorien() {
 		kategorien = kategorieMapper.getModelsAsList(dataAccessBean
 				.getDataAccess().getAllKategorie());
+	}
+
+	/**
+	 * Starten den ausgewählten Wissenstest manuell
+	 */
+	public void startTestNow() {
+		selectedWissenstest.setStartzeit(new Date(System.currentTimeMillis()));
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage("Erfolgreich gestartet!",
+						"Wissenstest wurde gestartet. Die Bearbeitungdauer berträgt "
+								+ bearbeitungsZeit + " Minuten ab jetzt."));
 	}
 
 	public void getAllWissenstestFragen() {
@@ -173,5 +193,45 @@ public class WissenstestVerwaltungBean implements Serializable {
 
 	public void setSelectedWissenstest(WissenstestBo selectedWissenstest) {
 		this.selectedWissenstest = selectedWissenstest;
+	}
+
+	public String getBezeichnung() {
+		return bezeichnung;
+	}
+
+	public void setBezeichnung(String bezeichnung) {
+		this.bezeichnung = bezeichnung;
+	}
+
+	public int getBearbeitungsZeit() {
+		return bearbeitungsZeit;
+	}
+
+	public void setBearbeitungsZeit(int bearbeitungsZeit) {
+		this.bearbeitungsZeit = bearbeitungsZeit;
+	}
+
+	public Date getStartzeit() {
+		return startzeit;
+	}
+
+	public void setStartzeit(Date startzeit) {
+		this.startzeit = startzeit;
+	}
+
+	public boolean isRandom() {
+		return random;
+	}
+
+	public void setRandom(boolean random) {
+		this.random = random;
+	}
+
+	public int getLaufzeit() {
+		return laufzeit;
+	}
+
+	public void setLaufzeit(int laufzeit) {
+		this.laufzeit = laufzeit;
 	}
 }

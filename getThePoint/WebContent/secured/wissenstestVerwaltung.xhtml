@@ -13,12 +13,40 @@
 	<ui:define name="content">
 		<h:form rendered="#{menuBean.hasLehrenderRole()}">
 
-			<p:growl id="msg" showDetail="true" escape="false" />
+			<p:growl id="growl" showDetail="true" escape="false" />
+
+			<p:dataTable id="testlist"
+				value="#{wissenstestVerwaltungBean.wissenstests}"
+				selectionMode="single"
+				
+				type="ordered" var="test" rowIndexVar="row" rowKey="#{test.id}" itemType="none">
+				<f:facet name="header">Verfügbare Tests</f:facet>
+				<p:column>
+					<p:outputLabel value="#{test.bezeichnung}" />
+				</p:column>
+			</p:dataTable>
+
 			<p:panel id="grundeinstellungen" header="Grundeinstellungen"
 				collapsed="true" toggleable="true" toggleSpeed="500">
-			<p:selectOneMenu value="#{wissenstestVerwaltungBean.selectedKategorie}">
-			</p:selectOneMenu>
-			
+				<p:panelGrid columns="2">
+					<p:outputLabel for="bezeichnung" value="Bezeichnung"></p:outputLabel>
+					<p:inputText id="bezeichnung"
+						value="#{wissenstestVerwaltungBean.bezeichnung}"></p:inputText>
+					<p:outputLabel for="time" value="Zeit pro Frage (s)"></p:outputLabel>
+
+					<p:inputText id="time"
+						value="#{wissenstestVerwaltungBean.bearbeitungsZeit}"></p:inputText>
+					<p:outputLabel for="start" value="Startzeit"></p:outputLabel>
+					<p:calendar id="start" pattern="MM/dd/yyyy HH:mm" timeZone="CET"
+						value="#{wissenstestVerwaltungBean.startzeit}"></p:calendar>
+					<p:outputLabel for="laufzeit" value="Verfügbarkeitsdauer (min)"></p:outputLabel>
+					<p:inputText id="laufzeit"
+						value="#{wissenstestVerwaltungBean.laufzeit}" required="true"></p:inputText>
+				</p:panelGrid>
+				<p:commandButton value="Test jetzt starten"
+					action="#{wissenstestVerwaltungBean.startTestNow()}"></p:commandButton>
+
+
 			</p:panel>
 			<p:panel id="fragenauswahl" header="Fragenauswahl" toggleable="true"
 				collapsed="true" toggleSpeed="500">
@@ -37,12 +65,9 @@
 						<p:spacer />
 					</p:selectOneMenu>
 				</p:panelGrid>
-				<p:panelGrid columns="1">
-					
-					<p:commandButton id="save" icon="ui-icon-disk" title="Speichern"
-						style="margin-top:5px" />
-				</p:panelGrid>
+
 			</p:panel>
+			<p:commandButton title="Speichern" update="growl" icon="ui-icon-disk" />
 		</h:form>
 	</ui:define>
 
