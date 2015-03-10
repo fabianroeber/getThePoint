@@ -20,6 +20,7 @@ import de.hdm.getThePoint.bo.KategorieBo;
 import de.hdm.getThePoint.bo.WissenstestBo;
 import de.hdm.getThePoint.db.mapper.FrageMapper;
 import de.hdm.getThePoint.db.mapper.KategorieMapper;
+import de.hdm.getThePoint.db.mapper.LehrenderMapper;
 import de.hdm.getThePoint.db.mapper.WissenstestMapper;
 
 /**
@@ -51,20 +52,19 @@ public class WissenstestVerwaltungBean implements Serializable {
 	private KategorieBo selectedKategorie;
 
 	// Attribute für den aktuellen Wissenstest
-	
-	
-	
+
 	private int laufzeit;
-	
 
 	private FrageMapper frageMapper;
 	private KategorieMapper kategorieMapper;
 	private WissenstestMapper wissenstestMapper;
+	private LehrenderMapper lehrenderMapper;
 
 	public WissenstestVerwaltungBean() {
 		frageMapper = new FrageMapper();
 		wissenstestMapper = new WissenstestMapper();
 		kategorieMapper = new KategorieMapper();
+		lehrenderMapper = new LehrenderMapper();
 		dlmfragen = new DualListModel<FrageBo>(fragen, fragen);
 	}
 
@@ -112,22 +112,12 @@ public class WissenstestVerwaltungBean implements Serializable {
 	}
 
 	/**
-	 * Lädt alle Wissenstests aus der Datenbank
+	 * Lädt alle Wissenstests, die bearbeitet werden dürfen, aus der Datenbank.
 	 */
 	public void getAllWissenstests() {
-		List<WissenstestBo> allwissenstests = wissenstestMapper
-				.getModelsAsList(dataAccessBean.getDataAccess()
-						.getAllWissentests());
-		wissenstests = new ArrayList<WissenstestBo>();
-
-		for (WissenstestBo wissenstestBo : allwissenstests) {
-			if (userBean.getLehrender() != null) {
-				if (userBean.getLehrender()
-						.equals(wissenstestBo.getLehrender())) {
-					wissenstests.add(wissenstestBo);
-				}
-			}
-		}
+		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
+				.getDataAccess().getWissentestsByLehrenderWithoutErgebnis(
+						lehrenderMapper.getDbModel(userBean.getLehrender())));
 	}
 
 	public void getAllKategorien() {
@@ -144,7 +134,7 @@ public class WissenstestVerwaltungBean implements Serializable {
 				null,
 				new FacesMessage("Erfolgreich gestartet!",
 						"Wissenstest wurde gestartet. Die Bearbeitungdauer berträgt "
-								+ bearbeitungsZeit + " Minuten ab jetzt."));
+								+ laufzeit + " Minuten ab jetzt."));
 	}
 
 	public List<FrageBo> getFragen() {
@@ -209,38 +199,6 @@ public class WissenstestVerwaltungBean implements Serializable {
 
 	public void setSelectedWissenstest(WissenstestBo selectedWissenstest) {
 		this.selectedWissenstest = selectedWissenstest;
-	}
-
-	public String getBezeichnung() {
-		return bezeichnung;
-	}
-
-	public void setBezeichnung(String bezeichnung) {
-		this.bezeichnung = bezeichnung;
-	}
-
-	public int getBearbeitungsZeit() {
-		return bearbeitungsZeit;
-	}
-
-	public void setBearbeitungsZeit(int bearbeitungsZeit) {
-		this.bearbeitungsZeit = bearbeitungsZeit;
-	}
-
-	public Date getStartzeit() {
-		return startzeit;
-	}
-
-	public void setStartzeit(Date startzeit) {
-		this.startzeit = startzeit;
-	}
-
-	public boolean isRandom() {
-		return random;
-	}
-
-	public void setRandom(boolean random) {
-		this.random = random;
 	}
 
 	public int getLaufzeit() {
