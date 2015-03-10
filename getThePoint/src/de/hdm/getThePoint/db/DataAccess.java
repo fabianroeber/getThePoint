@@ -96,6 +96,25 @@ public class DataAccess implements Serializable {
 				.getResultList();
 		return list;
 	}
+	
+	/**
+	 * Methode zum Abrufen aller {@link Wissenstest} eines Lehrenden, für
+	 * welchen Ergebnisse vorhanden sind.
+	 * 
+	 * @return
+	 */
+	public List<Wissenstest> getWissentestsByLehrenderWithErgebnis(Lehrender lehrender)
+			throws PersistenceException {
+
+		entityManager = entityManagerFactory.createEntityManager();
+
+		List<Wissenstest> list = entityManager
+				.createQuery(
+						"SELECT DISTINCT wissenstest FROM Wissenstest wissenstest, Ergebnis ergebnis WHERE wissenstest MEMBER OF ergebnis.wissenstest AND wissenstest.lehrender.id = "
+								+ lehrender.getId(), Wissenstest.class)
+				.getResultList();
+		return list;
+	}
 
 	/**
 	 * Methode zum Abrufen aller {@link Wissenstest}, für welchen Ergebnisse

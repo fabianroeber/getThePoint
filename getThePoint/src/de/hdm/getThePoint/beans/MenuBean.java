@@ -58,13 +58,18 @@ public class MenuBean implements Serializable {
 					"/secured/ergebnisse_student.xhtml", "Ergebnisse"));
 		}
 		if (hasLehrenderRole()) {
+			
 			menuVorlage.add(new GTPMenuItem(0,
 					"/secured/wissenstestVerwaltung.xhtml",
-					"Wissenstest - Verwaltung"));
-			menuVorlage.add(new GTPMenuItem(1, "/secured/fragenpool.xhtml",
+					"Verwaltung"));
+			menuVorlage.add(new GTPMenuItem(1,
+					"/secured/wissenstests_monitor.xhtml",
+					"Monitor"));
+			menuVorlage.add(new GTPMenuItem(2, "/secured/fragenpool.xhtml",
 					"Fragenpool"));
-			menuVorlage.add(new GTPMenuItem(2, "/secured/auswertungen.xhtml",
+			menuVorlage.add(new GTPMenuItem(3, "/secured/auswertungen.xhtml",
 					"Auswertungen"));
+
 		}
 		if (hasAdminRole()) {
 			menuVorlage.add(new GTPMenuItem(2, "/secured/lehrende.xhtml",

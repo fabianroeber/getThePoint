@@ -22,6 +22,7 @@ import de.hdm.getThePoint.db.mapper.FrageMapper;
 import de.hdm.getThePoint.db.mapper.KategorieMapper;
 import de.hdm.getThePoint.db.mapper.LehrenderMapper;
 import de.hdm.getThePoint.db.mapper.WissenstestMapper;
+import de.hdm.getThePoint.enums.TestStatus;
 
 /**
  * 
@@ -43,8 +44,13 @@ public class WissenstestVerwaltungBean implements Serializable {
 	@ManagedProperty(value = "#{dataAccesBean}")
 	public DataAccessBean dataAccessBean;
 
+	@ManagedProperty(value = "#{wissenstestBean}")
+	public WissenstestBean wissenstestBean;
+
 	private List<FrageBo> fragen;
 	private List<WissenstestBo> wissenstests;
+	private List<WissenstestBo> alleTests;
+	private List<WissenstestBo> laufendeTests;
 	private WissenstestBo selectedWissenstest;
 	private List<KategorieBo> kategorien;
 	private List<FrageBo> wissenstestfragen;
@@ -52,8 +58,9 @@ public class WissenstestVerwaltungBean implements Serializable {
 	private KategorieBo selectedKategorie;
 
 	// Attribute für den aktuellen Wissenstest
-
 	private int laufzeit;
+
+	static final long ONE_MINUTE_IN_MILLIS = 60000;
 
 	private FrageMapper frageMapper;
 	private KategorieMapper kategorieMapper;
@@ -73,6 +80,19 @@ public class WissenstestVerwaltungBean implements Serializable {
 		getAllFragen();
 		getAllKategorien();
 		getAllWissenstests();
+		getAllLaufendeTests();
+		getAlleWissensTests();
+	}
+
+	private void getAlleWissensTests() {
+		alleTests = wissenstestMapper.getModelsAsList(dataAccessBean
+				.getDataAccess().getAllWissentests());
+	}
+
+	/**
+	 * Lädt alle laufenden Tests
+	 */
+	private void getAllLaufendeTests() {
 
 	}
 
@@ -98,8 +118,8 @@ public class WissenstestVerwaltungBean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
-	public void onRowSelect(int id) {
-		selectedWissenstest = wissenstests.get(id);
+	public void onRowSelect(WissenstestBo bo) {
+		selectedWissenstest = bo;
 	}
 
 	/**
@@ -120,21 +140,81 @@ public class WissenstestVerwaltungBean implements Serializable {
 						lehrenderMapper.getDbModel(userBean.getLehrender())));
 	}
 
+	/**
+	 * Lädt alle Kategortien
+	 */
 	public void getAllKategorien() {
 		kategorien = kategorieMapper.getModelsAsList(dataAccessBean
 				.getDataAccess().getAllKategorie());
 	}
 
 	/**
-	 * Starten den ausgewählten Wissenstest manuell
+	 * Diese Methode startet den ausgewählten Wissenstest manuell.
 	 */
-	public void startTestNow() {
-		selectedWissenstest.setStartzeit(new Date(System.currentTimeMillis()));
+	public void startTestNow(WissenstestBo test) {
+
+		Date date = new Date(System.currentTimeMillis());
+		test.setStartzeit(date);
+		test.setEndzeit(new Date(date.getTime()
+				+ (laufzeit * ONE_MINUTE_IN_MILLIS)));
 		FacesContext.getCurrentInstance().addMessage(
 				null,
 				new FacesMessage("Erfolgreich gestartet!",
 						"Wissenstest wurde gestartet. Die Bearbeitungdauer berträgt "
 								+ laufzeit + " Minuten ab jetzt."));
+		saveWissenstest(test);
+	}
+
+	/**
+	 * Diese Mehtode stoppt einen laufenden Test
+	 */
+	public void stopTestNow(WissenstestBo test) {
+		test.setEndzeit(new Date(System.currentTimeMillis()));
+		FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						null,
+						new FacesMessage("Erfolgreich beendet!",
+								"Wissenstest wurde beendet, er kann nun nicht mehr durchgeführt werden"));
+		saveWissenstest(test);
+	}
+
+	/**
+	 * Diese Methode prüft, ob der Anwender der Ersteller des Wissenstest ist.
+	 * 
+	 * @param wissenstest
+	 * @return
+	 */
+	public boolean isUserErsteller(WissenstestBo wissenstest) {
+		if (wissenstest.getLehrender().equals(userBean.getLehrender())) {
+			return true;
+		} else
+			return false;
+	}
+
+	/**
+	 * Diese Methode liefert den Status des Wissenstests
+	 * 
+	 * @return
+	 */
+	public TestStatus getTestStatus(WissenstestBo wissenstest) {
+		if (wissenstestBean.isWissenstestActivated(wissenstest)) {
+			return TestStatus.RUNNING;
+		} else if (wissenstests.contains(wissenstest)) {
+			return TestStatus.WAITING;
+		} else
+			return TestStatus.COMPLETED;
+	}
+
+	/**
+	 * Diese Methode speichert einen Wissenstest
+	 * 
+	 * @param test
+	 */
+	public void saveWissenstest(WissenstestBo test) {
+		dataAccessBean.getDataAccess().saveWissenstest(
+				wissenstestMapper.getDbModel(test));
+		init();
 	}
 
 	public List<FrageBo> getFragen() {
@@ -208,4 +288,29 @@ public class WissenstestVerwaltungBean implements Serializable {
 	public void setLaufzeit(int laufzeit) {
 		this.laufzeit = laufzeit;
 	}
+
+	public List<WissenstestBo> getAlleTests() {
+		return alleTests;
+	}
+
+	public void setAlleTests(List<WissenstestBo> alleTests) {
+		this.alleTests = alleTests;
+	}
+
+	public List<WissenstestBo> getLaufendeTests() {
+		return laufendeTests;
+	}
+
+	public void setLaufendeTests(List<WissenstestBo> laufendeTests) {
+		this.laufendeTests = laufendeTests;
+	}
+
+	public WissenstestBean getWissenstestBean() {
+		return wissenstestBean;
+	}
+
+	public void setWissenstestBean(WissenstestBean wissenstestBean) {
+		this.wissenstestBean = wissenstestBean;
+	}
+
 }

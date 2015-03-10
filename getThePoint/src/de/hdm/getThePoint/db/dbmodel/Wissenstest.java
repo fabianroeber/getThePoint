@@ -30,8 +30,13 @@ public class Wissenstest extends HibernateModel {
 	private static final long serialVersionUID = 7719728256949700400L;
 	private Integer id;
 	private Lehrender lehrender;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date startzeit;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date endzeit;
+	
 	private Integer zeitFrage;
 	private Character random;
 	private Character starttyp;

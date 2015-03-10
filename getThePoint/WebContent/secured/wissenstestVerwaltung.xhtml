@@ -25,9 +25,10 @@
 					<p:outputLabel value="#{test.bezeichnung}" />
 				</p:column>
 				<p:ajax event="rowSelect"
-					listener="#{wissenstestVerwaltungBean.onRowSelect(row)}"
+					listener="#{wissenstestVerwaltungBean.onRowSelect(test)}"
 					update="@form"></p:ajax>
 			</p:dataTable>
+
 
 			<p:panel id="grundeinstellungen"
 				header="Grundeinstellungen #{wissenstestVerwaltungBean.selectedWissenstest.bezeichnung}"
@@ -46,11 +47,10 @@
 					<p:inputText id="laufzeit"
 						value="#{wissenstestVerwaltungBean.laufzeit}" required="true"></p:inputText>
 					<p:outputLabel for="zufall" value="Zufallsmodus"></p:outputLabel>
-					<p:selectBooleanButton id="zufall" offLabel="Aus" onLabel="An" value="#{wissenstestVerwaltungBean.selectedWissenstest.random}"></p:selectBooleanButton>
+					<p:selectBooleanButton id="zufall" offLabel="Aus" onLabel="An"
+						value="#{wissenstestVerwaltungBean.selectedWissenstest.random}"></p:selectBooleanButton>
 				</p:panelGrid>
-				<p:commandButton value="Test jetzt starten"
-					action="#{wissenstestVerwaltungBean.startTestNow()}"></p:commandButton>
-
+			
 
 			</p:panel>
 			<p:panel id="fragenauswahl" header="Fragenauswahl" toggleable="true"
@@ -70,8 +70,8 @@
 						<p:spacer />
 					</p:selectOneMenu>
 				</p:panelGrid>
-
 			</p:panel>
+			
 			<p:commandButton title="Speichern" update="growl" icon="ui-icon-disk" />
 		</h:form>
 	</ui:define>
