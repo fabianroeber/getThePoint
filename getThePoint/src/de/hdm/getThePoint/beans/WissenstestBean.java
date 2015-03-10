@@ -189,7 +189,7 @@ public class WissenstestBean implements Serializable {
 	 * @param wissenstest
 	 * @return
 	 */
-	private boolean isWissenstestActivated(WissenstestBo wissenstest) {
+	public boolean isWissenstestActivated(WissenstestBo wissenstest) {
 
 		Date now = new Date(System.currentTimeMillis());
 

@@ -51,11 +51,11 @@ public class WissenstestVerwaltungBean implements Serializable {
 	private KategorieBo selectedKategorie;
 
 	// Attribute für den aktuellen Wissenstest
-	private String bezeichnung;
-	private int bearbeitungsZeit;
-	private Date startzeit;
+	
+	
+	
 	private int laufzeit;
-	private boolean random;
+	
 
 	private FrageMapper frageMapper;
 	private KategorieMapper kategorieMapper;
@@ -73,7 +73,7 @@ public class WissenstestVerwaltungBean implements Serializable {
 		getAllFragen();
 		getAllKategorien();
 		getAllWissenstests();
-		getAllWissenstestFragen();
+
 	}
 
 	public boolean checkLoaded() {
@@ -98,16 +98,36 @@ public class WissenstestVerwaltungBean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
+	public void onRowSelect(int id) {
+		selectedWissenstest = wissenstests.get(id);
+	}
+
+	/**
+	 * Lädt alle Fragen aus der Datenbank
+	 */
 	public void getAllFragen() {
 		fragen = new ArrayList<FrageBo>();
 		fragen = frageMapper.getModelsAsList(dataAccessBean.getDataAccess()
 				.getAllFrage());
 	}
 
+	/**
+	 * Lädt alle Wissenstests aus der Datenbank
+	 */
 	public void getAllWissenstests() {
+		List<WissenstestBo> allwissenstests = wissenstestMapper
+				.getModelsAsList(dataAccessBean.getDataAccess()
+						.getAllWissentests());
 		wissenstests = new ArrayList<WissenstestBo>();
-		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
-				.getDataAccess().getAllWissentests());
+
+		for (WissenstestBo wissenstestBo : allwissenstests) {
+			if (userBean.getLehrender() != null) {
+				if (userBean.getLehrender()
+						.equals(wissenstestBo.getLehrender())) {
+					wissenstests.add(wissenstestBo);
+				}
+			}
+		}
 	}
 
 	public void getAllKategorien() {
@@ -125,10 +145,6 @@ public class WissenstestVerwaltungBean implements Serializable {
 				new FacesMessage("Erfolgreich gestartet!",
 						"Wissenstest wurde gestartet. Die Bearbeitungdauer berträgt "
 								+ bearbeitungsZeit + " Minuten ab jetzt."));
-	}
-
-	public void getAllWissenstestFragen() {
-
 	}
 
 	public List<FrageBo> getFragen() {

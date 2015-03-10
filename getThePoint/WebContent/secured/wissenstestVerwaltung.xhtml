@@ -17,31 +17,36 @@
 
 			<p:dataTable id="testlist"
 				value="#{wissenstestVerwaltungBean.wissenstests}"
-				selectionMode="single"
-				
-				type="ordered" var="test" rowIndexVar="row" rowKey="#{test.id}" itemType="none">
+				selection="#{wissenstestVerwaltungBean.selectedWissenstest}"
+				selectionMode="single" type="ordered" var="test" rowIndexVar="row"
+				rowKey="#{test.id}" itemType="none">
 				<f:facet name="header">Verfügbare Tests</f:facet>
 				<p:column>
 					<p:outputLabel value="#{test.bezeichnung}" />
 				</p:column>
+				<p:ajax event="rowSelect"
+					listener="#{wissenstestVerwaltungBean.onRowSelect(row)}"
+					update="@form"></p:ajax>
 			</p:dataTable>
 
-			<p:panel id="grundeinstellungen" header="Grundeinstellungen"
+			<p:panel id="grundeinstellungen"
+				header="Grundeinstellungen #{wissenstestVerwaltungBean.selectedWissenstest.bezeichnung}"
 				collapsed="true" toggleable="true" toggleSpeed="500">
 				<p:panelGrid columns="2">
 					<p:outputLabel for="bezeichnung" value="Bezeichnung"></p:outputLabel>
 					<p:inputText id="bezeichnung"
-						value="#{wissenstestVerwaltungBean.bezeichnung}"></p:inputText>
+						value="#{wissenstestVerwaltungBean.selectedWissenstest.bezeichnung}"></p:inputText>
 					<p:outputLabel for="time" value="Zeit pro Frage (s)"></p:outputLabel>
-
 					<p:inputText id="time"
-						value="#{wissenstestVerwaltungBean.bearbeitungsZeit}"></p:inputText>
+						value="#{wissenstestVerwaltungBean.selectedWissenstest.bearbeitungszeit}"></p:inputText>
 					<p:outputLabel for="start" value="Startzeit"></p:outputLabel>
-					<p:calendar id="start" pattern="MM/dd/yyyy HH:mm" timeZone="CET"
-						value="#{wissenstestVerwaltungBean.startzeit}"></p:calendar>
+					<p:calendar id="start" pattern="dd/MM/yyyy HH:mm" timeZone="CET"
+						value="#{wissenstestVerwaltungBean.selectedWissenstest.startzeit}"></p:calendar>
 					<p:outputLabel for="laufzeit" value="Verfügbarkeitsdauer (min)"></p:outputLabel>
 					<p:inputText id="laufzeit"
 						value="#{wissenstestVerwaltungBean.laufzeit}" required="true"></p:inputText>
+					<p:outputLabel for="zufall" value="Zufallsmodus"></p:outputLabel>
+					<p:selectBooleanButton id="zufall" offLabel="Aus" onLabel="An" value="#{wissenstestVerwaltungBean.selectedWissenstest.random}"></p:selectBooleanButton>
 				</p:panelGrid>
 				<p:commandButton value="Test jetzt starten"
 					action="#{wissenstestVerwaltungBean.startTestNow()}"></p:commandButton>
