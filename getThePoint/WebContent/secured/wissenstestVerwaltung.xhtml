@@ -50,7 +50,7 @@
 					<p:selectBooleanButton id="zufall" offLabel="Aus" onLabel="An"
 						value="#{wissenstestVerwaltungBean.selectedWissenstest.random}"></p:selectBooleanButton>
 				</p:panelGrid>
-			
+
 
 			</p:panel>
 			<p:panel id="fragenauswahl" header="Fragenauswahl" toggleable="true"
@@ -70,8 +70,25 @@
 						<p:spacer />
 					</p:selectOneMenu>
 				</p:panelGrid>
+				<p:pickList id="FragenPickList"
+					value="#{wissenstestVerwaltungBean.dlmfragen}" var="frage"
+					effect="bounce" itemValue="#{frage}" itemLabel="#{frage.text}"
+					showSourceControls="true" showTargetControls="true"
+					showCheckbox="true" showSourceFilter="true" showTargetFilter="true"
+					filterMatchMode="contains">
+					<f:facet name="sourceCaption">Fragenpool</f:facet>
+					<f:facet name="targetCaption">Wissenstest</f:facet>
+					<p:ajax event="transfer" listener="#{wissenstestBean.onTransfer()}"
+						update="growl" />
+					<p:column style="width:25%">
+						<h:outputText styleClass="ui-theme ui-theme-#{frage.text}" />
+					</p:column>
+					<p:column style="width:75%;">
+						<h:outputText value="#{frage.text}" />
+					</p:column>
+				</p:pickList>
 			</p:panel>
-			
+
 			<p:commandButton title="Speichern" update="growl" icon="ui-icon-disk" />
 		</h:form>
 	</ui:define>

@@ -48,7 +48,7 @@ public class WissenstestVerwaltungBean implements Serializable {
 	public WissenstestBean wissenstestBean;
 
 	private List<FrageBo> fragen;
-	private List<WissenstestBo> wissenstests;
+	private List<WissenstestBo> wissenstests = new ArrayList<WissenstestBo>();
 	private List<WissenstestBo> alleTests;
 	private List<WissenstestBo> laufendeTests;
 	private WissenstestBo selectedWissenstest;
@@ -72,7 +72,6 @@ public class WissenstestVerwaltungBean implements Serializable {
 		wissenstestMapper = new WissenstestMapper();
 		kategorieMapper = new KategorieMapper();
 		lehrenderMapper = new LehrenderMapper();
-		dlmfragen = new DualListModel<FrageBo>(fragen, fragen);
 	}
 
 	@PostConstruct
@@ -82,6 +81,7 @@ public class WissenstestVerwaltungBean implements Serializable {
 		getAllWissenstests();
 		getAllLaufendeTests();
 		getAlleWissensTests();
+		dlmfragen = new DualListModel<FrageBo>(fragen, fragen);
 	}
 
 	private void getAlleWissensTests() {

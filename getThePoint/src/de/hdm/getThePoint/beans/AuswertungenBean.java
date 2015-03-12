@@ -48,7 +48,6 @@ public class AuswertungenBean implements Serializable {
 	private WissenstestBo selectedWissenstest;
 	private WissenstestMapper wissenstestMapper;
 	private ErgebnisMapper ergebnisMapper;
-	private DataAccess dataAccess;
 	private BarChartModel barModel;
 	private List<AuswertungsErgebnis> auswertungsErgebnis;
 	private int definedPercentage;
@@ -69,8 +68,8 @@ public class AuswertungenBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		getAllWissenstests();
-		createAuswertungsErgebnisse();
-		createBarModels();
+//		createAuswertungsErgebnisse();
+//		createBarModels();
 	}
 
 	/**
@@ -302,32 +301,34 @@ public class AuswertungenBean implements Serializable {
 	}
 
 	public void getAllWissenstests() {
-		wissenstests = wissenstestMapper.getModelsAsList(dataAccess
-				.getAllWissentests());
+		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
+				.getDataAccess().getAllWissentests());
 	}
 
 	public void getAllErgebnisse() {
-		ergebnisse = ergebnisMapper.getModelsAsList(dataAccess
-				.getAllErgebnisse());
+		ergebnisse = ergebnisMapper.getModelsAsList(dataAccessBean
+				.getDataAccess().getAllErgebnisse());
 	}
 
 	public void getErgebnisseByWissenstest(WissenstestBo selektierterWissenstest) {
-		ergebnisseByWissenstest = ergebnisMapper.getModelsAsList(dataAccess
-				.getErgebnisseByWissenstest(selektierterWissenstest));
+		ergebnisseByWissenstest = ergebnisMapper.getModelsAsList(dataAccessBean
+				.getDataAccess().getErgebnisseByWissenstest(
+						selektierterWissenstest));
 	}
 
 	public void getErgebnisseByWissenstestOrderByStudent(
 			WissenstestBo selektierterWissenstest) {
 		ergebnisseByWissenstestOrderByStudent = ergebnisMapper
-				.getModelsAsList(dataAccess
+				.getModelsAsList(dataAccessBean.getDataAccess()
 						.getErgebnisseByWissenstest(selektierterWissenstest));
 	}
 
 	public void getErgebnisseByWissenstestOrderByFrageUndRichtig(
 			WissenstestBo selektierterWissenstest) {
 		ergebnisseByWissenstestOrderByFrageUndRichtig = ergebnisMapper
-				.getModelsAsList(dataAccess
-						.getErgebnisseByWissenstestOrderByFrageUndRichtig(selektierterWissenstest));
+				.getModelsAsList(dataAccessBean.getDataAccess()
+						.getErgebnisseByWissenstestOrderByFrageUndRichtig(
+								selektierterWissenstest));
 	}
 
 	public List<WissenstestBo> getWissenstests() {
