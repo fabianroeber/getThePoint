@@ -202,6 +202,13 @@ public class DataAccess implements Serializable {
 
 	}
 
+	/**
+	 * 
+	 * Methode liefert alle Ergebnisse zu einem Wissenstest
+	 * @param selektierterWissenstest
+	 * @return
+	 * @throws PersistenceException
+	 */
 	public List<Ergebnis> getErgebnisseByWissenstest(
 			WissenstestBo selektierterWissenstest) throws PersistenceException {
 
