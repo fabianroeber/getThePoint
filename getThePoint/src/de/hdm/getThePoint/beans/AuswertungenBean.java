@@ -67,8 +67,8 @@ public class AuswertungenBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		getAllWissenstests();
-		selectedWissenstest = wissenstests.get(3);
+		getWissenstestsWithErgebnis();
+		selectedWissenstest = wissenstests.get(1);
 		createAuswertungsErgebnisse();
 		createBarModels();
 	}
@@ -304,6 +304,11 @@ public class AuswertungenBean implements Serializable {
 	public void getAllWissenstests() {
 		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
 				.getDataAccess().getAllWissentests());
+	}
+	
+	public void getWissenstestsWithErgebnis() {
+		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
+				.getDataAccess().getWissentestsWithErgebnis());
 	}
 
 	public void getAllErgebnisse() {
