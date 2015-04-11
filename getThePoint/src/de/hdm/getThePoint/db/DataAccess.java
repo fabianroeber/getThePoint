@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
 import de.hdm.getThePoint.bo.WissenstestBo;
@@ -33,14 +32,12 @@ public class DataAccess implements Serializable {
 
 	private static final long serialVersionUID = -7993963883289903662L;
 
-	private EntityManagerFactory entityManagerFactory = null;
+	private EntityManagerFactory emf = null;
 
-	private EntityManager entityManager = null;
-
-	private static final String PERSISTENCEUNIT = "getthepoint";
+	private EntityManager em = null;
 
 	public DataAccess() {
-		getEntityManagerFactory();
+		emf = JpaUtil.getEmf();
 	}
 
 	/**
@@ -50,9 +47,9 @@ public class DataAccess implements Serializable {
 	 */
 	public List<Wissenstest> getAllWissentests() throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Wissenstest> list = entityManager.createQuery(
+		List<Wissenstest> list = em.createQuery(
 				"Select wissenstest FROM Wissenstest wissenstest",
 				Wissenstest.class).getResultList();
 		return list;
@@ -68,47 +65,47 @@ public class DataAccess implements Serializable {
 	public List<Wissenstest> getWissentestsByStudentWithErgebnis(Student student)
 			throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Wissenstest> list = entityManager
+		List<Wissenstest> list = em
 				.createQuery(
 						"SELECT DISTINCT wissenstest FROM Wissenstest wissenstest, Ergebnis ergebnis WHERE wissenstest MEMBER OF ergebnis.wissenstest AND ergebnis.student.id = "
 								+ student.getId(), Wissenstest.class)
 				.getResultList();
 		return list;
 	}
-	
+
 	/**
 	 * Methode zum Abrufen aller {@link Wissenstest} eines Lehrenden, für
 	 * welchen keine Ergebnisse vorhanden sind.
 	 * 
 	 * @return
 	 */
-	public List<Wissenstest> getWissentestsByLehrenderWithoutErgebnis(Lehrender lehrender)
-			throws PersistenceException {
+	public List<Wissenstest> getWissentestsByLehrenderWithoutErgebnis(
+			Lehrender lehrender) throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Wissenstest> list = entityManager
+		List<Wissenstest> list = em
 				.createQuery(
 						"SELECT DISTINCT wissenstest FROM Wissenstest wissenstest, Ergebnis ergebnis WHERE wissenstest NOT MEMBER OF ergebnis.wissenstest AND wissenstest.lehrender.id = "
 								+ lehrender.getId(), Wissenstest.class)
 				.getResultList();
 		return list;
 	}
-	
+
 	/**
 	 * Methode zum Abrufen aller {@link Wissenstest} eines Lehrenden, für
 	 * welchen Ergebnisse vorhanden sind.
 	 * 
 	 * @return
 	 */
-	public List<Wissenstest> getWissentestsByLehrenderWithErgebnis(Lehrender lehrender)
-			throws PersistenceException {
+	public List<Wissenstest> getWissentestsByLehrenderWithErgebnis(
+			Lehrender lehrender) throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Wissenstest> list = entityManager
+		List<Wissenstest> list = em
 				.createQuery(
 						"SELECT DISTINCT wissenstest FROM Wissenstest wissenstest, Ergebnis ergebnis WHERE wissenstest MEMBER OF ergebnis.wissenstest AND wissenstest.lehrender.id = "
 								+ lehrender.getId(), Wissenstest.class)
@@ -125,9 +122,9 @@ public class DataAccess implements Serializable {
 	public List<Wissenstest> getWissentestsWithErgebnis()
 			throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Wissenstest> list = entityManager
+		List<Wissenstest> list = em
 				.createQuery(
 						"SELECT DISTINCT wissenstest FROM Wissenstest wissenstest, Ergebnis ergebnis WHERE wissenstest MEMBER OF ergebnis.wissenstest",
 						Wissenstest.class).getResultList();
@@ -142,9 +139,9 @@ public class DataAccess implements Serializable {
 	 */
 	public List<Kategorie> getAllKategorie() throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Kategorie> list = entityManager.createQuery(
+		List<Kategorie> list = em.createQuery(
 				"Select kategorie FROM Kategorie kategorie", Kategorie.class)
 				.getResultList();
 
@@ -159,9 +156,9 @@ public class DataAccess implements Serializable {
 	 */
 	public List<Frage> getAllFrage() throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Frage> list = entityManager.createQuery(
+		List<Frage> list = em.createQuery(
 				"SELECT frage FROM Frage frage ORDER BY frage.id", Frage.class)
 				.getResultList();
 		return list;
@@ -176,9 +173,9 @@ public class DataAccess implements Serializable {
 	 */
 	public List<Lehrender> getAllLehrende() throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Lehrender> list = entityManager.createQuery(
+		List<Lehrender> list = em.createQuery(
 				"SELECT lehrender FROM Lehrender lehrender", Lehrender.class)
 				.getResultList();
 		return list;
@@ -193,9 +190,9 @@ public class DataAccess implements Serializable {
 	 */
 	public List<Ergebnis> getAllErgebnisse() throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Ergebnis> list = entityManager.createQuery(
+		List<Ergebnis> list = em.createQuery(
 				"SELECT ergebnis FROM Ergebnis ergebnis", Ergebnis.class)
 				.getResultList();
 		return list;
@@ -205,6 +202,7 @@ public class DataAccess implements Serializable {
 	/**
 	 * 
 	 * Methode liefert alle Ergebnisse zu einem Wissenstest
+	 * 
 	 * @param selektierterWissenstest
 	 * @return
 	 * @throws PersistenceException
@@ -212,9 +210,9 @@ public class DataAccess implements Serializable {
 	public List<Ergebnis> getErgebnisseByWissenstest(
 			WissenstestBo selektierterWissenstest) throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Ergebnis> list = entityManager.createQuery(
+		List<Ergebnis> list = em.createQuery(
 				"SELECT ergebnis FROM Ergebnis ergebnis where ergebnis.wissenstest = "
 						+ selektierterWissenstest.getId()
 						+ " ORDER BY ergebnis.student.id", Ergebnis.class)
@@ -226,9 +224,9 @@ public class DataAccess implements Serializable {
 	public List<Ergebnis> getErgebnisseByWissenstestOrderByFrageUndRichtig(
 			WissenstestBo selektierterWissenstest) throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Ergebnis> list = entityManager.createQuery(
+		List<Ergebnis> list = em.createQuery(
 				"SELECT ergebnis FROM Ergebnis ergebnis where ergebnis.wissenstest = "
 						+ selektierterWissenstest.getId()
 						+ " ORDER BY ergebnis.frage.id, ergebnis.richtig",
@@ -240,9 +238,9 @@ public class DataAccess implements Serializable {
 	public List<Frage> getFragenByKategorie(int kategorie_id)
 			throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Frage> list = entityManager.createQuery(
+		List<Frage> list = em.createQuery(
 				"Select frage FROM Frage frage where frage.kategorie = "
 						+ kategorie_id + " ORDER BY frage.id", Frage.class)
 				.getResultList();
@@ -258,9 +256,9 @@ public class DataAccess implements Serializable {
 	 */
 	public List<Ergebnis> getErgebnisseByStudent(int id) {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Ergebnis> ergebnisse = entityManager.createQuery(
+		List<Ergebnis> ergebnisse = em.createQuery(
 				"Select ergebnis FROM Ergebnis ergebnis WHERE ergebnis.student.id = "
 						+ id, Ergebnis.class).getResultList();
 
@@ -277,9 +275,9 @@ public class DataAccess implements Serializable {
 	public List<Ergebnis> getErgebnisseByWissenstestAndStudent(Student student,
 			Wissenstest wissenstest) {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		List<Ergebnis> ergebnisse = entityManager.createQuery(
+		List<Ergebnis> ergebnisse = em.createQuery(
 				"Select ergebnis FROM Ergebnis ergebnis WHERE ergebnis.student.id = "
 						+ student.getId() + " AND ergebnis.wissenstest.id = "
 						+ wissenstest.getId(), Ergebnis.class).getResultList();
@@ -294,14 +292,13 @@ public class DataAccess implements Serializable {
 	 */
 	public void saveErgebnis(Ergebnis ergebnis) {
 
-		entityManager = entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
 
 		Ergebnis ergebnisToSave;
 
 		if (ergebnis.getId() != null) {
-			ergebnisToSave = entityManager.find(Ergebnis.class,
-					ergebnis.getId());
+			ergebnisToSave = em.find(Ergebnis.class, ergebnis.getId());
 		} else {
 			ergebnisToSave = new Ergebnis();
 		}
@@ -311,9 +308,9 @@ public class DataAccess implements Serializable {
 		ergebnisToSave.setWissenstest(ergebnis.getWissenstest());
 		ergebnisToSave.setRichtig(ergebnis.getRichtig());
 
-		entityManager.persist(ergebnisToSave);
-		entityManager.getTransaction().commit();
-		entityManager.close();
+		em.persist(ergebnisToSave);
+		em.getTransaction().commit();
+		em.close();
 
 	}
 
@@ -327,13 +324,13 @@ public class DataAccess implements Serializable {
 	public Student getStudentByKuerzel(String kuerzel)
 			throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		Student student = entityManager.createQuery(
+		Student student = em.createQuery(
 				"Select student FROM Student student where student.kuerzel = '"
 						+ kuerzel + "'", Student.class).getSingleResult();
 
-		entityManager.close();
+		em.close();
 
 		return student;
 	}
@@ -348,13 +345,13 @@ public class DataAccess implements Serializable {
 	public Lehrender getLehrenderByKuerzel(String kuerzel)
 			throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		Lehrender lehrender = entityManager.createQuery(
+		Lehrender lehrender = em.createQuery(
 				"Select lehrender FROM Lehrender lehrender where lehrender.kuerzel = '"
 						+ kuerzel + "'", Lehrender.class).getSingleResult();
 
-		entityManager.close();
+		em.close();
 
 		return lehrender;
 
@@ -369,13 +366,13 @@ public class DataAccess implements Serializable {
 	 */
 	public Admin getAdminByUserName(String name) throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
+		em = emf.createEntityManager();
 
-		Admin admin = entityManager.createQuery(
+		Admin admin = em.createQuery(
 				"Select admin FROM Admin admin WHERE admin.login = '" + name
 						+ "'", Admin.class).getSingleResult();
 
-		entityManager.close();
+		em.close();
 
 		return admin;
 
@@ -389,11 +386,11 @@ public class DataAccess implements Serializable {
 	public void saveFragen(List<Frage> fragen) {
 
 		for (Frage frage : fragen) {
-			entityManager = entityManagerFactory.createEntityManager();
-			entityManager.getTransaction().begin();
+			em = emf.createEntityManager();
+			em.getTransaction().begin();
 			Frage frageToSave;
 			if (frage.getId() != null) {
-				frageToSave = entityManager.find(Frage.class, frage.getId());
+				frageToSave = em.find(Frage.class, frage.getId());
 			} else {
 				frageToSave = new Frage();
 			}
@@ -402,24 +399,23 @@ public class DataAccess implements Serializable {
 			frageToSave.setSchwierigkeit(frage.getSchwierigkeit());
 			frageToSave.setText(frage.getText());
 
-			entityManager.persist(frageToSave);
+			em.persist(frageToSave);
 
 			for (Antwort antwort : frage.getAntworts()) {
 				Antwort antwortToSave;
 				if (antwort.getId() != null) {
-					antwortToSave = entityManager.find(Antwort.class,
-							antwort.getId());
+					antwortToSave = em.find(Antwort.class, antwort.getId());
 				} else {
 					antwortToSave = new Antwort();
 				}
 				antwort.setText(antwort.getText());
 				antwort.setFrage(frageToSave);
-				entityManager.persist(antwortToSave);
+				em.persist(antwortToSave);
 			}
 			frageToSave.setAntwort(frage.getAntwort());
-			entityManager.persist(frageToSave);
-			entityManager.getTransaction().commit();
-			entityManager.close();
+			em.persist(frageToSave);
+			em.getTransaction().commit();
+			em.close();
 		}
 
 	}
@@ -431,13 +427,12 @@ public class DataAccess implements Serializable {
 	 */
 	public void saveWissenstest(Wissenstest wissenstest) {
 
-		entityManager = entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
 
 		Wissenstest wissenstestToSave;
 		if (wissenstest.getId() != null) {
-			wissenstestToSave = entityManager.find(Wissenstest.class,
-					wissenstest.getId());
+			wissenstestToSave = em.find(Wissenstest.class, wissenstest.getId());
 		} else {
 			wissenstestToSave = new Wissenstest();
 		}
@@ -448,13 +443,13 @@ public class DataAccess implements Serializable {
 		wissenstestToSave.setLehrender(wissenstest.getLehrender());
 		wissenstestToSave.setRandom(wissenstest.getRandom());
 		wissenstestToSave.setZeitFrage(wissenstest.getZeitFrage());
-		entityManager.persist(wissenstestToSave);
+		em.persist(wissenstestToSave);
 
 		for (ZuordungWissenstestFrage zuordungWissenstestFrage : wissenstest
 				.getZuordungWissenstestFrages()) {
 			ZuordungWissenstestFrage zuordungWissenstestFrageToSave;
 			if (zuordungWissenstestFrage.getId() != null) {
-				zuordungWissenstestFrageToSave = entityManager.find(
+				zuordungWissenstestFrageToSave = em.find(
 						ZuordungWissenstestFrage.class,
 						zuordungWissenstestFrage.getId());
 			} else {
@@ -463,10 +458,10 @@ public class DataAccess implements Serializable {
 			zuordungWissenstestFrageToSave.setFrage(zuordungWissenstestFrage
 					.getFrage());
 			zuordungWissenstestFrageToSave.setWissenstest(wissenstestToSave);
-			entityManager.persist(zuordungWissenstestFrageToSave);
+			em.persist(zuordungWissenstestFrageToSave);
 		}
-		entityManager.getTransaction().commit();
-		entityManager.close();
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	/**
@@ -485,13 +480,12 @@ public class DataAccess implements Serializable {
 	 */
 	public void deleteFrage(Frage frage) {
 
-		entityManager = entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
-		entityManager.remove(entityManager.contains(frage) ? frage
-				: entityManager.merge(frage));
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		em.remove(em.contains(frage) ? frage : em.merge(frage));
 
-		entityManager.getTransaction().commit();
-		entityManager.close();
+		em.getTransaction().commit();
+		em.close();
 
 	}
 
@@ -501,13 +495,13 @@ public class DataAccess implements Serializable {
 	 * @param dbModel
 	 */
 	public void saveStudent(Student student) {
-		entityManager = entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
 
 		Student studentToSave;
 
 		if (student.getId() != null) {
-			studentToSave = entityManager.find(Student.class, student.getId());
+			studentToSave = em.find(Student.class, student.getId());
 		} else {
 			studentToSave = new Student();
 		}
@@ -516,9 +510,9 @@ public class DataAccess implements Serializable {
 		studentToSave.setName(student.getName());
 		studentToSave.setVorname(student.getVorname());
 
-		entityManager.persist(studentToSave);
-		entityManager.getTransaction().commit();
-		entityManager.close();
+		em.persist(studentToSave);
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	/**
@@ -529,14 +523,13 @@ public class DataAccess implements Serializable {
 	 */
 	public void saveLehrender(Lehrender lehrender) throws PersistenceException {
 
-		entityManager = entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
 
 		Lehrender lehrenderToSave;
 
 		if (lehrender.getId() != null) {
-			lehrenderToSave = entityManager.find(Lehrender.class,
-					lehrender.getId());
+			lehrenderToSave = em.find(Lehrender.class, lehrender.getId());
 		} else {
 			lehrenderToSave = new Lehrender();
 		}
@@ -544,9 +537,9 @@ public class DataAccess implements Serializable {
 		lehrenderToSave.setVorname(lehrender.getVorname());
 		lehrenderToSave.setKuerzel(lehrender.getKuerzel());
 
-		entityManager.persist(lehrenderToSave);
-		entityManager.getTransaction().commit();
-		entityManager.close();
+		em.persist(lehrenderToSave);
+		em.getTransaction().commit();
+		em.close();
 
 	}
 
@@ -558,32 +551,11 @@ public class DataAccess implements Serializable {
 	 */
 	public void deleteLehrender(Lehrender lehrender)
 			throws PersistenceException {
-		entityManager = entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
-		entityManager.remove(entityManager.contains(lehrender) ? lehrender
-				: entityManager.merge(lehrender));
-		entityManager.getTransaction().commit();
-		entityManager.close();
-	}
-
-	/**
-	 * Erstellt eine neue {@link EntityManagerFactory} und einen neuen
-	 * {@link EntityManager}.
-	 * 
-	 * @return
-	 */
-	private void getEntityManagerFactory() {
-		entityManagerFactory = Persistence
-				.createEntityManagerFactory(PERSISTENCEUNIT);
-
-	}
-
-	/**
-	 * Schlie�t den {@link EntityManager} und die {@link EntityManagerFactory};
-	 */
-	public void closeEntityManagerFactory() {
-		entityManager.close();
-		entityManagerFactory.close();
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		em.remove(em.contains(lehrender) ? lehrender : em.merge(lehrender));
+		em.getTransaction().commit();
+		em.close();
 	}
 
 }
