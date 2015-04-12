@@ -142,7 +142,7 @@ public class FrageBean implements Serializable {
 			}
 			dataAccessBean.getDataAccess().saveFragen(dbfragen);
 			context.addMessage(null, new FacesMessage(
-					"Fragen Erfolgriech gespeichert"));
+					"Fragen erfolgreich gespeichert"));
 		} catch (PersistenceException e) {
 			context.addMessage(null, new FacesMessage("Fehler beim Speichern"));
 		}
