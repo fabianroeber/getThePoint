@@ -68,8 +68,8 @@ public class AuswertungenBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		getWissenstestsWithErgebnis();
-		selectedWissenstest = wissenstests.get(1);
-		createAuswertungsErgebnisse();
+		selectedWissenstest = wissenstests.get(0);
+		// createAuswertungsErgebnisse();
 		createBarModels();
 	}
 
@@ -80,36 +80,34 @@ public class AuswertungenBean implements Serializable {
 	private void createAuswertungsErgebnisse() {
 		getErgebnisseByWissenstestOrderByStudent(selectedWissenstest);
 
-		// int anzrichtig = 0;
-		// int anzfalsch = 0;
-		// AuswertungsErgebnis auswerg;
-		// ErgebnisBo lasterg = null;
-		//
-		// for (ErgebnisBo erg : ergebnisseByWissenstestOrderByStudent) {
-		// if (lasterg != null)
-		// if (erg.getStudent().getId() != lasterg.getStudent().getId()) {
-		// auswerg = new AuswertungsErgebnis(erg.getStudent()
-		// .getName(), erg.getStudent().getMatrikelnummer(),
-		// (anzrichtig
-		// * 100
-		// / selectedWissenstest.getFrageZuordungen()
-		// .size()));
-		// auswertungsErgebnis.add(auswerg);
-		// anzrichtig = 0;
-		// anzfalsch = 0;
-		// }
-		//
-		// if (erg.isRichtig())
-		// anzrichtig++;
-		// else
-		// anzfalsch++;
-		//
-		// lasterg = erg;
-		// }
-		// auswerg = new AuswertungsErgebnis(lasterg.getStudent().getName(),
-		// lasterg.getStudent().getMatrikelnummer(), anzrichtig * 100
-		// / lasterg.getWissenstest().getFrageZuordungen().size());
-		// auswertungsErgebnis.add(auswerg);
+		int anzrichtig = 0;
+		int anzfalsch = 0;
+		AuswertungsErgebnis auswerg;
+		ErgebnisBo lasterg = null;
+
+		for (ErgebnisBo erg : ergebnisseByWissenstestOrderByStudent) {
+			if (lasterg != null)
+				if (erg.getStudent().getId() != lasterg.getStudent().getId()) {
+					auswerg = new AuswertungsErgebnis(erg.getStudent()
+							.getName(), erg.getStudent().getMatrikelnummer(),
+							(anzrichtig * 100 / selectedWissenstest
+									.getFrageZuordungen().size()));
+					auswertungsErgebnis.add(auswerg);
+					anzrichtig = 0;
+					anzfalsch = 0;
+				}
+
+			if (erg.isRichtig())
+				anzrichtig++;
+			else
+				anzfalsch++;
+
+			lasterg = erg;
+		}
+		auswerg = new AuswertungsErgebnis(lasterg.getStudent().getName(),
+				lasterg.getStudent().getMatrikelnummer(), anzrichtig * 100
+						/ lasterg.getWissenstest().getFrageZuordungen().size());
+		auswertungsErgebnis.add(auswerg);
 
 	}
 
@@ -207,6 +205,7 @@ public class AuswertungenBean implements Serializable {
 		int anzahlRichtigeAntwGes = 0;
 		int anzahlFragen = 0;
 		int laststudentid = 0;
+		String antwort;
 		for (ErgebnisBo er : ergebnisseByWissenstest) {
 			if (laststudentid != er.getStudent().getId()) {
 				i++;
@@ -223,7 +222,11 @@ public class AuswertungenBean implements Serializable {
 			Cell cell3 = row3.createCell(0);
 			cell3.setCellValue(er.getFrage().getText());
 			Cell cell4 = row3.createCell(1);
-			cell4.setCellValue(er.getAntwort().getText());
+			if (er.getAntwort() == null) {
+				cell4.setCellValue("[keine Antwort]");
+			} else {
+				cell4.setCellValue(er.getAntwort().getText());
+			}
 			Cell cell5 = row3.createCell(2);
 
 			cell5.setCellValue(er.isRichtig() ? "richtig" : "falsch");
@@ -305,7 +308,7 @@ public class AuswertungenBean implements Serializable {
 		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
 				.getDataAccess().getAllWissentests());
 	}
-	
+
 	public void getWissenstestsWithErgebnis() {
 		wissenstests = wissenstestMapper.getModelsAsList(dataAccessBean
 				.getDataAccess().getWissentestsWithErgebnis());
