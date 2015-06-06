@@ -1,7 +1,6 @@
 package de.hdm.getThePoint.beans;
 
 import java.io.Serializable;
-import java.security.GeneralSecurityException;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -9,8 +8,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.PersistenceException;
-
-import com.unboundid.ldap.sdk.LDAPException;
 
 import de.hdm.getThePoint.bo.LehrenderBo;
 import de.hdm.getThePoint.bo.StudentBo;
@@ -124,31 +121,31 @@ public class UserBean implements Serializable {
 				}
 			} else {
 				// LDAP CHECK
-				try {
-					String ldapuser = ldapAuthentificator.authenticate(
-							userName, password);
+				// try {
+				// String ldapuser = ldapAuthentificator.authenticate(
+				// userName, password);
 
-					if (ldapuser != null && ldapuser.equals(userName)) {
-						loggedIn = true;
+				if (userName != null) {
+					loggedIn = true;
 
-						checkLehrender();
-						if (lehrender == null) {
-							organizeStudentUserData();
-							if (mobile) {
-								return navigationBean.redirectToMobileWelcome();
-							}
-							return navigationBean.redirectToWelcome();
-						}
+					// checkLehrender();
+					if (lehrender == null) {
+						organizeStudentUserData();
 						if (mobile) {
 							return navigationBean.redirectToMobileWelcome();
 						}
 						return navigationBean.redirectToWelcome();
 					}
-
-				} catch (LDAPException | GeneralSecurityException e) {
-					e.printStackTrace();
-					loginFailed();
+					if (mobile) {
+						return navigationBean.redirectToMobileWelcome();
+					}
+					return navigationBean.redirectToWelcome();
 				}
+
+				// } catch (LDAPException | GeneralSecurityException e) {
+				// e.printStackTrace();
+				// loginFailed();
+				// }
 
 			}
 
@@ -211,8 +208,13 @@ public class UserBean implements Serializable {
 	 * Diese Methode l&auml;dt die Daten eines Studenten aus der Datenbank.
 	 */
 	private void checkStudent() {
-		student = studentMapper.getModel(dataAccessBean.getDataAccess()
-				.getStudentByKuerzel(userName));
+		if (studentMapper.getModel(dataAccessBean.getDataAccess()
+				.getStudentByKuerzel(userName)) != null) {
+			student = studentMapper.getModel(dataAccessBean.getDataAccess()
+					.getStudentByKuerzel(userName));
+		}
+		
+
 	}
 
 	/**

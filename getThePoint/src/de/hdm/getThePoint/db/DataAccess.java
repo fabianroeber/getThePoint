@@ -313,6 +313,11 @@ public class DataAccess implements Serializable {
 		em.close();
 
 	}
+	
+	public boolean hasStudent(String kuerzel) {
+		em = emf.createEntityManager();
+		
+	}
 
 	/**
 	 * Ermittelt einen Studenten anhand seines Kuerzels.
