@@ -3,6 +3,7 @@ package de.hdm.getThePoint.beans;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -69,7 +70,7 @@ public class AuswertungenBean implements Serializable {
 	public void init() {
 		getWissenstestsWithErgebnis();
 		selectedWissenstest = wissenstests.get(0);
-		// createAuswertungsErgebnisse();
+		createAuswertungsErgebnisse();
 		createBarModels();
 	}
 
@@ -84,6 +85,7 @@ public class AuswertungenBean implements Serializable {
 		int anzfalsch = 0;
 		AuswertungsErgebnis auswerg;
 		ErgebnisBo lasterg = null;
+		auswertungsErgebnis = new ArrayList<AuswertungsErgebnis>();
 
 		for (ErgebnisBo erg : ergebnisseByWissenstestOrderByStudent) {
 			if (lasterg != null)
@@ -106,7 +108,7 @@ public class AuswertungenBean implements Serializable {
 		}
 		auswerg = new AuswertungsErgebnis(lasterg.getStudent().getName(),
 				lasterg.getStudent().getMatrikelnummer(), anzrichtig * 100
-						/ lasterg.getWissenstest().getFrageZuordungen().size());
+						/ selectedWissenstest.getFrageZuordungen().size());
 		auswertungsErgebnis.add(auswerg);
 
 	}
