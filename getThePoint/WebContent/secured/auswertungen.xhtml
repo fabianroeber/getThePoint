@@ -55,9 +55,15 @@
 
 			<p:dataTable value="#{auswertungenBean.auswertungsErgebnis}"
 				rowIndexVar="row" id="auswertungsErgebnis" var="auswerg">
-				<p:column headerText="Name" value="#{auswerg.studentname}"></p:column>
-				<p:column headerText="Matrikel-Nr." value="#{auswerg.matrikelnr}"></p:column>
-				<p:column headerText="%" value="#{auswerg.richtigInProzent}"></p:column>
+				<p:column headerText="Name">
+					<p:outputLabel value="#{auswerg.studentname}" />
+				</p:column>
+				<p:column headerText="Matrikel-Nr.">
+					<p:outputLabel value="#{auswerg.matrikelnr}" />
+				</p:column>
+				<p:column headerText="%">
+					<p:outputLabel value="#{auswerg.richtigInProzent}" />
+				</p:column>
 			</p:dataTable>
 
 		</h:form>
@@ -73,5 +79,5 @@
 
 
 	</ui:define>
-	
+
 </ui:composition>
