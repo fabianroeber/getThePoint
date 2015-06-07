@@ -40,7 +40,7 @@
 			<property name="hibernate.connection.url"
 				value="jdbc:mysql://db.cbax0ml6ihqg.eu-central-1.rds.amazonaws.com:3306/getthepointdb" />
 			<property name="hibernate.connection.username" value="shuricano" />
-			<property name="hibernate.connection.password" value="test1234" />
+			<property name="hibernate.connection.password" value="spicedgold" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="show_sql" value="true" />
