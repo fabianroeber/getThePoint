@@ -8,7 +8,7 @@
 	xmlns:of="http://omnifaces.org/functions"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	<ui:define name="content">
-		<h:form rendered="#{menuBean.hasLehrenderRole()}">
+		<h:form id="mainform" rendered="#{menuBean.hasLehrenderRole()}">
 
 			<br></br>
 			<br></br>
@@ -17,18 +17,21 @@
 				selectionMode="single"
 				selection="#{auswertungenBean.selectedWissenstest}"
 				value="#{auswertungenBean.wissenstests}" rowKey="#{wissenstest.id}">
+				<p:ajax listener="#{auswertungenBean.createAuswertungsErgebnisse}"
+					event="rowSelect" update=":mainform:auswertungsErgebnis" />
 				<f:facet name="header">Auswahl des Wissenstests</f:facet>
 				<p:column headerText="Bezeichnung"
+					sortBy="#{wissenstest.bezeichnung}"
 					selection="#{auswertungenBean.selectedWissenstest}"
 					style="text-align:left">
 					<p:outputLabel value="#{wissenstest.bezeichnung}" />
 				</p:column>
-				<p:column headerText="Beginn">
+				<p:column headerText="Beginn" sortBy="#{wissenstest.startzeit}">
 					<p:outputLabel value="#{wissenstest.startzeit}">
 						<f:convertDateTime pattern="dd.MM.yyyy hh:mm:ss" />
 					</p:outputLabel>
 				</p:column>
-				<p:column headerText="Ende">
+				<p:column headerText="Ende" sortBy="#{wissenstest.endzeit}">
 					<p:outputLabel value="#{wissenstest.endzeit}">
 						<f:convertDateTime pattern="dd.MM.yyyy hh:mm:ss" />
 					</p:outputLabel>
@@ -37,33 +40,41 @@
 					<h:commandLink
 						action="#{auswertungenBean.createAuswertungStudenten()}"
 						title="Excel Export des kompletten Wissenstest">
-						<h:graphicImage value="resources/images/Excel_15.png" height="25"
+						<h:graphicImage value="/resources/images/Excel_15.png" height="25"
 							width="25"></h:graphicImage>
 					</h:commandLink>
 					<p:commandLink oncomplete="PF('dlg').show();"
 						update=":myOutputPanel"
 						action="#{auswertungenBean.createBarModels()}" ajax="true"
 						title="Statistik">
-						<h:graphicImage value="resources/images/analytics.png" height="25"
-							width="25"></h:graphicImage>
+						<h:graphicImage value="/resources/images/analytics.png"
+							height="25" width="25"></h:graphicImage>
 					</p:commandLink>
 
 				</f:facet>
 			</p:dataTable>
 
 
+			<br></br>
+			<br></br>
+
+			<p:inputText />
+
+			<br></br>
 
 			<p:dataTable value="#{auswertungenBean.auswertungsErgebnis}"
 				rowIndexVar="row" id="auswertungsErgebnis" var="auswerg">
-				<p:column headerText="Name">
+				<f:facet name="header">Ergebnisse</f:facet>
+				<p:column headerText="Name" sortBy="#{auswerg.studentname}">
 					<p:outputLabel value="#{auswerg.studentname}" />
 				</p:column>
-				<p:column headerText="Matrikel-Nr.">
+				<p:column headerText="Matrikel-Nr." sortBy="#{auswerg.matrikelnr}">
 					<p:outputLabel value="#{auswerg.matrikelnr}" />
 				</p:column>
-				<p:column headerText="%">
-					<p:outputLabel value="#{auswerg.richtigInProzent}" />
+				<p:column headerText="richtige Antworten in %" sortBy="#{auswerg.richtigInProzent}">
+					<p:outputLabel value="#{auswerg.richtigInProzent}" rowStyleClass="#{auswerg.richtigInProzent le 80 ? 'markOrange' : 'markOrange'}" />
 				</p:column>
+				<f:facet name="footer"></f:facet>
 			</p:dataTable>
 
 		</h:form>

@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -69,7 +70,7 @@ public class AuswertungenBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		getWissenstestsWithErgebnis();
-		selectedWissenstest = wissenstests.get(1);
+		selectedWissenstest = wissenstests.get(0);
 		createAuswertungsErgebnisse();
 		createBarModels();
 	}
@@ -78,7 +79,7 @@ public class AuswertungenBean implements Serializable {
 	 * Diese Methode befüllt die Liste von Auswertungsergebnis, in der in der
 	 * View ersichtlich macht, welche Studenten einen Bonuspunkt bekommen.
 	 */
-	private void createAuswertungsErgebnisse() {
+	public void createAuswertungsErgebnisse() {
 		getErgebnisseByWissenstestOrderByStudent(selectedWissenstest);
 
 		int anzrichtig = 0;
@@ -294,6 +295,7 @@ public class AuswertungenBean implements Serializable {
 
 	}
 
+	
 	/**
 	 * Diese Methode prüft ob ein Ergebnis unter oder über der eingegeben
 	 * Prozentzahl liegt.

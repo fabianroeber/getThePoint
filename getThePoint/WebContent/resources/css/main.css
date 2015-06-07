@@ -4,6 +4,14 @@
 	background-color: #F79F81;
 }
 
+.blue.ui-datatable .ui-datatable-even {
+	background: red !important;
+}
+
+.blue.ui-datatable .ui-datatable-odd {
+	background: red !important; 
+}
+
 .hide-column-names table thead tr {
 	display: none;
 }
@@ -30,8 +38,11 @@
 }
 
 .noBorders tr, .noBorders td {
-    background: none !important;
-    border: none !important;
+	background: none !important;
+	border: none !important;
 }
 
-@font-face { font-family: "HdM Frutiger Next Pro Light"; src: url('#{resource["fonts/HdMFrutigerNextPro-Light.otf"]}'); }
+@font-face {
+	font-family: "HdM Frutiger Next Pro Light";
+	src: url('#{resource["fonts/HdMFrutigerNextPro-Light.otf"]}');
+}
