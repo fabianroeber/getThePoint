@@ -54,7 +54,8 @@
 
 
 			<p:dataTable value="#{auswertungenBean.auswertungsErgebnis}"
-				rowIndexVar="row" id="auswertungsErgebnis" var="auswerg">
+				id="auswertungsErgebnis" var="auswerg"
+				rowKey="#{auswerg.matrikelnr}">
 				<p:column headerText="Name" value="#{auswerg.studentname}"></p:column>
 				<p:column headerText="Matrikel-Nr." value="#{auswerg.matrikelnr}"></p:column>
 				<p:column headerText="%" value="#{auswerg.richtigInProzent}"></p:column>
@@ -73,5 +74,5 @@
 
 
 	</ui:define>
-	
+
 </ui:composition>
