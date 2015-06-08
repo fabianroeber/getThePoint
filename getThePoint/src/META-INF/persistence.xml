@@ -38,8 +38,8 @@
 				value="false" />
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url"
-				value="jdbc:mysql://db2.cbax0ml6ihqg.eu-central-1.rds.amazonaws.com:3306/getthepointdb" />
-			<property name="hibernate.connection.username" value="shuricano" />
+				value="jdbc:mysql://141.62.117.37:3306/getthepointdb" />
+			<property name="hibernate.connection.username" value="gtp" />
 			<property name="hibernate.connection.password" value="spicedgold" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
