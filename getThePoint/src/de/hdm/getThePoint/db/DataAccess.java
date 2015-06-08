@@ -314,10 +314,7 @@ public class DataAccess implements Serializable {
 
 	}
 	
-	public boolean hasStudent(String kuerzel) {
-		em = emf.createEntityManager();
-		
-	}
+
 
 	/**
 	 * Ermittelt einen Studenten anhand seines Kuerzels.
