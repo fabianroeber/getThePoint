@@ -215,6 +215,8 @@ public class UserBean implements Serializable {
 		student.setKuerzel(userName);
 		dataAccessBean.getDataAccess().saveStudent(
 				studentMapper.getDbModel(student));
+		student = studentMapper.getModel(dataAccessBean.getDataAccess()
+				.getStudentByKuerzel(userName));
 	}
 
 	public String getUserName() {

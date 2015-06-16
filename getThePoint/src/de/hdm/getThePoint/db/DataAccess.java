@@ -514,7 +514,9 @@ public class DataAccess implements Serializable {
 
 		em.persist(studentToSave);
 		em.getTransaction().commit();
+		
 		em.close();
+		
 	}
 
 	/**

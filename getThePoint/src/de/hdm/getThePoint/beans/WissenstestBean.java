@@ -55,6 +55,8 @@ public class WissenstestBean implements Serializable {
 	 * Timer f&uuml;r die aktuelle Frage, der herunterl&auml;uft.
 	 */
 	private int timer = 0;
+	
+	private boolean lastfrage = false;
 
 	private WissenstestMapper wissenstestMapper;
 	private ErgebnisMapper ergebnismapper;
@@ -305,6 +307,14 @@ public class WissenstestBean implements Serializable {
 
 	public void setFragen(List<FrageBo> fragen) {
 		this.fragen = fragen;
+	}
+
+	public boolean isLastfrage() {
+		return lastfrage;
+	}
+
+	public void setLastfrage(boolean lastfrage) {
+		this.lastfrage = lastfrage;
 	}
 
 }

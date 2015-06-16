@@ -14,9 +14,9 @@
 		<h:form id="wissenstest">
 			<p:growl id="growl" showDetail="true" sticky="true" />
 			<p:panel rendered="#{!wissenstestBean.testInProgress}">
-				<p:poll interval="10" global="false"
+				<p:poll interval="5" global="false"
 					listener="#{wissenstestBean.getAllWissenstests()}"
-					update="testlist, @form" />
+					update="wissenstest" />
 				<p:dataList id="testlist" value="#{wissenstestBean.wissenstests}"
 					rows="8" type="ordered" paginator="true" var="test"
 					rowIndexVar="row" itemType="none">
@@ -36,7 +36,7 @@
 					listener="#{wissenstestBean.nextFrage()}"
 					update="fragen growl fragepanel" global="false"></p:poll>
 				<p:poll interval="1" listener="#{wissenstestBean.timerDown()}"
-					update="timer" global="false"></p:poll>
+					update="timer fragepanel" global="false"></p:poll>
 
 				<p:panelGrid id="timer" columns="2">
 					<p:outputLabel value="Verbleibende Zeit"></p:outputLabel>
@@ -55,9 +55,14 @@
 					</p:selectOneRadio>
 				</p:panelGrid>
 				<p:commandButton value="Nächste Frage"
+					rendered="#{!wissenstestBean.lastfrage}"
 					action="#{wissenstestBean.nextFrage()}" update="fragen"></p:commandButton>
 				<p:commandButton value="Test abbrechen"
+					rendered="#{!wissenstestBean.lastfrage}"
 					action="#{wissenstestBean.testAbbrechen()}" update="@form growl"></p:commandButton>
+				<p:commandButton value="Test abschließen"
+					rendered="#{wissenstestBean.lastfrage}"
+					action="#{wissenstestBean.nextFrage()}" update="@form growl"></p:commandButton>
 			</p:panel>
 		</h:form>
 	</ui:define>
