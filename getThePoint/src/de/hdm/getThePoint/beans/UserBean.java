@@ -7,6 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import de.hdm.getThePoint.bo.LehrenderBo;
@@ -181,8 +182,10 @@ public class UserBean implements Serializable {
 	 */
 	private void organizeStudentUserData() {
 
-		checkStudent();
-		if (student == null) {
+		try {
+			student = studentMapper.getModel(dataAccessBean.getDataAccess()
+					.getStudentByKuerzel(userName));
+		} catch (NoResultException e) {
 			registerNewUser();
 		}
 	}
@@ -202,19 +205,6 @@ public class UserBean implements Serializable {
 		}
 
 		return navigationBean.redirectToLogout();
-	}
-
-	/**
-	 * Diese Methode l&auml;dt die Daten eines Studenten aus der Datenbank.
-	 */
-	private void checkStudent() {
-		if (studentMapper.getModel(dataAccessBean.getDataAccess()
-				.getStudentByKuerzel(userName)) != null) {
-			student = studentMapper.getModel(dataAccessBean.getDataAccess()
-					.getStudentByKuerzel(userName));
-		}
-		
-
 	}
 
 	/**
