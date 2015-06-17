@@ -123,6 +123,8 @@ public class AuswertungenBean implements Serializable {
 		getErgebnisseByWissenstestOrderByFrageUndRichtig(selectedWissenstest);
 		HorizontalBarChartModel model = new HorizontalBarChartModel();
 
+		model.setSeriesColors("1E7145, D10734");
+		
 		ChartSeries richtig = new ChartSeries();
 		ChartSeries falsch = new ChartSeries();
 		richtig.setLabel("richtig");

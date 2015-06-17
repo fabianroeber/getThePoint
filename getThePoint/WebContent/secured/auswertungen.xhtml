@@ -67,10 +67,10 @@
 				<f:facet name="header">Ergebnisse</f:facet>
 				<p:column headerText="Name" sortBy="#{auswerg.studentname}">
 					<p:outputLabel value="#{auswerg.studentname}" />
-				</p:column>
-				<p:column headerText="Matrikel-Nr." sortBy="#{auswerg.matrikelnr}">
-					<p:outputLabel value="#{auswerg.matrikelnr}" />
-				</p:column>
+				 </p:column>
+				<!-- <p:column headerText="Kuerzel" sortBy="#{auswerg.kuerzel}">
+					<p:outputLabel value="#{auswerg.kuerzel}" />
+				</p:column> -->
 				<p:column headerText="richtige Antworten in %" sortBy="#{auswerg.richtigInProzent}">
 					<p:outputLabel value="#{auswerg.richtigInProzent}" rowStyleClass="#{auswerg.richtigInProzent le 80 ? 'markOrange' : 'markOrange'}" />
 				</p:column>
@@ -81,7 +81,7 @@
 
 
 		<p:dialog id="myDialog" header="Auswertung nach Fragen"
-			widgetVar="dlg" height="700px" width="1000px">
+			widgetVar="dlg" height="850px" width="1350px">
 			<p:outputPanel id="myOutputPanel">
 				<p:chart type="bar" model="#{auswertungenBean.barModel}"
 					style="height:800px; width:1300px" />
